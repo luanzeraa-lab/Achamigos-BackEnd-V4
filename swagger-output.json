@@ -1,0 +1,300 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Achamigos",
+    "description": "Documentação da API Achamigos",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://achamigos-back-end.onrender.com/api"
+    }
+  ],
+  "paths": {
+    "/animais": {
+      "get": {
+        "summary": "Listar animais",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "object" }
+                }
+              }
+            }
+          },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "post": {
+        "summary": "Criar animal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "example": "any" },
+                  "idade": { "example": "any" },
+                  "raca": { "example": "any" },
+                  "sexo": { "example": "any" },
+                  "porte": { "example": "any" },
+                  "peso": { "example": "any" },
+                  "observacoes": { "example": "any" },
+                  "castracao": { "example": true },
+                  "imagem": { "example": "any" },
+                  "userId": { "example": "any" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/animais/{id}": {
+      "put": {
+        "summary": "Atualizar animal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "example": "any" },
+                  "idade": { "example": "any" },
+                  "raca": { "example": "any" },
+                  "sexo": { "example": "any" },
+                  "porte": { "example": "any" },
+                  "peso": { "example": "any" },
+                  "observacoes": { "example": "any" },
+                  "castracao": { "example": true },
+                  "imagem": { "example": "any" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "delete": {
+        "summary": "Deletar animal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Listar usuários",
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "summary": "Atualizar usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "example": "any" },
+                  "telefone": { "example": "any" },
+                  "cnpj": { "example": "any" },
+                  "userLogin": { "example": "any" },
+                  "senha": { "example": "any" },
+                  "email": { "example": "any" },
+                  "endereco": { "example": "any" },
+                  "tipo": { "example": "any" },
+                  "userStatus": { "example": "any" },
+                  "linkUser": { "example": "any" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "delete": {
+        "summary": "Deletar usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/eventos": {
+      "get": {
+        "summary": "Listar eventos",
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "post": {
+        "summary": "Criar evento",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data_Publicacao": { "example": "any" },
+                  "data_Exclusao": { "example": "any" },
+                  "tipo_Evento": { "example": "any" },
+                  "texto": { "example": "any" },
+                  "eventoStatus": { "example": "any" },
+                  "imagem": { "example": "any" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/eventos/{id}": {
+      "put": {
+        "summary": "Atualizar evento",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "delete": {
+        "summary": "Deletar evento",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    }
+  }
+}
