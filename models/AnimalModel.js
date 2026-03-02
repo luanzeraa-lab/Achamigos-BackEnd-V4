@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 
-const VacinaSchema = new mongoose.Schema({
-    nome: {type: String, required: true}
-})
 
 const AnimalSchema = new mongoose.Schema({
     nome: {type: String, required: true},
@@ -14,7 +11,6 @@ const AnimalSchema = new mongoose.Schema({
     observacoes: {type: String},
     linkAnimal: {type: String},
     castracao: {type: Boolean, required:true},
-    vacinas: [VacinaSchema],
     imagem: {type: String},
     tipo: {type: String, required:true},
     userId:{
@@ -41,7 +37,6 @@ const buscarAnimalPorId = async (id) =>{
 const cadastrarAnimal = async (dados, file) => {
   const novoAnimal = new Animal({
     ...dados,
-    vacinas: dados.vacinas || [],
     imagem: file? `/public/${file.filename}` : null
   });
   return await novoAnimal.save();
