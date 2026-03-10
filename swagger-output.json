@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://achamigos-back-end.onrender.com/api"
+       "url": "http://localhost:3002/api"
     }
   ],
   "paths": {
