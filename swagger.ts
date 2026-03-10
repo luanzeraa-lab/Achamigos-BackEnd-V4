@@ -1,6 +1,9 @@
-const swaggerAutogen = require('swagger-autogen')();
+import swaggerAutogen from 'swagger-autogen';
+import dotenv from 'dotenv';
 
-const docs = {
+dotenv.config();
+
+const doc = {
   info: {
     title: 'API Achamigos',
     description: 'Documentação da API Achamigos usando Swagger',
@@ -21,7 +24,12 @@ const docs = {
 };
 
 const outputFile = './swagger-output.json';
-const endpointsFiles = ['./api.js', './routes/UserRoute.js', './routes/AnimalRoute.js', 
-    './routes/FiltroRoute.js', './routes/EventoRoute.js'];
+const endpointsFiles = [
+  './api.ts',
+  './routes/UserRoute.ts',
+  './routes/AnimalRoute.ts',
+  './routes/FiltroRoute.ts',
+  './routes/EventoRoute.ts'
+];
 
-swaggerAutogen(outputFile, endpointsFiles, docs);
+swaggerAutogen()(outputFile, endpointsFiles, doc);
