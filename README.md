@@ -74,7 +74,7 @@ http://localhost:3002/docs
 ### Animais
 - `GET /api/animais` - Lista todos os animais
 - `GET /api/animais/:id` - Busca um animal por ID
-- `POST /api/animais` - Cadastra um novo animal (com upload de imagem)
+- `POST /api/animais` - Cadastra um novo animal 
 - `PUT /api/animais/:id` - Atualiza um animal
 - `DELETE /api/animais/:id` - Remove um animal
 - `GET /api/animais/buscar` - Filtra animais por parâmetros
@@ -86,30 +86,17 @@ http://localhost:3002/docs
 
 ### Eventos
 - `GET /api/eventos` - Lista todos os eventos
-- `POST /api/eventos` - Cadastra um novo evento (com upload de imagem)
+- `POST /api/eventos` - Cadastra um novo evento 
 - `PUT /api/eventos/:id` - Atualiza um evento
 - `DELETE /api/eventos/:id` - Remove um evento
 
 ## Autenticação
 
-Todas as rotas da API (exceto `/docs` e `/public`) requerem autenticação via API Key.
+Todas as rotas da API requerem autenticação via API Key.
 
 Adicione o header em todas as requisições:
 ```
 x-api-key: SUA_API_KEY
 ```
 
-## Migração para TypeScript
-
-Este projeto foi completamente migrado de JavaScript para TypeScript incluindo:
-- ✅ Tipagem completa em todos os arquivos
-- ✅ Interfaces para Models (IUser, IAnimal, IEvento)
-- ✅ Tipos do Express (Request, Response, NextFunction)
-- ✅ Configuração do TypeScript (tsconfig.json)
-- ✅ Compilação sem erros
-- ✅ Compatibilidade com Node.js (CommonJS)
-
-## Licença
-
-ISC
 
