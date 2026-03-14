@@ -28,9 +28,7 @@
           },
           "403": { "description": "Forbidden" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       },
       "post": {
         "summary": "Criar animal",
@@ -61,9 +59,7 @@
           "400": { "description": "Bad Request" },
           "403": { "description": "Forbidden" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       }
     },
     "/animais/{id}": {
@@ -102,9 +98,7 @@
           "200": { "description": "OK" },
           "403": { "description": "Forbidden" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       },
       "delete": {
         "summary": "Deletar animal",
@@ -120,9 +114,7 @@
           "200": { "description": "OK" },
           "403": { "description": "Forbidden" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       }
     },
     "/users": {
@@ -134,9 +126,7 @@
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       }
     },
     "/users/{id}": {
@@ -177,9 +167,7 @@
           "400": { "description": "Bad Request" },
           "403": { "description": "Forbidden" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       },
       "delete": {
         "summary": "Deletar usuário",
@@ -196,9 +184,7 @@
           "400": { "description": "Bad Request" },
           "403": { "description": "Forbidden" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       }
     },
     "/eventos": {
@@ -210,9 +196,7 @@
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       },
       "post": {
         "summary": "Criar evento",
@@ -240,9 +224,7 @@
           "403": { "description": "Forbidden" },
           "500": { "description": "Internal Server Error" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       }
     },
     "/eventos/{id}": {
@@ -262,9 +244,7 @@
           "403": { "description": "Forbidden" },
           "500": { "description": "Internal Server Error" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       },
       "delete": {
         "summary": "Deletar evento",
@@ -282,9 +262,7 @@
           "403": { "description": "Forbidden" },
           "500": { "description": "Internal Server Error" }
         },
-        "security": [
-          { "apiKeyAuth": [] }
-        ]
+        "security": [{ "apiKeyAuth": [] }]
       }
     }
   },

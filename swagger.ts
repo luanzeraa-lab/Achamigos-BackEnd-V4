@@ -1,7 +1,7 @@
-import swaggerAutogen from 'swagger-autogen';
-import dotenv from 'dotenv';
+import swaggerAutogen from 'swagger-autogen'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 const doc = {
   info: {
@@ -18,18 +18,20 @@ const doc = {
       description: process.env.API_KEY,
     },
   },
-  security: [{
-    apiKeyAuth: []
-  }],
-};
+  security: [
+    {
+      apiKeyAuth: [],
+    },
+  ],
+}
 
-const outputFile = './swagger-output.json';
+const outputFile = './swagger-output.json'
 const endpointsFiles = [
   './api.ts',
   './routes/UserRoute.ts',
   './routes/AnimalRoute.ts',
   './routes/FiltroRoute.ts',
-  './routes/EventoRoute.ts'
-];
+  './routes/EventoRoute.ts',
+]
 
-swaggerAutogen()(outputFile, endpointsFiles, doc);
+swaggerAutogen()(outputFile, endpointsFiles, doc)
