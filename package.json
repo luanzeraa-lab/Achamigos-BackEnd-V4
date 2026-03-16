@@ -1,6 +1,6 @@
 {
   "name": "api-achamigos",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "API Achamigos",
   "license": "ISC",
   "author": "",
@@ -8,7 +8,7 @@
   "main": "dist/api.js",
   "scripts": {
     "dev": "ts-node api.ts",
-    "build": "ERRO-1",
+    "build": "tsc",
     "start": "node dist/api.js",
     "lint": "eslint",
     "lint:fix": "eslint . --fix",
