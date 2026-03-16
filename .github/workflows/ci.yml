@@ -68,21 +68,22 @@ jobs:
           git push origin v${{ env.new_version }}
 
       - name: Enviar email se falhar
-  if: failure()
-  uses: dawidd6/action-send-mail@v3
-  with:
-    server_address: smtp.gmail.com
-    server_port: 465
-    username: ${{ secrets.EMAIL_USER }}
-    password: ${{ secrets.EMAIL_PASSWORD }}
-    subject: Falha no pipeline - ${{ github.repository }}
-    body: |
-      O pipeline falhou.
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Falha no pipeline - ${{ github.repository }}
+          body: |
+            O pipeline falhou.
 
-      Repositório: ${{ github.repository }}
-      Branch: ${{ github.ref }}
-      Commit: ${{ github.sha }}
+            Repositório: ${{ github.repository }}
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
 
-      https://github.com/${{ github.repository }}/actions
-    to: ${{ secrets.EMAIL_USER }}
-    from: GitHub Actions
+            Veja detalhes:
+            https://github.com/${{ github.repository }}/actions
+          to: ${{ secrets.EMAIL_USER }}
+          from: GitHub Actions
