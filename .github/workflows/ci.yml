@@ -64,7 +64,7 @@ jobs:
           git add package.json
           git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
 
-          git tag v${{ env.new_version }}
+          git tag -l | grep "v${{ env.new_version }}" || git tag v${{ env.new_version }}
 
           git push 
           git push origin v${{ env.new_version }}
