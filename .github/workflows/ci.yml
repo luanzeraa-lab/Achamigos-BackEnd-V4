@@ -67,6 +67,7 @@ jobs:
           git push origin main
           git push origin v${{ env.new_version }}
 
+      #envio de email se falhar
       - name: Enviar email se falhar
         if: failure()
         uses: dawidd6/action-send-mail@v3
