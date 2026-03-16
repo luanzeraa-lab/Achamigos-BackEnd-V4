@@ -8,7 +8,7 @@
   "main": "dist/api.js",
   "scripts": {
     "dev": "ts-node api.ts",
-    "build": "tsc",
+    "build": "ERRO-1",
     "start": "node dist/api.js",
     "lint": "eslint",
     "lint:fix": "eslint . --fix",
