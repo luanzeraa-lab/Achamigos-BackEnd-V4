@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'feature/*'
     tags-ignore:
       - '*'
 
@@ -64,7 +66,7 @@ jobs:
 
           git tag v${{ env.new_version }}
 
-          git push origin main
+          git push 
           git push origin v${{ env.new_version }}
 
       - name: Enviar email se falhar
