@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'feature/*'
     tags-ignore:
       - '*'
 
@@ -56,33 +58,26 @@ jobs:
 
       - name: Commit e criar tag
         run: |
-          git config --global user.name "luanzeraa-lab"
-          git config --global user.email "luansilva_2@hotmail.com"
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
 
           git add package.json
           git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
 
-          git tag v${{ env.new_version }}
+          git tag -l | grep "v${{ env.new_version }}" || git tag v${{ env.new_version }}
 
-          git push origin main
+          git push 
           git push origin v${{ env.new_version }}
 
       - name: Enviar email se falhar
-  if: failure()
-  uses: dawidd6/action-send-mail@v3
-  with:
-    server_address: smtp.gmail.com
-    server_port: 465
-    username: ${{ secrets.EMAIL_USER }}
-    password: ${{ secrets.EMAIL_PASSWORD }}
-    subject: Falha no pipeline - ${{ github.repository }}
-    body: |
-      O pipeline falhou.
-
-      Repositório: ${{ github.repository }}
-      Branch: ${{ github.ref }}
-      Commit: ${{ github.sha }}
-
-      https://github.com/${{ github.repository }}/actions
-    to: ${{ secrets.EMAIL_USER }}
-    from: GitHub Actions
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Falha no pipeline - ${{ github.repository }}
+          body: O pipeline do GitHub Actions falhou.
+          to: ${{ secrets.EMAIL_USER }}
+          from: GitHub Actions
