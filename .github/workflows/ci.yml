@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+
+jobs:
+  version:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodar build
+        run: npm run build
+
+      - name: Rodar testes
+        run: npm test
+
+      - name: Instalar semver
+        run: npm install -g semver
+
+      - name: Pegar última versão
+        id: version
+        run: |
+          git fetch --tags
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+
+          echo "Última versão: $LAST_TAG"
+
+          CURRENT_VERSION=${LAST_TAG#v}
+          NEW_VERSION=$(semver -i patch $CURRENT_VERSION)
+
+          echo "Nova versão: $NEW_VERSION"
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Atualizar package.json
+        run: npm version ${{ env.new_version }} --no-git-tag-version
+
+      - name: Commit e criar tag
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add package.json
+          git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
+
+          git tag v${{ env.new_version }}
+
+          git push origin main
+          git push origin v${{ env.new_version }}
+
+      - name: Enviar email se falhar
+  if: failure()
+  uses: dawidd6/action-send-mail@v3
+  with:
+    server_address: smtp.gmail.com
+    server_port: 465
+    username: ${{ secrets.EMAIL_USER }}
+    password: ${{ secrets.EMAIL_PASSWORD }}
+    subject: Falha no pipeline - ${{ github.repository }}
+    body: |
+      O pipeline falhou.
+
+      Repositório: ${{ github.repository }}
+      Branch: ${{ github.ref }}
+      Commit: ${{ github.sha }}
+
+      https://github.com/${{ github.repository }}/actions
+    to: ${{ secrets.EMAIL_USER }}
+    from: GitHub Actions
