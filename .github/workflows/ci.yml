@@ -56,8 +56,8 @@ jobs:
 
       - name: Commit e criar tag
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "luanzeraa-lab"
+          git config --global user.email "luansilva_2@hotmail.com"
 
           git add package.json
           git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
