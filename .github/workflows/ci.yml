@@ -58,7 +58,7 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Atualizar package.json
-        run: npm version "$new_version" --no-git-tag-version
+        run: npm version "$new_version" --no-git-tag-version --allow-same-version
 
       - name: Commit e criar tag
         run: |
