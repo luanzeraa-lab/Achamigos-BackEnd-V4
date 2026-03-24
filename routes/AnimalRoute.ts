@@ -19,5 +19,6 @@ router.get('/animais', animalController.listarAnimal)
 router.post('/animais', upload.single('imagem'), animalController.cadastrarAnimal)
 router.put('/animais/:id', animalController.alterarAnimal)
 router.delete('/animais/:id', animalController.excluirAnimal)
+router.get('/animais', animalController.main())
 
 export default router

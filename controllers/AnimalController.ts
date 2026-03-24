@@ -1,5 +1,16 @@
 import { Request, Response } from 'express'
 import * as AnimalModel from '../models/AnimalModel'
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
+export async function main() {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: "Explain how AI works in a few words",
+  });
+  console.log(response.text);
+}
 
 export const listarAnimal = async (req: Request, res: Response): Promise<void> => {
   try {
