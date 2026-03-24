@@ -10,6 +10,7 @@ import animalRoute from './routes/AnimalRoute'
 import userRoute from './routes/UserRoute'
 import eventoRoute from './routes/EventoRoute'
 import filtroRoute from './routes/FiltroRoute'
+import iaRoute from './routes/IaRoute'
 
 import apiKeyAuth from './middleware/apiKeyAuth'
 import swaggerDocument from './swagger-output.json'
@@ -39,6 +40,7 @@ app.use('/api', animalRoute)
 app.use('/api', userRoute)
 app.use('/api', eventoRoute)
 app.use('/api', filtroRoute)
+app.use('/api', iaRoute)
 
 // Conexão MongoDB
 mongoose

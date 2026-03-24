@@ -13,7 +13,7 @@ API para gerenciamento de animais, usuários e eventos da plataforma Achamigos.
 
 ## Estrutura do Projeto
 
-```
+```text
 ├── api.ts                  # Arquivo principal da aplicação
 ├── tsconfig.json          # Configuração do TypeScript
 ├── swagger.ts             # Configuração do Swagger
@@ -30,17 +30,19 @@ API para gerenciamento de animais, usuários e eventos da plataforma Achamigos.
 ## Instalação
 
 1. Clone o repositório
-2. Instale as dependências:
+1. Instale as dependências:
 
 ```bash
 npm install
 ```
 
-3. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+1. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
 MONGO_URI=sua_connection_string_mongodb
 API_KEY=sua_chave_api
+GEMINI_API_KEY=sua_chave_google_genai
+GEMINI_MODEL=gemini-2.0-flash
 PORT=3002
 ```
 
@@ -74,7 +76,7 @@ Inicia o servidor a partir do código compilado em `dist/`.
 
 Acesse a documentação Swagger após iniciar o servidor:
 
-```
+```text
 http://localhost:3002/docs
 ```
 
@@ -108,6 +110,84 @@ Todas as rotas da API requerem autenticação via API Key.
 
 Adicione o header em todas as requisições:
 
-```
+```text
 x-api-key: SUA_API_KEY
 ```
+
+## Integracao com Google GenAI (Gemini)
+
+Este projeto usa a SDK oficial `@google/genai` para gerar respostas com IA.
+
+### 1) Dependencia
+
+Se necessario, instale/atualize:
+
+```bash
+npm install @google/genai
+```
+
+### 2) Endpoint criado
+
+- `POST /api/ia/prompt` - Envia prompt para o Gemini
+- `GET /api/ia/historico` - Lista historico em memoria (opcional)
+
+### 3) Exemplo de chamada (backend)
+
+Request:
+
+```http
+POST /api/ia/prompt
+x-api-key: SUA_API_KEY
+Content-Type: application/json
+
+{
+  "prompt": "Crie uma descricao curta para adoção de um cachorro idoso.",
+  "systemInstruction": "Responda em portugues, em tom acolhedor.",
+  "model": "gemini-2.0-flash",
+  "saveHistory": true,
+  "userId": "123"
+}
+```
+
+Response:
+
+```json
+{
+  "model": "gemini-2.0-flash",
+  "response": "Texto gerado pelo Gemini...",
+  "savedToHistory": true
+}
+```
+
+### 4) Exemplo de consumo no frontend
+
+```javascript
+async function gerarTexto(prompt) {
+  const response = await fetch('http://localhost:3002/api/ia/prompt', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': 'SUA_API_KEY_PUBLICA_DO_CLIENTE',
+    },
+    body: JSON.stringify({
+      prompt,
+      systemInstruction: 'Responda em portugues de forma objetiva.',
+      saveHistory: false,
+    }),
+  })
+
+  if (!response.ok) {
+    const erro = await response.json()
+    throw new Error(erro.message || 'Falha ao gerar texto')
+  }
+
+  const data = await response.json()
+  return data.response
+}
+```
+
+### 5) Seguranca
+
+- Nunca exponha `GEMINI_API_KEY` no frontend.
+- A chamada ao Gemini e feita apenas no backend.
+- O frontend conversa com o endpoint interno `/api/ia/prompt`.

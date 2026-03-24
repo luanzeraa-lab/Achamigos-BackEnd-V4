@@ -32,6 +32,7 @@ const endpointsFiles = [
   './routes/AnimalRoute.ts',
   './routes/FiltroRoute.ts',
   './routes/EventoRoute.ts',
+  './routes/IaRoute.ts',
 ]
 
 swaggerAutogen()(outputFile, endpointsFiles, doc)
