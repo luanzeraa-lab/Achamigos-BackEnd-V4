@@ -39,39 +39,33 @@ jobs:
       - name: Rodar testes
         run: npm test
 
-      - name: Instalar semver
-        run: npm install -g semver
-
-      - name: Pegar última versão
-        id: version
+      - name: Incrementar versão automaticamente
         run: |
-          git fetch --tags
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-
-          echo "Última versão: $LAST_TAG"
-
-          CURRENT_VERSION=${LAST_TAG#v}
-          NEW_VERSION=$(semver -i patch $CURRENT_VERSION)
-
+          NEW_VERSION=$(npm version patch --no-git-tag-version | sed 's/^v//')
           echo "Nova versão: $NEW_VERSION"
-
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
-
-      - name: Atualizar package.json
-        run: npm version "$new_version" --no-git-tag-version --allow-same-version
 
       - name: Commit e criar tag
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          git add package.json
+          git add package.json package-lock.json
           git commit -m "chore(release): version $new_version [skip ci]" || echo "Sem mudanças"
 
-          git tag -l | grep "v$new_version" || git tag "v$new_version"
+          BRANCH_NAME="${{ github.ref_name }}"
+          BRANCH_SLUG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9._/-]#-#g' | tr '/' '-')
+
+          if [ "$BRANCH_NAME" = "main" ]; then
+            TAG_NAME="v$new_version"
+          else
+            TAG_NAME="v$new_version-$BRANCH_SLUG"
+          fi
+
+          git tag -l | grep "^$TAG_NAME$" || git tag "$TAG_NAME"
 
           git push origin HEAD:${{ github.ref_name }}
-          git push origin "v$new_version"
+          git push origin "$TAG_NAME"
 
       - name: Enviar email se falhar
         if: failure()
