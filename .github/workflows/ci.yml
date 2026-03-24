@@ -1,5 +1,8 @@
 name: Release
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -19,7 +22,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+          ref: ${{ github.ref_name }}
+          token: ${{ secrets.GH_TOKEN || github.token }}
 
       - name: Configurar Node.js
         uses: actions/setup-node@v3
@@ -54,7 +58,7 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Atualizar package.json
-        run: npm version ${{ env.new_version }} --no-git-tag-version
+        run: npm version "$new_version" --no-git-tag-version
 
       - name: Commit e criar tag
         run: |
@@ -62,12 +66,12 @@ jobs:
           git config --global user.email "github-actions@github.com"
 
           git add package.json
-          git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
+          git commit -m "chore(release): version $new_version [skip ci]" || echo "Sem mudanças"
 
-          git tag -l | grep "v${{ env.new_version }}" || git tag v${{ env.new_version }}
+          git tag -l | grep "v$new_version" || git tag "v$new_version"
 
-          git push 
-          git push origin v${{ env.new_version }}
+          git push origin HEAD:${{ github.ref_name }}
+          git push origin "v$new_version"
 
       - name: Enviar email se falhar
         if: failure()

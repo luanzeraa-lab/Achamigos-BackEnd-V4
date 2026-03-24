@@ -10,8 +10,7 @@ import animalRoute from './routes/AnimalRoute'
 import userRoute from './routes/UserRoute'
 import eventoRoute from './routes/EventoRoute'
 import filtroRoute from './routes/FiltroRoute'
-import iaRoute from './routes/IaRoute'
-
+import GenaiRoute from './routes/GenaiRoute'
 import apiKeyAuth from './middleware/apiKeyAuth'
 import swaggerDocument from './swagger-output.json'
 
@@ -34,13 +33,13 @@ const swaggerOptions = {
 }
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 
+app.use('/api', GenaiRoute)
 // Rotas da API
 app.use(apiKeyAuth)
 app.use('/api', animalRoute)
 app.use('/api', userRoute)
 app.use('/api', eventoRoute)
 app.use('/api', filtroRoute)
-app.use('/api', iaRoute)
 
 // Conexão MongoDB
 mongoose
@@ -55,3 +54,4 @@ app.listen(port, () => {
 })
 
 export {app}
+
