@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { gerarTexto } from '../services/GenaiService'
+//c
 
 export async function gerarTextoController(req: Request, res: Response): Promise<void> {
   try {
