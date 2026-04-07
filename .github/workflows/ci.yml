@@ -1,9 +1,16 @@
 name: Release
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
-      - main   # 🔥 só main gera versão
+      - main
+      - develop
+      - 'feature/*'
+    tags-ignore:
+      - '*'
 
 jobs:
   version:
@@ -15,6 +22,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.ref_name }}
           token: ${{ secrets.GH_TOKEN || github.token }}
 
       - name: Configurar Node.js
@@ -31,42 +39,42 @@ jobs:
       - name: Rodar testes
         run: npm test
 
-      - name: Instalar semver
-        run: npm install -g semver
-
-      - name: Calcular nova versão
+      - name: Incrementar versão automaticamente
         run: |
-          git fetch --tags
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-
-          echo "Última versão: $LAST_TAG"
-
-          CURRENT_VERSION=${LAST_TAG#v}
-          NEW_VERSION=$(semver -i patch $CURRENT_VERSION)
-
+          NEW_VERSION=$(npm version patch --no-git-tag-version | sed 's/^v//')
           echo "Nova versão: $NEW_VERSION"
-
           echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
 
-      - name: Atualizar package.json
-        run: npm version ${{ env.new_version }} --no-git-tag-version
-
-      - name: Commit + Tag (APENAS NA MAIN)
+      - name: Commit e controle de tags
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          git add package.json
-          git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
+          git add package.json package-lock.json
+          git commit -m "chore(release): version $new_version [skip ci]" || echo "Sem mudanças"
 
-          TAG_NAME="v${{ env.new_version }}"
+          BRANCH_NAME="${{ github.ref_name }}"
 
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            git tag "$TAG_NAME"
+          # Sempre envia o commit
+          git push origin HEAD:${{ github.ref_name }}
+
+          # 🔥 Controle de tags
+          if [ "$BRANCH_NAME" = "main" ]; then
+            TAG_NAME="v$new_version"
+
+          elif [ "$BRANCH_NAME" = "develop" ]; then
+            TAG_NAME="v$new_version-beta"
+
+          else
+            echo "Branch $BRANCH_NAME não gera tag"
+            exit 0
           fi
 
-          git push origin main
-          git push origin "$TAG_NAME"
+          # Evita erro se a tag já existir
+          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            git tag "$TAG_NAME"
+            git push origin "$TAG_NAME"
+          fi
 
       - name: Enviar email se falhar
         if: failure()
