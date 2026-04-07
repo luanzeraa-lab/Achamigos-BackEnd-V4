@@ -2,6 +2,8 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import express, { Request, Response, Application } from 'express'
+import { loggerMiddleware } from "./middleware/loggerMiddleware";
+import { errorMiddleware } from "./middleware/errorMiddleware";
 import cors from 'cors'
 import mongoose from 'mongoose'
 import swaggerUi from 'swagger-ui-express'
@@ -19,6 +21,7 @@ const app: Application = express()
 app.use(express.json())
 app.use(cors({ origin: '*' }))
 app.use('/public', express.static('public'))
+app.use(loggerMiddleware);
 
 // Rotas básicas
 app.get('/', (req: Request, res: Response) => {
@@ -40,6 +43,7 @@ app.use('/api', animalRoute)
 app.use('/api', userRoute)
 app.use('/api', eventoRoute)
 app.use('/api', filtroRoute)
+app.use(errorMiddleware);
 
 // Conexão MongoDB
 mongoose
