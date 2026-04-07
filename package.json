@@ -1,6 +1,10 @@
 {
   "name": "api-achamigos",
+<<<<<<< HEAD
   "version": "1.0.6",
+=======
+  "version": "1.0.5",
+>>>>>>> feature/pipeline
   "description": "API Achamigos",
   "license": "ISC",
   "author": "",
