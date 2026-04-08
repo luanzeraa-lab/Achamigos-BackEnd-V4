@@ -11,7 +11,7 @@ export async function loggerMiddleware(req: Request, res: Response, next: NextFu
       method: req.method,
       url: req.originalUrl,
       statusCode: res.statusCode,
-      duration,
+      duration: duration,
       body: req.body,
       params: req.params,
       query: req.query,

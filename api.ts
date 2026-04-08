@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import "dotenv/config";
 dotenv.config()
 
 import express, { Request, Response, Application } from 'express'
@@ -14,6 +15,7 @@ import eventoRoute from './routes/EventoRoute'
 import filtroRoute from './routes/FiltroRoute'
 import GenaiRoute from './routes/GenaiRoute'
 import apiKeyAuth from './middleware/apiKeyAuth'
+import logRoute from './routes/LogRoute'
 import swaggerDocument from './swagger-output.json'
 
 const app: Application = express()
@@ -21,6 +23,7 @@ const app: Application = express()
 app.use(express.json())
 app.use(cors({ origin: '*' }))
 app.use('/public', express.static('public'))
+
 app.use(loggerMiddleware);
 
 // Rotas básicas
@@ -37,6 +40,7 @@ const swaggerOptions = {
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 
 app.use('/api', GenaiRoute)
+app.use('/api', logRoute);
 // Rotas da API
 app.use(apiKeyAuth)
 app.use('/api', animalRoute)
