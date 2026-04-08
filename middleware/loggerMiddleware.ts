@@ -4,10 +4,11 @@ import { logger } from "../utils/logger";
 export async function loggerMiddleware(req: Request, res: Response, next: NextFunction) {
   const start = Date.now();
 
-  res.on("finish", async () => {
+  res.on("finish", () => {
     const duration = Date.now() - start;
 
-    await logger.info("HTTP Request", {
+    logger.info("HTTP Request", {
+      type: "http_request",
       method: req.method,
       url: req.originalUrl,
       statusCode: res.statusCode,
