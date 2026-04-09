@@ -9,7 +9,7 @@ router.get("/log", async (req, res) => {
 
   await logger.info("Teste manual", { ok: true });
 
-  await logtail.flush(); 
+  // await logtail.flush(); 
 
   res.send("ok");
 });
