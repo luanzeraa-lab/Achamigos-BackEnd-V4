@@ -1,5 +1,11 @@
 import dotenv from 'dotenv'
 import "dotenv/config";
+import dns from "dns"
+
+if(process.env.DNS_FORCE === 'true') {
+  dns.setServers(["1.1.1.1", "8.8.8.8"])
+}
+
 dotenv.config()
 
 import express, { Request, Response, Application } from 'express'
@@ -53,8 +59,8 @@ app.use(errorMiddleware);
 mongoose
   .connect(process.env.MONGO_URI as string)
   .then(() => console.log('✅ Conexão com o banco de dados bem-sucedida!'))
-  .catch((err) => console.log('❌ Erro ao conectar ao banco de dados:', err))
-
+  .catch((err) => console.log('❌ Erro ao conectar ao banco de dados:', err)
+)
 // Inicialização do servidor
 const port = process.env.PORT || 3002
 app.listen(port, () => {
