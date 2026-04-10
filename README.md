@@ -192,53 +192,61 @@ async function gerarTexto(prompt) {
 - A chamada ao Gemini e feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/ia/prompt`.
 
-### 6) Como rodar em container Docker
-Pré-requisitos Docker desktop instalado e aberto
-
-Criar a imagem Docker
-No diretório raiz do backend (onde está o Dockerfile):
-
-docker build -t backend-app .
-
-Rodar o container
-docker run -d -p 3002:3002 --name backend-container backend-app
-
-A aplicação estará acessível em: http://localhost:3002
-
-Parar e remover o container
-Para parar:
-
-docker stop backend-container
-
-Para remover:
-
-docker rm backend-container
-
-
 ## 📊 Observabilidade e Logs
 
-Pré-requisitos
-Docker desktop instalado e aberto
+O backend do projeto utiliza o Better Stack para monitoramento e análise de logs em tempo real.
 
- 1. Criar a imagem Docker
+### 🧾 Estrutura dos logs
 
-No diretório raiz do backend (onde está o Dockerfile):
+Os logs são enviados de forma estruturada, contendo:
 
-docker build -t backend-app .
+- método HTTP  
+- rota acessada  
+- status da resposta  
+- tempo de resposta (`duration`)  
+- mensagem do log  
 
- 2. Rodar o container
+---
 
-docker run -d -p 3002:3002 --name backend-container backend-app
+### 📡 Integração
 
-A aplicação estará acessível em:
- http://localhost:3002
+Os logs da API foram integrados ao Better Stack e validados com sucesso, garantindo o monitoramento das requisições.
 
-3. Parar e remover o container
+---
 
-Para parar:
+### 🚨 Alertas configurados
 
-docker stop backend-container
+- **Alta taxa de erros**  
+  Dispara quando ocorrem erros `500` ou `401` mais de **10 vezes em 1 minuto**
 
-Para remover:
+- **Pico de requisições**  
+  Dispara quando a API recebe mais de **100 requisições em 1 minuto**
 
-docker rm backend-container
+- **Lentidão / performance**  
+  Dispara quando o tempo de resposta (`duration`) é maior que **1000ms (1 segundo)**
+
+---
+
+### 📬 Notificações
+
+Quando os alertas são atingidos, notificações são enviadas automaticamente por e-mail.
+
+---
+
+### 🖼️ Evidências
+
+- Logs no Better Stack  
+- Alertas configurados  
+- Notificações por e-mail  
+
+### 📍 Logs no Better Stack
+
+![Logs](./docs/errolog.png)
+![Logs](./docs/lentidaolog.png)
+![Logs](./docs/req100log.png)
+
+### 📍 Notificações por e-mail
+
+![Email](./docs/erro.png)
+![Email](./docs/lentidao.png)
+![Email](./docs/req100.png)
