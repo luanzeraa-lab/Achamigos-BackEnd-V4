@@ -192,6 +192,7 @@ async function gerarTexto(prompt) {
 - A chamada ao Gemini e feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/ia/prompt`.
 
+<<<<<<< HEAD
 ### 6) Como rodar em container Docker
 Pré-requisitos Docker desktop instalado e aberto
 
@@ -216,60 +217,32 @@ docker rm backend-container
 
 
 ## 📊 Observabilidade e Logs
+=======
+### 5) Como rodar em container Docker
+>>>>>>> develop
 
-O backend do projeto utiliza o Better Stack para monitoramento e análise de logs em tempo real.
+Pré-requisitos
+Docker desktop instalado e aberto
 
-### 🧾 Estrutura dos logs
+ 1. Criar a imagem Docker
 
-Os logs são enviados de forma estruturada, contendo:
+No diretório raiz do backend (onde está o Dockerfile):
 
-- método HTTP  
-- rota acessada  
-- status da resposta  
-- tempo de resposta (`duration`)  
-- mensagem do log  
+docker build -t backend-app .
 
----
+ 2. Rodar o container
 
-### 📡 Integração
+docker run -d -p 3002:3002 --name backend-container backend-app
 
-Os logs da API foram integrados ao Better Stack e validados com sucesso, garantindo o monitoramento das requisições.
+A aplicação estará acessível em:
+ http://localhost:3002
 
----
+3. Parar e remover o container
 
-### 🚨 Alertas configurados
+Para parar:
 
-- **Alta taxa de erros**  
-  Dispara quando ocorrem erros `500` ou `401` mais de **10 vezes em 1 minuto**
+docker stop backend-container
 
-- **Pico de requisições**  
-  Dispara quando a API recebe mais de **100 requisições em 1 minuto**
+Para remover:
 
-- **Lentidão / performance**  
-  Dispara quando o tempo de resposta (`duration`) é maior que **1000ms (1 segundo)**
-
----
-
-### 📬 Notificações
-
-Quando os alertas são atingidos, notificações são enviadas automaticamente por e-mail.
-
----
-
-### 🖼️ Evidências
-
-- Logs no Better Stack  
-- Alertas configurados  
-- Notificações por e-mail  
-
-### 📍 Logs no Better Stack
-
-![Logs](./docs/errolog.png)
-![Logs](./docs/lentidaolog.png)
-![Logs](./docs/req100log.png)
-
-### 📍 Notificações por e-mail
-
-![Email](./docs/erro.png)
-![Email](./docs/lentidao.png)
-![Email](./docs/req100.png)
+docker rm backend-container
