@@ -191,3 +191,62 @@ async function gerarTexto(prompt) {
 - Nunca exponha `GEMINI_API_KEY` no frontend.
 - A chamada ao Gemini e feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/ia/prompt`.
+
+## 📊 Observabilidade e Logs
+
+O backend do projeto utiliza o Better Stack para monitoramento e análise de logs em tempo real.
+
+### 🧾 Estrutura dos logs
+
+Os logs são enviados de forma estruturada, contendo:
+
+- método HTTP  
+- rota acessada  
+- status da resposta  
+- tempo de resposta (`duration`)  
+- mensagem do log  
+
+---
+
+### 📡 Integração
+
+Os logs da API foram integrados ao Better Stack e validados com sucesso, garantindo o monitoramento das requisições.
+
+---
+
+### 🚨 Alertas configurados
+
+- **Alta taxa de erros**  
+  Dispara quando ocorrem erros `500` ou `401` mais de **10 vezes em 1 minuto**
+
+- **Pico de requisições**  
+  Dispara quando a API recebe mais de **100 requisições em 1 minuto**
+
+- **Lentidão / performance**  
+  Dispara quando o tempo de resposta (`duration`) é maior que **1000ms (1 segundo)**
+
+---
+
+### 📬 Notificações
+
+Quando os alertas são atingidos, notificações são enviadas automaticamente por e-mail.
+
+---
+
+### 🖼️ Evidências
+
+- Logs no Better Stack  
+- Alertas configurados  
+- Notificações por e-mail  
+
+### 📍 Logs no Better Stack
+
+![Logs](./docs/errolog.png)
+![Logs](./docs/lentidaolog.png)
+![Logs](./docs/req100log.png)
+
+### 📍 Notificações por e-mail
+
+![Email](./docs/erro.png)
+![Email](./docs/lentidao.png)
+![Email](./docs/req100.png)
