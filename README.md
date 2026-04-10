@@ -191,3 +191,31 @@ async function gerarTexto(prompt) {
 - Nunca exponha `GEMINI_API_KEY` no frontend.
 - A chamada ao Gemini e feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/ia/prompt`.
+
+### 5) Como rodar em container Docker
+
+Pré-requisitos
+Docker desktop instalado e aberto
+
+ 1. Criar a imagem Docker
+
+No diretório raiz do backend (onde está o Dockerfile):
+
+docker build -t backend-app .
+
+ 2. Rodar o container
+
+docker run -d -p 3002:3002 --name backend-container backend-app
+
+A aplicação estará acessível em:
+ http://localhost:3002
+
+3. Parar e remover o container
+
+Para parar:
+
+docker stop backend-container
+
+Para remover:
+
+docker rm backend-container
