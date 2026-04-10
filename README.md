@@ -192,7 +192,6 @@ async function gerarTexto(prompt) {
 - A chamada ao Gemini e feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/ia/prompt`.
 
-<<<<<<< HEAD
 ### 6) Como rodar em container Docker
 Pré-requisitos Docker desktop instalado e aberto
 
@@ -217,9 +216,6 @@ docker rm backend-container
 
 
 ## 📊 Observabilidade e Logs
-=======
-### 5) Como rodar em container Docker
->>>>>>> develop
 
 Pré-requisitos
 Docker desktop instalado e aberto
