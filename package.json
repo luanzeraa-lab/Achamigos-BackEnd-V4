@@ -1,10 +1,6 @@
 {
   "name": "api-achamigos",
-<<<<<<< HEAD
-  "version": "0.0.4",
-=======
-  "version": "1.0.1",
->>>>>>> 88c20afcee73b1ec43939e7ebc794e81d4c753bf
+  "version": "1.0.0",
   "description": "API Achamigos",
   "license": "ISC",
   "author": "",
