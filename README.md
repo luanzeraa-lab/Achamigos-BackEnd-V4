@@ -44,6 +44,7 @@ API_KEY=sua_chave_api
 GEMINI_API_KEY=sua_chave_google_genai
 GEMINI_MODEL=gemini-2.0-flash
 PORT=3002
+LOGTAIL_SOURCE_TOKEN=sua_logtail_token
 ```
 
 ## Scripts Disponíveis
@@ -192,7 +193,33 @@ async function gerarTexto(prompt) {
 - A chamada ao Gemini e feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/ia/prompt`.
 
-## 📊 Observabilidade e Logs
+### 6) Como rodar em container Docker
+Pré-requisitos - Docker desktop instalado e aberto e arquivo .env
+com LOGTAIL_SOURCE_TOKEN=sua_logtail_token. Aqui você pode colocar uma logtail fake
+apenas para teste.
+
+
+Criar a imagem Docker
+No diretório raiz do backend (onde está o Dockerfile):
+
+docker build -t backend-app .
+
+Rodar o container
+docker run -d -p 3002:3002 --name backend-container backend-app
+
+A aplicação estará acessível em: http://localhost:3002
+
+Parar e remover o container
+Para parar:
+
+docker stop backend-container
+
+Para remover:
+
+docker rm backend-container
+
+
+## 7) 📊 Observabilidade e Logs
 
 O backend do projeto utiliza o Better Stack para monitoramento e análise de logs em tempo real.
 
@@ -241,6 +268,7 @@ Quando os alertas são atingidos, notificações são enviadas automaticamente p
 
 ### 📍 Logs no Better Stack
 
+![Logs](./docs/logs.jpg)
 ![Logs](./docs/errolog.png)
 ![Logs](./docs/lentidaolog.png)
 ![Logs](./docs/req100log.png)
