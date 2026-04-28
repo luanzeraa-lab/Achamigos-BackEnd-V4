@@ -1,0 +1,22 @@
+
+services:
+  mongo:
+    image: mongo
+    container_name: achamigos-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: .
+    container_name: achamigos-backend
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/achamigos
+
+volumes:
+  mongo_data:
