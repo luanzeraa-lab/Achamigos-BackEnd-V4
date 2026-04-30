@@ -16,7 +16,10 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017/achamigos
+      - MONGO_URI=mongodb://mongo:27017/achamigos
+      - LOGTAIL_SOURCE_TOKEN=h9sCAQmdLY5CoZDz38AxqJ5q
+      - GEMINI_API_KEY=AIzaSyCYmFalzucOov6hmTBoLjgXeTN2dgKHJi0
+      - API_KEY=1234
 
 volumes:
   mongo_data:

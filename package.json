@@ -1,6 +1,10 @@
 {
   "name": "api-achamigos",
+<<<<<<< HEAD
   "version": "1.0.3",
+=======
+  "version": "1.0.6",
+>>>>>>> feature/genai
   "description": "API Achamigos",
   "license": "ISC",
   "author": "",
