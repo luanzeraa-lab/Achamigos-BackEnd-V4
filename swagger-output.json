@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://achamigos-back-end.onrender.com/api"
+      "url": "https://achamigos-back-end.onrender.com/api",
+      "description": "Servidor de Produção (Render)"
+    },
+    {
+      "url": "http://localhost:3002/api",
+      "description": "Servidor de Desenvolvimento Local"
     }
   ],
   "paths": {
@@ -120,11 +125,90 @@
     "/users": {
       "get": {
         "summary": "Listar usuários",
+        "description": "Retorna a lista de usuários cadastrados no sistema.",
         "responses": {
-          "200": { "description": "OK" },
-          "400": { "description": "Bad Request" },
-          "403": { "description": "Forbidden" },
-          "404": { "description": "Not Found" }
+          "200": {
+            "description": "Lista de usuários retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/User" }
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "_id": "642c1f1a1a1a1a1a1a1a1a1a",
+                        "nome": "ONG Amigos",
+                        "cnpj": "12.345.678/0001-90",
+                        "telefone": "(11) 99999-9999",
+                        "userLogin": "ong_amigos",
+                        "email": "contato@ongamigos.org",
+                        "endereco": { "cep": "01234-567", "rua": "Rua A", "cidade": "São Paulo", "numero": "123" },
+                        "linkUser": "/public/1650000000000.jpg"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Requisição inválida" },
+          "403": { "description": "Proibido - chave API inválida" },
+          "404": { "description": "Nenhum usuário encontrado" }
+        },
+        "security": [{ "apiKeyAuth": [] }]
+      },
+      "post": {
+        "summary": "Criar usuário",
+        "description": "Cadastro de novo usuário. Pode enviar `application/json` ou `multipart/form-data` quando for enviar imagem (`imagem` campo). A senha será armazenada de forma segura (hash).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NewUser" },
+              "examples": {
+                "json": {
+                  "value": {
+                    "nome": "ONG Amigos",
+                    "cnpj": "12.345.678/0001-90",
+                    "telefone": "(11) 99999-9999",
+                    "userLogin": "ong_amigos",
+                    "senha": "SenhaSegura123!",
+                    "email": "contato@ongamigos.org",
+                    "endereco": { "cep": "01234-567", "rua": "Rua A", "cidade": "São Paulo", "numero": "123" },
+                    "linkUser": "/public/1650000000000.jpg"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "imagem": { "type": "string", "format": "binary" },
+                  "nome": { "type": "string" },
+                  "cnpj": { "type": "string" },
+                  "telefone": { "type": "string" },
+                  "userLogin": { "type": "string" },
+                  "senha": { "type": "string" },
+                  "email": { "type": "string" },
+                  "endereco": { "$ref": "#/components/schemas/Endereco" }
+                },
+                "required": ["nome","cnpj","telefone","userLogin","senha","email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/User" } } }
+          },
+          "400": { "description": "Dados de entrada inválidos ou usuário já cadastrado" },
+          "403": { "description": "Proibido - chave API inválida" },
+          "500": { "description": "Erro interno" }
         },
         "security": [{ "apiKeyAuth": [] }]
       }
@@ -132,57 +216,66 @@
     "/users/{id}": {
       "put": {
         "summary": "Atualizar usuário",
+        "description": "Atualiza os dados do usuário informado pelo id. A senha, se fornecida, será re-hashada.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string" },
+            "description": "ID do usuário a ser atualizado"
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "nome": { "example": "any" },
-                  "telefone": { "example": "any" },
-                  "cnpj": { "example": "any" },
-                  "userLogin": { "example": "any" },
-                  "senha": { "example": "any" },
-                  "email": { "example": "any" },
-                  "endereco": { "example": "any" },
-                  "tipo": { "example": "any" },
-                  "userStatus": { "example": "any" },
-                  "linkUser": { "example": "any" }
+              "schema": { "$ref": "#/components/schemas/UpdateUser" },
+              "examples": {
+                "update": {
+                  "value": {
+                    "nome": "ONG Amigos Atualizada",
+                    "telefone": "(11) 98888-8888",
+                    "email": "novo@ongamigos.org",
+                    "senha": "NovaSenha123!",
+                    "endereco": { "cep": "01234-567", "rua": "Rua B", "cidade": "São Paulo", "numero": "321" }
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "OK" },
-          "400": { "description": "Bad Request" },
-          "403": { "description": "Forbidden" }
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/User" } } }
+          },
+          "400": { "description": "Dados inválidos" },
+          "403": { "description": "Proibido - chave API inválida" },
+          "404": { "description": "Usuário não encontrado" }
         },
         "security": [{ "apiKeyAuth": [] }]
       },
       "delete": {
         "summary": "Deletar usuário",
+        "description": "Remove o usuário identificado pelo id.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string" },
+            "description": "ID do usuário a ser removido"
           }
         ],
         "responses": {
-          "200": { "description": "OK" },
-          "400": { "description": "Bad Request" },
-          "403": { "description": "Forbidden" }
+          "200": {
+            "description": "Usuário removido com sucesso",
+            "content": { "application/json": { "schema": { "type": "object", "properties": { "message": { "type": "string" } } } } }
+          },
+          "400": { "description": "Requisição inválida" },
+          "403": { "description": "Proibido - chave API inválida" },
+          "404": { "description": "Usuário não encontrado" }
         },
         "security": [{ "apiKeyAuth": [] }]
       }
@@ -272,6 +365,58 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key"
+      }
+    }
+    ,
+    "schemas": {
+      "Endereco": {
+        "type": "object",
+        "properties": {
+          "cep": { "type": "string", "example": "01234-567" },
+          "rua": { "type": "string", "example": "Rua A" },
+          "cidade": { "type": "string", "example": "São Paulo" },
+          "numero": { "type": "string", "example": "123" }
+        }
+      },
+      "NewUser": {
+        "type": "object",
+        "required": ["nome","cnpj","telefone","userLogin","senha","email"],
+        "properties": {
+          "nome": { "type": "string", "example": "ONG Amigos" },
+          "cnpj": { "type": "string", "example": "12.345.678/0001-90" },
+          "telefone": { "type": "string", "example": "(11) 99999-9999" },
+          "userLogin": { "type": "string", "example": "ong_amigos" },
+          "senha": { "type": "string", "example": "SenhaSegura123!" },
+          "email": { "type": "string", "format": "email", "example": "contato@ongamigos.org" },
+          "endereco": { "$ref": "#/components/schemas/Endereco" },
+          "linkUser": { "type": "string", "example": "/public/1650000000000.jpg" }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "telefone": { "type": "string" },
+          "cnpj": { "type": "string" },
+          "userLogin": { "type": "string" },
+          "senha": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "endereco": { "$ref": "#/components/schemas/Endereco" },
+          "linkUser": { "type": "string" }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string", "example": "642c1f1a1a1a1a1a1a1a1a1a" },
+          "nome": { "type": "string", "example": "ONG Amigos" },
+          "cnpj": { "type": "string", "example": "12.345.678/0001-90" },
+          "telefone": { "type": "string", "example": "(11) 99999-9999" },
+          "userLogin": { "type": "string", "example": "ong_amigos" },
+          "email": { "type": "string", "format": "email", "example": "contato@ongamigos.org" },
+          "endereco": { "$ref": "#/components/schemas/Endereco" },
+          "linkUser": { "type": "string", "example": "/public/1650000000000.jpg" }
+        }
       }
     }
   }
