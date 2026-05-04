@@ -19,5 +19,6 @@ router.get('/users', userController.listarUser)
 router.post('/users', upload.single('imagem'), userController.cadastrarUser)
 router.put('/users/:id', userController.alterarUser)
 router.delete('/users/:id', userController.excluirUser)
+router.post('/users/login', userController.login)
 
 export default router
