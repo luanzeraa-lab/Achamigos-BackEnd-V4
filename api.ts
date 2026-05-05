@@ -23,7 +23,7 @@ import filtroRoute from './routes/FiltroRoute'
 import GenaiRoute from './routes/GenaiRoute'
 import apiKeyAuth from './middleware/apiKeyAuth'
 import logRoute from './routes/LogRoute'
-import swaggerDocument from './swagger-output.json'
+=import swaggerDocument from './swagger-output.json'
 
 const app: Application = express()
 
