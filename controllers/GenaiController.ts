@@ -1,12 +1,23 @@
 import { Request, Response } from 'express'
 import { gerarTexto } from '../services/GenaiService'
 import {animais, descricao} from '../models/BancoAnimais'
+import { listarAnimais } from '../models/AnimalModel'
+
+// export async function getAnimaisController(req: Request, res: Response): Promise<void> {
+//   try {
+//     const animaisData = await listarAnimais()
+//     res.json(animaisData)
+//   } catch (error) {
+//     res.status(500).json({ erro: 'Erro ao buscar animais' })
+//   }
+// }
 
 export async function gerarTextoController(req: Request, res: Response): Promise<void> {
   try {
     const { prompt, id, nome }: any = req.body
 
-    const resposta: string = await gerarTexto( prompt + JSON.stringify(animais) + descricao );
+    const animaisData = await listarAnimais()
+    const resposta: string = await gerarTexto( prompt + JSON.stringify(animaisData) + descricao );
 
     let respostaJson: any = null
     try {
