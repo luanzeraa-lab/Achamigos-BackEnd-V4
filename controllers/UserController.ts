@@ -1,6 +1,46 @@
 import { Request, Response } from 'express'
+import { User } from '../models/UserModel'
 import * as UserModel from '../models/UserModel'
 import bcrypt from 'bcryptjs'
+
+ export const login = async (req: Request, res: Response) => {
+    const { email, senha } = req.body;
+
+    try {
+
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.json({
+          status: "error",
+          message: "Usuário não encontrado",
+        });
+      }
+      const senhaCorreta = await bcrypt.compare(senha, user.senha);
+
+      if (!senhaCorreta) {
+        return res.json({
+          status: "error",
+          message: "Senha ou Email incorretos",
+        });
+      }
+
+      const userObj: any = user.toObject();
+      delete userObj.senha;
+
+      return res.json({
+        status: "success",
+        user: userObj,
+        message: "Login realizado com sucesso",
+      });
+
+    } catch (error) {
+      console.error(error);
+      return res.json({
+        status: "error",
+        message: "Erro no servidor",
+      });
+    }
+  }
 
 export const listarUser = async (req: Request, res: Response): Promise<void> => {
   try {
