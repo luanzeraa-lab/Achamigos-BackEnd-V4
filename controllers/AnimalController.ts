@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import * as AnimalModel from '../models/AnimalModel'
 import { logger } from '../utils/logger'
-//teste
 export const listarAnimal = async (req: Request, res: Response): Promise<void> => {
   try {
     const animais = await AnimalModel.listarAnimais()
