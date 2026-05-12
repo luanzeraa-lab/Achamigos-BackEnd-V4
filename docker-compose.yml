@@ -28,7 +28,7 @@ services:
     
 
   frontend:
-    image: lucas03almeida/front-end_achamigos:1.0.8
+    image: lucas03almeida/front-end_achamigos:1.0.9
     container_name: achamigos-frontend
     restart: always
     ports:
