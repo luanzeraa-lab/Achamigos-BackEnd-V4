@@ -36,7 +36,7 @@ jobs:
         run: npm run build
 
       - name: Rodar testes
-        run: npm test
+        run: npm test test:coverage
 
       - name: Análise com SonarCloud
         uses: SonarSource/sonarcloud-github-action@v2
@@ -44,6 +44,7 @@ jobs:
           args: >
             -Dsonar.projectKey=achamigos-backend
             -Dsonar.organization=luanzeraa-lab
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 

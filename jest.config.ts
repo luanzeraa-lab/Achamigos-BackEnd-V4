@@ -4,15 +4,27 @@ export default {
     testMatch: ['**/*.spec.ts'],
     clearMocks: true,
     restoreMocks: true,
-    collectCoverageFrom: ['**/*.ts'],
-    coverageDirectory:'coverage',
     collectCoverage: true,
+    coverageDirectory: 'coverage',
+    collectCoverageFrom: [
+        'src/**/*.ts',
+        'controllers/**/*.ts',
+        'models/**/*.ts',
+        'services/**/*.ts'
+    ],
+    coveragePathIgnorePatterns: [
+        '/node_modules/',
+        '/dist/',
+        'swagger.ts',
+        'api.ts',
+        '.spec.ts'
+    ],
     coverageThreshold: {
         global: {
             branches: 10,
-            statement:10,
+            statements: 10,
             lines: 10,
-            function: 10
+            functions: 10
         }
     },
 };
