@@ -13,6 +13,7 @@
     "dev": "ts-node api.ts",
     "build": "tsc",
     "start": "node dist/api.js",
+    "swagger": "tsx swagger.ts",
     "lint": "eslint",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,ts,json,md}\""
