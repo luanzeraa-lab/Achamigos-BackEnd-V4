@@ -1,6 +1,6 @@
 {
   "name": "api-achamigos",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "API Achamigos",
   "license": "ISC",
   "author": "",
@@ -13,6 +13,7 @@
     "dev": "ts-node api.ts",
     "build": "tsc",
     "start": "node dist/api.js",
+    "swagger": "tsx swagger.ts",
     "lint": "eslint",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,ts,json,md}\""
