@@ -143,20 +143,7 @@ jobs:
       # =========================================
       - name: Atualizar package.json
         run: |
-          NEW_VER="${{ steps.version.outputs.new_version }}"
-          CURRENT_VER=$(node -p "require('./package.json').version")
-
-          echo "Versão atual no arquivo: $CURRENT_VER"
-          echo "Versão calculada pela Action: $NEW_VER"
-
-          if [ "$NEW_VER" = "$CURRENT_VER" ]; then
-            echo "A versão calculada já é a atual do package.json. Forçando um incremento leve para evitar falhas..."
-            # Força o incremento patch para não quebrar a automação
-            npm version patch --no-git-tag-version
-          else
-            echo "Aplicando nova versão identificada..."
-            npm version $NEW_VER --no-git-tag-version
-          fi
+          npm version ${{ steps.version.outputs.new_version }} --no-git-tag-version
 
       # =========================================
       # COMMIT E TAGS
