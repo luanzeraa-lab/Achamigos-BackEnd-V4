@@ -6,6 +6,7 @@ export default {
     restoreMocks: true,
     collectCoverage: true,
     coverageDirectory: 'coverage',
+    modulePathIgnorePatterns: ['<rootDir>/dist/'],
     collectCoverageFrom: [
         'src/**/*.ts',
         'controllers/**/*.ts',
