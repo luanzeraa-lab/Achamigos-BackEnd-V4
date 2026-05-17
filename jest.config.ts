@@ -6,6 +6,7 @@ export default {
     restoreMocks: true,
     collectCoverageFrom: ['**/*.ts'],
     coverageDirectory:'coverage',
+    coverageReporters: ['text', 'lcov'],
     collectCoverage: true,
     coverageThreshold: {
         global: {
