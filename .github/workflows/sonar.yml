@@ -27,7 +27,7 @@ jobs:
       - name: Run tests (generate coverage)
         run: npm run test:coverage
 
-      - name: Debug: show coverage file
+      - name: Debug show coverage file
         run: |
           echo "Coverage files in workspace:"
           ls -la coverage || true
