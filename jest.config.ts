@@ -4,8 +4,9 @@ export default {
     testMatch: ['**/*.spec.ts'],
     clearMocks: true,
     restoreMocks: true,
+    coverageDirectory:'coverage',
+    coverageReporters: ['text', 'lcov'],
     collectCoverage: true,
-    coverageDirectory: 'coverage',
     modulePathIgnorePatterns: ['<rootDir>/dist/'],
     collectCoverageFrom: [
         'src/**/*.ts',
