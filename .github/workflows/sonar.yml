@@ -31,7 +31,8 @@ jobs:
         run: |
           echo "Coverage files in workspace:"
           ls -la coverage || true
-          echo "\n--- start coverage/lcov.info ---"
+          echo ""
+          echo "--- start coverage/lcov.info ---"
           head -n 80 coverage/lcov.info || true
           echo "--- end coverage/lcov.info ---"
 
