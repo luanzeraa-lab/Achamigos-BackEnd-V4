@@ -4,6 +4,7 @@ import { beforeAll, beforeEach, describe, expect, it, jest } from '@jest/globals
 
 import apiKeyAuth from '../../middleware/apiKeyAuth'
 import eventoRoute from '../../routes/EventoRoute'
+import path from 'path'
 import * as EventoModel from '../../models/EventoModel'
 import type { IEvento } from '../../types'
 
@@ -100,6 +101,32 @@ describe('Evento integration tests', () => {
         linkEvento: 'https://exemplo.com/evento',
       }),
       undefined
+    )
+  })
+
+  it('deve cadastrar evento com imagem na rota POST /api/eventos (upload)', async () => {
+    const novoEvento = {
+      id: '5',
+      nomeEvento: 'Passeio com Pets',
+      tipo_Evento: 'Passeio',
+    } as unknown as IEvento
+
+    cadastrarEventoMock.mockResolvedValue(novoEvento)
+
+    const filePath = path.join(__dirname, '../../public/custom.css')
+
+    const response = await request(createApp())
+      .post('/api/eventos')
+      .set('x-api-key', apiKey)
+      .field('nomeEvento', 'Passeio com Pets')
+      .field('tipo_Evento', 'Passeio')
+      .attach('imagem', filePath)
+
+    expect(response.status).toBe(201)
+    expect(EventoModel.cadastrarEvento).toHaveBeenCalledTimes(1)
+    expect(EventoModel.cadastrarEvento).toHaveBeenCalledWith(
+      expect.objectContaining({ nomeEvento: 'Passeio com Pets', tipo_Evento: 'Passeio' }),
+      expect.any(Object)
     )
   })
 

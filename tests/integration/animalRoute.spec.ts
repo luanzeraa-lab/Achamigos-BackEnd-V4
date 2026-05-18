@@ -4,6 +4,7 @@ import { beforeAll, beforeEach, describe, expect, it, jest } from '@jest/globals
 
 import apiKeyAuth from '../../middleware/apiKeyAuth'
 import animalRoute from '../../routes/AnimalRoute'
+import path from 'path'
 import * as AnimalModel from '../../models/AnimalModel'
 import type { IAnimal } from '../../types'
 
@@ -133,6 +134,32 @@ describe('Animal integration tests', () => {
         userId: 'user-1',
       }),
       undefined
+    )
+  })
+
+  it('deve cadastrar um animal com imagem na rota POST /api/animais (upload)', async () => {
+    const novoAnimal = {
+      id: '654',
+      nome: 'Bolinha',
+      raca: 'SRD',
+    } as unknown as IAnimal
+
+    cadastrarAnimalMock.mockResolvedValue(novoAnimal)
+
+    const filePath = path.join(__dirname, '../../public/custom.css')
+
+    const response = await request(createApp())
+      .post('/api/animais')
+      .set('x-api-key', apiKey)
+      .field('nome', 'Bolinha')
+      .field('raca', 'SRD')
+      .attach('imagem', filePath)
+
+    expect(response.status).toBe(201)
+    expect(AnimalModel.cadastrarAnimal).toHaveBeenCalledTimes(1)
+    expect(AnimalModel.cadastrarAnimal).toHaveBeenCalledWith(
+      expect.objectContaining({ nome: 'Bolinha', raca: 'SRD' }),
+      expect.any(Object)
     )
   })
 

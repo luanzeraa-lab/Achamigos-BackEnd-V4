@@ -4,6 +4,7 @@ import { beforeAll, beforeEach, describe, expect, it, jest } from '@jest/globals
  
 import apiKeyAuth from '../../middleware/apiKeyAuth'
 import userRoute from '../../routes/UserRoute'
+import path from 'path'
 import * as UserModel from '../../models/UserModel'
 import type { IUser } from '../../types'
  
@@ -21,11 +22,13 @@ jest.mock('../../utils/logger', () => ({
   },
 }))
 
+jest.mock('bcryptjs', () => ({
+  hashSync: jest.fn(() => 'hashed_password'),
+  compare: jest.fn(),
+}))
+
 const listarUserMock = UserModel.listarUser as jest.MockedFunction<
   typeof UserModel.listarUser
->
-const criarUserMock = UserModel.criarUser as jest.MockedFunction<
-  typeof UserModel.criarUser
 >
 const alterarUserMock = UserModel.alterarUser as jest.MockedFunction<
   typeof UserModel.alterarUser
@@ -122,9 +125,38 @@ describe('User integration tests', () => {
         cnpj: '98.765.432/0001-11',
         telefone: '11999999999',
         email: 'norte@petshop.com',
+        endereco: {"cep": "01310-100", "cidade": "São Paulo", "numero": "1000", "rua": "Avenida Paulista"},
         senha: 'hashed_password',
       }),
       undefined
+    )
+  })
+
+  it('deve cadastrar um user com imagem na rota POST /api/users (upload)', async () => {
+    const novoUser = {
+      id: '999',
+      nome: 'Pet Shop Sul',
+      cnpj: '11.111.111/0001-11',
+    } as unknown as IUser
+
+    const filePath = path.join(__dirname, '../../public/custom.css')
+
+    const response = await request(createApp())
+      .post('/api/users')
+      .set('x-api-key', apiKey)
+      .field('nome', 'Pet Shop Sul')
+      .field('cnpj', '11.111.111/0001-11')
+      .field('telefone', '11988888888')
+      .field('userLogin', 'petsul')
+      .field('senha', 'senha123')
+      .field('email', 'sul@petshop.com')
+      .attach('imagem', filePath)
+
+    expect(response.status).toBe(201)
+    expect(UserModel.criarUser).toHaveBeenCalledTimes(1)
+    expect(UserModel.criarUser).toHaveBeenCalledWith(
+      expect.objectContaining({ nome: 'Pet Shop Sul', cnpj: '11.111.111/0001-11', email: 'sul@petshop.com' }),
+      expect.any(Object)
     )
   })
 
