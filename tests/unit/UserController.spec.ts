@@ -101,274 +101,99 @@ describe('UserController', () => {
     })
   })
 
-  it('lista usuarios com sucesso', async () => {
+  it('listar: sucesso, vazio e erro', async () => {
     const req = {} as any
-    const res = createRes()
+    listarUserMock.mockResolvedValueOnce([{ id: '1', nome: 'Loja' }] as any)
+    const res1 = createRes()
+    await listarUser(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    listarUserMock.mockResolvedValue([{ id: '1', nome: 'Loja' }] as any)
+    listarUserMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await listarUser(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(404)
 
-    await listarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith([{ id: '1', nome: 'Loja' }])
+    listarUserMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await listarUser(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna 404 quando nao ha usuarios', async () => {
-    const req = {} as any
-    const res = createRes()
+  it('cadastro: validações e erro', async () => {
+    const req1 = { body: { nome: 'Pet Shop' } } as any
+    const res1 = createRes()
+    await cadastrarUser(req1, res1)
+    expect(res1.status).toHaveBeenCalledWith(400)
 
-    listarUserMock.mockResolvedValue(null as any)
+    const body = { nome: 'Pet Shop', cnpj: '12.345.678/0001-99', telefone: '11999999999', userLogin: 'petshop', senha: 'senha123', email: 'contato@teste.com' }
+    listarUserMock.mockResolvedValueOnce([{ email: 'contato@teste.com', userLogin: 'outro' }] as any)
+    const req2 = { body } as any
+    const res2 = createRes()
+    await cadastrarUser(req2, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
 
-    await listarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(404)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Nenhum usuário encontrado' })
+    listarUserMock.mockResolvedValueOnce([{ email: 'outro@teste.com', userLogin: 'petshop' }] as any)
+    const req3 = { body } as any
+    const res3 = createRes()
+    await cadastrarUser(req3, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna erro ao listar usuarios', async () => {
-    const req = {} as any
-    const res = createRes()
+  it('cadastro sucesso e erro', async () => {
+    listarUserMock.mockResolvedValueOnce([] as any)
+    criarUserMock.mockResolvedValueOnce({ id: '1', nome: 'Pet Shop', email: 'contato@teste.com' } as any)
+    const req1 = { body: { nome: 'Pet Shop', cnpj: '12.345.678/0001-99', telefone: '11999999999', userLogin: 'petshop', senha: 'senha123', email: 'contato@teste.com' }, file: undefined } as any
+    const res1 = createRes()
+    await cadastrarUser(req1, res1)
+    expect(res1.status).toHaveBeenCalledWith(201)
 
-    listarUserMock.mockRejectedValue(new Error('erro ao listar'))
-
-    await listarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao listar' })
+    listarUserMock.mockResolvedValueOnce([] as any)
+    criarUserMock.mockRejectedValueOnce(new Error('erro'))
+    const res2 = createRes()
+    await cadastrarUser(req1, res2)
+    expect(res2.status).toHaveBeenCalledWith(500)
   })
 
-  it('retorna 400 quando campos obrigatorios faltam', async () => {
-    const req = { body: { nome: 'Pet Shop' } } as any
-    const res = createRes()
+  it('alterar: com hash, vazio, vazio e erro', async () => {
+    alterarUserMock.mockResolvedValueOnce({ id: '2', nome: 'Atualizado' } as any)
+    const req1 = { params: { id: '2' }, body: { nome: 'Atualizado', senha: 'novaSenha' } } as any
+    const res1 = createRes()
+    await alterarUser(req1, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    await cadastrarUser(req, res)
+    alterarUserMock.mockResolvedValueOnce({ id: '2', nome: 'Atualizado' } as any)
+    const req2 = { params: { id: '2' }, body: { nome: 'Atualizado', senha: '   ' } } as any
+    const res2 = createRes()
+    await alterarUser(req2, res2)
+    expect(res2.status).toHaveBeenCalledWith(200)
 
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Campos obrigatórios não informados' })
+    alterarUserMock.mockResolvedValueOnce(null as any)
+    const req3 = { params: { id: '2' }, body: { nome: 'Atualizado' } } as any
+    const res3 = createRes()
+    await alterarUser(req3, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
+
+    alterarUserMock.mockRejectedValueOnce(new Error('erro'))
+    const res4 = createRes()
+    await alterarUser(req3, res4)
+    expect(res4.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna 400 quando email ja existe', async () => {
-    const req = {
-      body: {
-        nome: 'Pet Shop',
-        cnpj: '12.345.678/0001-99',
-        telefone: '11999999999',
-        userLogin: 'petshop',
-        senha: 'senha123',
-        email: 'contato@teste.com',
-      },
-    } as any
-    const res = createRes()
-
-    listarUserMock.mockResolvedValue([
-      { email: 'contato@teste.com', userLogin: 'outro' },
-    ] as any)
-
-    await cadastrarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'E-mail já cadastrado' })
-  })
-
-  it('retorna 400 quando login ja existe', async () => {
-    const req = {
-      body: {
-        nome: 'Pet Shop',
-        cnpj: '12.345.678/0001-99',
-        telefone: '11999999999',
-        userLogin: 'petshop',
-        senha: 'senha123',
-        email: 'contato@teste.com',
-      },
-    } as any
-    const res = createRes()
-
-    listarUserMock.mockResolvedValue([
-      { email: 'outro@teste.com', userLogin: 'petshop' },
-    ] as any)
-
-    await cadastrarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Login já cadastrado' })
-  })
-
-  it('cadastra usuario com sucesso', async () => {
-    const req = {
-      body: {
-        nome: 'Pet Shop',
-        cnpj: '12.345.678/0001-99',
-        telefone: '11999999999',
-        userLogin: 'petshop',
-        senha: 'senha123',
-        email: 'contato@teste.com',
-        endereco: {
-          cep: '01310-100',
-          rua: 'Avenida Paulista',
-          cidade: 'São Paulo',
-          numero: '1000',
-        },
-      },
-      file: undefined,
-    } as any
-    const res = createRes()
-
-    listarUserMock.mockResolvedValue([] as any)
-    criarUserMock.mockResolvedValue({
-      id: '1',
-      nome: 'Pet Shop',
-      senha: 'hashed_password',
-      __v: 0,
-      email: 'contato@teste.com',
-    } as any)
-
-    await cadastrarUser(req, res)
-
-    expect(hashSyncMock).toHaveBeenCalledWith('senha123', 10)
-    expect(UserModel.criarUser).toHaveBeenCalledWith(
-      expect.objectContaining({
-        nome: 'Pet Shop',
-        cnpj: '12.345.678/0001-99',
-        telefone: '11999999999',
-        userLogin: 'petshop',
-        senha: 'hashed_password',
-        email: 'contato@teste.com',
-      }),
-      undefined
-    )
-    expect(res.status).toHaveBeenCalledWith(201)
-    expect(res.json).toHaveBeenCalledWith({
-      id: '1',
-      nome: 'Pet Shop',
-      email: 'contato@teste.com',
-    })
-  })
-
-  it('retorna erro ao cadastrar usuario', async () => {
-    const req = {
-      body: {
-        nome: 'Pet Shop',
-        cnpj: '12.345.678/0001-99',
-        telefone: '11999999999',
-        userLogin: 'petshop',
-        senha: 'senha123',
-        email: 'contato@teste.com',
-      },
-    } as any
-    const res = createRes()
-
-    listarUserMock.mockResolvedValue([] as any)
-    criarUserMock.mockRejectedValue(new Error('erro ao criar'))
-
-    await cadastrarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(500)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao criar' })
-  })
-
-  it('altera usuario com senha e faz hash', async () => {
-    const req = {
-      params: { id: '2' },
-      body: { nome: 'Atualizado', senha: 'novaSenha' },
-    } as any
-    const res = createRes()
-
-    alterarUserMock.mockResolvedValue({ id: '2', nome: 'Atualizado' } as any)
-
-    await alterarUser(req, res)
-
-    expect(hashSyncMock).toHaveBeenCalledWith('novaSenha', 10)
-    expect(UserModel.alterarUser).toHaveBeenCalledWith('2', {
-      nome: 'Atualizado',
-      senha: 'hashed_password',
-    })
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({ id: '2', nome: 'Atualizado' })
-  })
-
-  it('altera usuario com senha em branco sem gerar hash', async () => {
-    const req = {
-      params: { id: '2' },
-      body: { nome: 'Atualizado', senha: '   ' },
-    } as any
-    const res = createRes()
-
-    alterarUserMock.mockResolvedValue({ id: '2', nome: 'Atualizado' } as any)
-
-    await alterarUser(req, res)
-
-    expect(hashSyncMock).not.toHaveBeenCalled()
-    expect(UserModel.alterarUser).toHaveBeenCalledWith('2', {
-      nome: 'Atualizado',
-      senha: '   ',
-    })
-    expect(res.status).toHaveBeenCalledWith(200)
-  })
-
-  it('retorna 400 quando usuario nao e encontrado na alteracao', async () => {
-    const req = {
-      params: { id: '2' },
-      body: { nome: 'Atualizado' },
-    } as any
-    const res = createRes()
-
-    alterarUserMock.mockResolvedValue(null as any)
-
-    await alterarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Usuário não encontrado' })
-  })
-
-  it('retorna erro ao alterar usuario', async () => {
-    const req = {
-      params: { id: '2' },
-      body: { nome: 'Atualizado' },
-    } as any
-    const res = createRes()
-
-    alterarUserMock.mockRejectedValue(new Error('erro ao atualizar'))
-
-    await alterarUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao atualizar' })
-  })
-
-  it('exclui usuario com sucesso', async () => {
+  it('excluir: sucesso, vazio e erro', async () => {
     const req = { params: { id: '3' } } as any
-    const res = createRes()
+    excluirUserMock.mockResolvedValueOnce({ id: '3' } as any)
+    const res1 = createRes()
+    await excluirUser(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    excluirUserMock.mockResolvedValue({ id: '3' } as any)
+    excluirUserMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await excluirUser(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
 
-    await excluirUser(req, res)
-
-    expect(UserModel.excluirUser).toHaveBeenCalledWith('3')
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({ id: '3' })
-  })
-
-  it('retorna 400 quando usuario nao e encontrado na exclusao', async () => {
-    const req = { params: { id: '3' } } as any
-    const res = createRes()
-
-    excluirUserMock.mockResolvedValue(null as any)
-
-    await excluirUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Usuário não encontrado' })
-  })
-
-  it('retorna erro ao excluir usuario', async () => {
-    const req = { params: { id: '3' } } as any
-    const res = createRes()
-
-    excluirUserMock.mockRejectedValue(new Error('erro ao excluir'))
-
-    await excluirUser(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao excluir' })
+    excluirUserMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await excluirUser(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 })

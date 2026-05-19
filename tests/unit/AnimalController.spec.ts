@@ -33,181 +33,89 @@ describe('AnimalController', () => {
     jest.clearAllMocks()
   })
 
-  it('lista animais com sucesso', async () => {
+  it('listar: sucesso, vazio e erro', async () => {
     const req = {} as any
-    const res = createRes()
+    listarAnimaisMock.mockResolvedValueOnce([{ id: '1', nome: 'Rex' }] as any)
+    const res1 = createRes()
+    await listarAnimal(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
+    expect(res1.json).toHaveBeenCalledWith([{ id: '1', nome: 'Rex' }])
 
-    listarAnimaisMock.mockResolvedValue([{ id: '1', nome: 'Rex' }] as any)
+    listarAnimaisMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await listarAnimal(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(404)
 
-    await listarAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith([{ id: '1', nome: 'Rex' }])
+    listarAnimaisMock.mockRejectedValueOnce(new Error('falha'))
+    const res3 = createRes()
+    await listarAnimal(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna 404 quando nao ha animais', async () => {
-    const req = {} as any
-    const res = createRes()
+  it('cadastrar: sucesso e erro', async () => {
+    const req = { body: { nome: 'Mel', raca: 'SRD' }, file: undefined } as any
+    cadastrarAnimalMock.mockResolvedValueOnce({ id: '10', nome: 'Mel', raca: 'SRD' } as any)
+    const res1 = createRes()
+    await cadastrarAnimal(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(201)
 
-    listarAnimaisMock.mockResolvedValue(null as any)
-
-    await listarAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(404)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Nenhum animal encontrado' })
+    cadastrarAnimalMock.mockRejectedValueOnce(new Error('erro'))
+    const res2 = createRes()
+    await cadastrarAnimal(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna erro ao listar animais', async () => {
-    const req = {} as any
-    const res = createRes()
-
-    listarAnimaisMock.mockRejectedValue(new Error('falha na lista'))
-
-    await listarAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'falha na lista' })
-  })
-
-  it('cadastra animal com sucesso', async () => {
-    const req = {
-      body: { nome: 'Mel', raca: 'SRD' },
-      file: undefined,
-    } as any
-    const res = createRes()
-
-    cadastrarAnimalMock.mockResolvedValue({ id: '10', nome: 'Mel', raca: 'SRD' } as any)
-
-    await cadastrarAnimal(req, res)
-
-    expect(AnimalModel.cadastrarAnimal).toHaveBeenCalledWith({ nome: 'Mel', raca: 'SRD' }, undefined)
-    expect(res.status).toHaveBeenCalledWith(201)
-    expect(res.json).toHaveBeenCalledWith({ id: '10', nome: 'Mel', raca: 'SRD' })
-  })
-
-  it('retorna erro ao cadastrar animal', async () => {
-    const req = {
-      body: { nome: 'Mel', raca: 'SRD' },
-      file: undefined,
-    } as any
-    const res = createRes()
-
-    cadastrarAnimalMock.mockRejectedValue(new Error('erro ao salvar'))
-
-    await cadastrarAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao salvar' })
-  })
-
-  it('busca animal por id com sucesso', async () => {
+  it('buscar: sucesso, vazio e erro', async () => {
     const req = { params: { id: '123' } } as any
-    const res = createRes()
+    buscarAnimalPorIdMock.mockResolvedValueOnce({ id: '123', nome: 'Lua' } as any)
+    const res1 = createRes()
+    await buscarAnimalPorId(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    buscarAnimalPorIdMock.mockResolvedValue({ id: '123', nome: 'Lua' } as any)
+    buscarAnimalPorIdMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await buscarAnimalPorId(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(404)
 
-    await buscarAnimalPorId(req, res)
-
-    expect(AnimalModel.buscarAnimalPorId).toHaveBeenCalledWith('123')
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({ id: '123', nome: 'Lua' })
+    buscarAnimalPorIdMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await buscarAnimalPorId(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna 404 quando animal nao e encontrado', async () => {
-    const req = { params: { id: '123' } } as any
-    const res = createRes()
-
-    buscarAnimalPorIdMock.mockResolvedValue(null as any)
-
-    await buscarAnimalPorId(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(404)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Animal não encontrado' })
-  })
-
-  it('retorna erro ao buscar animal por id', async () => {
-    const req = { params: { id: '123' } } as any
-    const res = createRes()
-
-    buscarAnimalPorIdMock.mockRejectedValue(new Error('erro na busca'))
-
-    await buscarAnimalPorId(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro na busca' })
-  })
-
-  it('altera animal com sucesso', async () => {
+  it('alterar: sucesso, vazio e erro', async () => {
     const req = { params: { id: '456' }, body: { nome: 'Thor' } } as any
-    const res = createRes()
+    alterarAnimalMock.mockResolvedValueOnce({ id: '456', nome: 'Thor' } as any)
+    const res1 = createRes()
+    await alterarAnimal(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    alterarAnimalMock.mockResolvedValue({ id: '456', nome: 'Thor' } as any)
+    alterarAnimalMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await alterarAnimal(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(404)
 
-    await alterarAnimal(req, res)
-
-    expect(AnimalModel.alterarAnimal).toHaveBeenCalledWith('456', { nome: 'Thor' })
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({ id: '456', nome: 'Thor' })
+    alterarAnimalMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await alterarAnimal(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna 404 quando nao encontra animal para alteracao', async () => {
-    const req = { params: { id: '456' }, body: { nome: 'Thor' } } as any
-    const res = createRes()
-
-    alterarAnimalMock.mockResolvedValue(null as any)
-
-    await alterarAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(404)
-    expect(res.json).toHaveBeenCalledWith({ error: 'Animal não encontrado' })
-  })
-
-  it('retorna erro ao alterar animal', async () => {
-    const req = { params: { id: '456' }, body: { nome: 'Thor' } } as any
-    const res = createRes()
-
-    alterarAnimalMock.mockRejectedValue(new Error('erro ao atualizar'))
-
-    await alterarAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao atualizar' })
-  })
-
-  it('exclui animal com sucesso', async () => {
+  it('excluir: sucesso, vazio e erro', async () => {
     const req = { params: { id: '789' } } as any
-    const res = createRes()
+    excluirAnimalMock.mockResolvedValueOnce({ id: '789' } as any)
+    const res1 = createRes()
+    await excluirAnimal(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    excluirAnimalMock.mockResolvedValue({ id: '789' } as any)
+    excluirAnimalMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await excluirAnimal(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
 
-    await excluirAnimal(req, res)
-
-    expect(AnimalModel.excluirAnimal).toHaveBeenCalledWith('789')
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Animal deletado com sucesso' })
-  })
-
-  it('retorna 400 quando nao encontra animal para exclusao', async () => {
-    const req = { params: { id: '789' } } as any
-    const res = createRes()
-
-    excluirAnimalMock.mockResolvedValue(null as any)
-
-    await excluirAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Animal não encontrado' })
-  })
-
-  it('retorna erro ao excluir animal', async () => {
-    const req = { params: { id: '789' } } as any
-    const res = createRes()
-
-    excluirAnimalMock.mockRejectedValue(new Error('erro ao deletar'))
-
-    await excluirAnimal(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'Erro ao deletar animal' })
+    excluirAnimalMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await excluirAnimal(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 })

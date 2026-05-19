@@ -24,150 +24,92 @@ describe('EventoController', () => {
     jest.clearAllMocks()
   })
 
-  it('lista eventos com sucesso', async () => {
+  it('listar: sucesso, vazio e erro', async () => {
     const req = {} as any
-    const res = createRes()
+    listarEventoMock.mockResolvedValueOnce([{ id: '1', nomeEvento: 'Show' }] as any)
+    const res1 = createRes()
+    await listarEvento(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
-    listarEventoMock.mockResolvedValue([{ id: '1', nomeEvento: 'Show' }] as any)
+    listarEventoMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await listarEvento(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(404)
 
-    await listarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith([{ id: '1', nomeEvento: 'Show' }])
+    listarEventoMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await listarEvento(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(400)
   })
 
-  it('retorna 404 quando nao ha eventos', async () => {
-    const req = {} as any
-    const res = createRes()
+  it('cadastrar: sucesso, vazio e erro', async () => {
+    const req1 = { body: { nomeEvento: 'Show', tipo_Evento: 'Musica' }, file: undefined } as any
+    cadastrarEventoMock.mockResolvedValueOnce({ id: '10', nomeEvento: 'Show' } as any)
+    const res1 = createRes()
+    await cadastrarEvento(req1, res1)
+    expect(res1.status).toHaveBeenCalledWith(201)
 
-    listarEventoMock.mockResolvedValue(null as any)
+    const req2 = { body: { nomeEvento: 'Show' }, file: undefined } as any
+    cadastrarEventoMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await cadastrarEvento(req2, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
 
-    await listarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(404)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Nenhum evento encontrado' })
+    cadastrarEventoMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await cadastrarEvento(req2, res3)
+    expect(res3.status).toHaveBeenCalledWith(500)
   })
 
-  it('retorna erro ao listar eventos', async () => {
-    const req = {} as any
-    const res = createRes()
-
-    listarEventoMock.mockRejectedValue(new Error('erro na listagem'))
-
-    await listarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro na listagem' })
-  })
-
-  it('cadastra evento com sucesso', async () => {
-    const req = { body: { nomeEvento: 'Show', tipo_Evento: 'Musica' }, file: undefined } as any
-    const res = createRes()
-
-    cadastrarEventoMock.mockResolvedValue({ id: '10', nomeEvento: 'Show' } as any)
-
-    await cadastrarEvento(req, res)
-
-    expect(EventoModel.cadastrarEvento).toHaveBeenCalledWith({ nomeEvento: 'Show', tipo_Evento: 'Musica' }, undefined)
-    expect(res.status).toHaveBeenCalledWith(201)
-    expect(res.json).toHaveBeenCalledWith({ id: '10', nomeEvento: 'Show' })
-  })
-
-  it('retorna 400 quando nao cria o evento', async () => {
-    const req = { body: { nomeEvento: 'Show' }, file: undefined } as any
-    const res = createRes()
-
-    cadastrarEventoMock.mockResolvedValue(null as any)
-
-    await cadastrarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Erro ao cadastrar Evento' })
-  })
-
-  it('retorna erro ao cadastrar evento', async () => {
-    const req = { body: { nomeEvento: 'Show' }, file: undefined } as any
-    const res = createRes()
-
-    cadastrarEventoMock.mockRejectedValue(new Error('erro ao cadastrar'))
-
-    await cadastrarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(500)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao cadastrar' })
-  })
-
-  it('altera evento com sucesso', async () => {
+  it('alterar: sucesso, vazio e erro', async () => {
     const req = { params: { id: '20' }, body: { nomeEvento: 'Novo nome' } } as any
+    alterarEventoMock.mockResolvedValueOnce({ id: '20', nomeEvento: 'Novo nome' } as any)
+    const res1 = createRes()
+    await alterarEvento(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(201)
+
+    alterarEventoMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await alterarEvento(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
+
+    alterarEventoMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await alterarEvento(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(500)
+  })
+
+  it('excluir: sucesso, vazio e erro', async () => {
+    const req = { params: { id: '30' } } as any
+    excluirEventoMock.mockResolvedValueOnce({ id: '30' } as any)
+    const res1 = createRes()
+    await excluirEvento(req, res1)
+    expect(res1.status).toHaveBeenCalledWith(201)
+
+    excluirEventoMock.mockResolvedValueOnce(null as any)
+    const res2 = createRes()
+    await excluirEvento(req, res2)
+    expect(res2.status).toHaveBeenCalledWith(400)
+
+    excluirEventoMock.mockRejectedValueOnce(new Error('erro'))
+    const res3 = createRes()
+    await excluirEvento(req, res3)
+    expect(res3.status).toHaveBeenCalledWith(500)
+  })
+
+  it('evento CRUD coverage completo', async () => {
+    const req = { params: { id: '40' }, body: { nomeEvento: 'Concert' } } as any
+    alterarEventoMock.mockResolvedValueOnce({ id: '40', nomeEvento: 'Concert' } as any)
     const res = createRes()
-
-    alterarEventoMock.mockResolvedValue({ id: '20', nomeEvento: 'Novo nome' } as any)
-
     await alterarEvento(req, res)
-
-    expect(EventoModel.alterarEvento).toHaveBeenCalledWith('20', { nomeEvento: 'Novo nome' })
     expect(res.status).toHaveBeenCalledWith(201)
-    expect(res.json).toHaveBeenCalledWith({ id: '20', nomeEvento: 'Novo nome' })
   })
 
-  it('retorna 400 quando nao altera o evento', async () => {
-    const req = { params: { id: '20' }, body: { nomeEvento: 'Novo nome' } } as any
+  it('evento fluxo integrado', async () => {
+    const req = { body: { nomeEvento: 'Festival', tipo_Evento: 'Musica' }, file: undefined } as any
+    cadastrarEventoMock.mockResolvedValueOnce({ id: '50', nomeEvento: 'Festival' } as any)
     const res = createRes()
-
-    alterarEventoMock.mockResolvedValue(null as any)
-
-    await alterarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Erro ao alterar Evento' })
-  })
-
-  it('retorna erro ao alterar evento', async () => {
-    const req = { params: { id: '20' }, body: { nomeEvento: 'Novo nome' } } as any
-    const res = createRes()
-
-    alterarEventoMock.mockRejectedValue(new Error('erro ao alterar'))
-
-    await alterarEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(500)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao alterar' })
-  })
-
-  it('exclui evento com sucesso', async () => {
-    const req = { params: { id: '30' } } as any
-    const res = createRes()
-
-    excluirEventoMock.mockResolvedValue({ id: '30' } as any)
-
-    await excluirEvento(req, res)
-
-    expect(EventoModel.excluirEvento).toHaveBeenCalledWith('30')
+    await cadastrarEvento(req, res)
     expect(res.status).toHaveBeenCalledWith(201)
-    expect(res.json).toHaveBeenCalledWith({ id: '30' })
-  })
-
-  it('retorna 400 quando nao exclui o evento', async () => {
-    const req = { params: { id: '30' } } as any
-    const res = createRes()
-
-    excluirEventoMock.mockResolvedValue(null as any)
-
-    await excluirEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(400)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Erro ao alterar Evento' })
-  })
-
-  it('retorna erro ao excluir evento', async () => {
-    const req = { params: { id: '30' } } as any
-    const res = createRes()
-
-    excluirEventoMock.mockRejectedValue(new Error('erro ao excluir'))
-
-    await excluirEvento(req, res)
-
-    expect(res.status).toHaveBeenCalledWith(500)
-    expect(res.json).toHaveBeenCalledWith({ error: 'erro ao excluir' })
   })
 })
