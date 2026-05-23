@@ -50,7 +50,7 @@ app.use('/api', GenaiRoute)
 app.use('/api', logRoute);
 // Rotas da API
 
-app.use(apiKeyAuth)
+//app.use(apiKeyAuth)
 app.use('/api', animalRoute)
 app.use('/api', userRoute)
 app.use('/api', eventoRoute)
