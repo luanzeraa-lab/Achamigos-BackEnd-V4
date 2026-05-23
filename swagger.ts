@@ -9,7 +9,6 @@ const doc = {
     description: 'Documentação da API Achamigos usando Swagger',
     version: packageJson.version,
   },
-  host: 'localhost:3002',
   schemes: ['http'],
   securityDefinitions: {
     apiKeyAuth: {
