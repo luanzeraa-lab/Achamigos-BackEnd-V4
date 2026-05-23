@@ -108,9 +108,19 @@ jobs:
             git push origin "$TAG_NAME"
           fi
 
-      - name: Trigger Render Deploy (Backend - Versão Específica)
+      - name: Trigger Render Deploy
         run: |
-          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}&imgURL=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:${{ env.new_version }}"
+          # Sempre faz deploy em HML (para develop e para main)
+          echo "Deployando para HOMOLOGAÇÃO (HML)..."
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_HML }}&imgURL=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:${{ env.new_version }}"
+          
+          # Se for a main, faz deploy também em PRODUÇÃO
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            echo "Deployando para PRODUÇÃO..."
+            curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_PROD }}&imgURL=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:${{ env.new_version }}"
+          else
+            echo "Branch não é main, pulando produção."
+          fi
 
       - name: Enviar email se falhar
         if: failure()
