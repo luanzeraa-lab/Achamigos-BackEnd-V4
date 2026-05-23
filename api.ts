@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import "dotenv/config";
 import dns from "dns"
 
-//test
+
 if(process.env.DNS_FORCE === 'true') {
   dns.setServers(["1.1.1.1", "8.8.8.8"])
 }
