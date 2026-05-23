@@ -33,7 +33,7 @@ app.use('/public', express.static('public'))
 
 app.use(loggerMiddleware);
 
-// Rotas básicas
+
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: '🚀 Api Achamigos rodando com sucesso!' })
 })
