@@ -17,7 +17,7 @@ export async function gerarTextoController(req: Request, res: Response): Promise
     const { prompt, id, nome }: any = req.body
 
     const animaisData = await listarAnimais()
-    const resposta: string = await gerarTexto( prompt + JSON.stringify(animaisData) + descricao );
+    const resposta: string = await gerarTexto( prompt + JSON.stringify(animais) + descricao );
 
     let respostaJson: any = null
     try {

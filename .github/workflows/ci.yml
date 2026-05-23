@@ -1,211 +1,53 @@
-name: Release
-
-permissions:
-  contents: write
+name: Backend CI
 
 on:
   push:
     branches:
       - main
       - develop
-      - 'feature/*'
-    tags-ignore:
-      - '*'
 
 jobs:
   version:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+    outputs:
+      new_version: ${{ steps.version.outputs.new_version }}
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: 'npm'
-
       - name: Instalar dependências
         run: npm install
-
-      - name: Rodar build
-        run: npm run build
-
-      - name: Rodar testes
-        run: npm test
-
-      - name: Análise com SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          args: >
-            -Dsonar.projectKey=achamigos-backend
-            -Dsonar.organization=luanzeraa-lab
+      - name: Rodar build e testes
+        run: |
+          npm run build
+          npm run test:coverage
+      - name: SonarCloud
+        uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker Image (Validação)
-        uses: docker/build-push-action@v5
         with:
-          context: .
-          push: false
-          tags: api-node:test
-
-      - name: Login no Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # =========================================
-      # INSTALAR SEMVER
-      # =========================================
-      - name: Instalar semver
-        run: npm install -g semver
-
-      # =========================================
-      # CRIAR TAG INICIAL
-      # =========================================
-      - name: Criar tag inicial caso não exista
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git fetch --tags
-
-          if [ -z "$(git tag)" ]; then
-            git config --global user.name "github-actions"
-            git config --global user.email "github-actions@github.com"
-
-            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-
-            git tag -a v0.0.0 -m "Initial release"
-            git push origin v0.0.0
-          fi
-
-      # =========================================
-      # CALCULAR NOVA VERSÃO
-      # =========================================
+          args: -Dsonar.projectKey=achamigos-backend -Dsonar.organization=luanzeraa-lab
       - name: Calcular nova versão
         id: version
         run: |
-          git fetch --tags
-
-          LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-
-          if [ -z "$LAST_TAG" ]; then
-            LAST_TAG="v0.0.0"
-          fi
-
-          echo "Versão atual: $LAST_TAG"
-
+          npm install -g semver
+          LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v0.0.0")
           COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s")
-
-          echo "Commits encontrados:"
-          echo "$COMMITS"
-
           VERSION_TYPE="patch"
-
-          while IFS= read -r COMMIT
-          do
-            echo "Analisando commit: $COMMIT"
-
-            if [[ "$COMMIT" == *"BREAKING CHANGE"* ]]; then
-              VERSION_TYPE="major"
-              break
-
-            elif [[ "$COMMIT" =~ ^feat(\(.+\))?: ]]; then
-              VERSION_TYPE="minor"
-
-            elif [[ "$COMMIT" =~ ^fix(\(.+\))?: ]]; then
-              if [ "$VERSION_TYPE" != "minor" ]; then
-                VERSION_TYPE="patch"
-              fi
-            fi
-
-          done <<< "$COMMITS"
-
-          CURRENT_VERSION=${LAST_TAG#v}
-
-          NEW_VERSION=$(semver -i $VERSION_TYPE $CURRENT_VERSION)
-
-          echo "Nova versão: $NEW_VERSION"
-
+          if [[ "$COMMITS" == *"BREAKING CHANGE"* ]]; then VERSION_TYPE="major"; elif [[ "$COMMITS" =~ ^feat ]]; then VERSION_TYPE="minor"; fi
+          NEW_VERSION=$(semver -i $VERSION_TYPE ${LAST_TAG#v})
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-      # =========================================
-      # ATUALIZAR PACKAGE.JSON
-      # =========================================
-      - name: Atualizar package.json
+      - name: Atualizar versão e Docker
         run: |
           npm version ${{ steps.version.outputs.new_version }} --no-git-tag-version
-
-      # =========================================
-      # COMMIT E TAGS
-      # =========================================
-      - name: Commit e controle de tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-
-          git add package.json package-lock.json
-
-          git commit -m "chore(release): version ${{ steps.version.outputs.new_version }} [skip ci]" || echo "Sem mudanças"
-
-          BRANCH_NAME="${{ github.ref_name }}"
-
-          git push origin HEAD:${{ github.ref_name }}
-
-          if [ "$BRANCH_NAME" = "main" ]; then
-            TAG_NAME="v${{ steps.version.outputs.new_version }}"
-
-          elif [ "$BRANCH_NAME" = "develop" ]; then
-            TAG_NAME="v${{ steps.version.outputs.new_version }}-beta"
-
-          else
-            echo "Branch $BRANCH_NAME não gera tag"
-            exit 0
-          fi
-
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            git tag "$TAG_NAME"
-            git push origin "$TAG_NAME"
-          fi
-
-      # =========================================
-      # BUILD E PUSH DOCKER
-      # =========================================
-      - name: Build e Push da imagem Docker
-        if: github.ref_name == 'main' || github.ref_name == 'develop'
-        uses: docker/build-push-action@v5
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:${{ steps.version.outputs.new_version }} .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:${{ steps.version.outputs.new_version }}
+      - name: Salvar artefato da versão
+        run: echo ${{ steps.version.outputs.new_version }} > VERSION.txt
+      - uses: actions/upload-artifact@v3
         with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:${{ steps.version.outputs.new_version }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/achamigos-backend:latest
-
-      # =========================================
-      # EMAIL EM CASO DE FALHA
-      # =========================================
-      - name: Enviar email se falhar
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USER }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Falha no pipeline - ${{ github.repository }}
-          body: O pipeline do GitHub Actions falhou.
-          to: ${{ secrets.EMAIL_USER }}
-          from: GitHub Actions
+          name: version-info
+          path: VERSION.txt

@@ -33,7 +33,7 @@ app.use('/public', express.static('public'))
 
 app.use(loggerMiddleware);
 
-// Rotas básicas
+
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: '🚀 Api Achamigos rodando com sucesso!' })
 })
@@ -50,7 +50,7 @@ app.use('/api', GenaiRoute)
 app.use('/api', logRoute);
 // Rotas da API
 
-app.use(apiKeyAuth)
+//app.use(apiKeyAuth)
 app.use('/api', animalRoute)
 app.use('/api', userRoute)
 app.use('/api', eventoRoute)
