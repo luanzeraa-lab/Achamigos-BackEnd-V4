@@ -5,11 +5,9 @@
     "description": "Documentação da API Achamigos usando Swagger",
     "version": "1.2.0"
   },
-  "host": "localhost:3002",
+  
+  "schemes": ["http", "https"],
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
