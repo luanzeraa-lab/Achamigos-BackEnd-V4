@@ -19,6 +19,33 @@
     "/api/gerartexto": {
       "post": {
         "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "prompt"
+                ],
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "example": "Descreva um animal para adoção"
+                  },
+                  "id": {
+                    "type": "string",
+                    "example": "123"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "Rex"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -96,6 +123,62 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "Rex"
+                  },
+                  "idade": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "raca": {
+                    "type": "string",
+                    "example": "Vira-lata"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "Macho"
+                  },
+                  "porte": {
+                    "type": "string",
+                    "example": "Médio"
+                  },
+                  "peso": {
+                    "type": "number",
+                    "example": 12.5
+                  },
+                  "observacoes": {
+                    "type": "string",
+                    "example": "Animal dócil"
+                  },
+                  "linkAnimal": {
+                    "type": "string",
+                    "example": "https://achamigos.com/animal/1"
+                  },
+                  "castracao": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "example": "Cachorro"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "682f123456789abcdef12345"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -147,6 +230,75 @@
       },
       "post": {
         "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "nome",
+                  "raca",
+                  "sexo",
+                  "porte",
+                  "castracao",
+                  "tipo",
+                  "userId"
+                ],
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "Rex"
+                  },
+                  "idade": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "raca": {
+                    "type": "string",
+                    "example": "Vira-lata"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "Macho"
+                  },
+                  "porte": {
+                    "type": "string",
+                    "example": "Médio"
+                  },
+                  "peso": {
+                    "type": "number",
+                    "example": 12.5
+                  },
+                  "observacoes": {
+                    "type": "string",
+                    "example": "Animal dócil"
+                  },
+                  "linkAnimal": {
+                    "type": "string",
+                    "example": "https://achamigos.com/animal/1"
+                  },
+                  "castracao": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "imagem": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "example": "Cachorro"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "682f123456789abcdef12345"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Criado"
@@ -174,6 +326,79 @@
       },
       "post": {
         "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "nome",
+                  "cnpj",
+                  "telefone",
+                  "userLogin",
+                  "senha",
+                  "email"
+                ],
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "ONG Patinhas"
+                  },
+                  "cnpj": {
+                    "type": "string",
+                    "example": "12345678000199"
+                  },
+                  "telefone": {
+                    "type": "string",
+                    "example": "15999999999"
+                  },
+                  "userLogin": {
+                    "type": "string",
+                    "example": "ongpatinhas"
+                  },
+                  "senha": {
+                    "type": "string",
+                    "example": "123456"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "contato@ong.com"
+                  },
+                  "endereco": {
+                    "type": "object",
+                    "properties": {
+                      "cep": {
+                        "type": "string",
+                        "example": "18110000"
+                      },
+                      "rua": {
+                        "type": "string",
+                        "example": "Rua das Flores"
+                      },
+                      "cidade": {
+                        "type": "string",
+                        "example": "Votorantim"
+                      },
+                      "numero": {
+                        "type": "string",
+                        "example": "100"
+                      }
+                    }
+                  },
+                  "linkUser": {
+                    "type": "string",
+                    "example": "https://achamigos.com"
+                  },
+                  "imagem": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Criado"
@@ -200,6 +425,66 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "ONG Patinhas"
+                  },
+                  "cnpj": {
+                    "type": "string",
+                    "example": "12345678000199"
+                  },
+                  "telefone": {
+                    "type": "string",
+                    "example": "15999999999"
+                  },
+                  "userLogin": {
+                    "type": "string",
+                    "example": "ongpatinhas"
+                  },
+                  "senha": {
+                    "type": "string",
+                    "example": "123456"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "contato@ong.com"
+                  },
+                  "endereco": {
+                    "type": "object",
+                    "properties": {
+                      "cep": {
+                        "type": "string",
+                        "example": "18110000"
+                      },
+                      "rua": {
+                        "type": "string",
+                        "example": "Rua das Flores"
+                      },
+                      "cidade": {
+                        "type": "string",
+                        "example": "Votorantim"
+                      },
+                      "numero": {
+                        "type": "string",
+                        "example": "100"
+                      }
+                    }
+                  },
+                  "linkUser": {
+                    "type": "string",
+                    "example": "https://achamigos.com"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -240,16 +525,23 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "email",
+                  "senha"
+                ],
                 "properties": {
                   "email": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "contato@ong.com"
                   },
                   "senha": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "123456"
                   }
                 }
               }
@@ -275,6 +567,42 @@
       },
       "post": {
         "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeEvento": {
+                    "type": "string",
+                    "example": "Feira de Adoção"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "tipo_Evento": {
+                    "type": "string",
+                    "example": "Adoção"
+                  },
+                  "texto": {
+                    "type": "string",
+                    "example": "Venha adotar um amigo"
+                  },
+                  "linkEvento": {
+                    "type": "string",
+                    "example": "https://achamigos.com/evento/1"
+                  },
+                  "imagem": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Criado"
@@ -301,6 +629,37 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nomeEvento": {
+                    "type": "string",
+                    "example": "Feira de Adoção"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "tipo_Evento": {
+                    "type": "string",
+                    "example": "Adoção"
+                  },
+                  "texto": {
+                    "type": "string",
+                    "example": "Venha adotar um amigo"
+                  },
+                  "linkEvento": {
+                    "type": "string",
+                    "example": "https://achamigos.com/evento/1"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Criado"
@@ -341,6 +700,49 @@
     "/api/animais/buscar": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "tipo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "porte",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cidade",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "castrado",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "true"
+            }
+          },
+          {
+            "name": "idade",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -350,320 +752,84 @@
           }
         }
       }
-    },
-    "/users": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/users/login": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "example": "any"
-                  },
-                  "senha": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/animais/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/animais": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/animais/buscar": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/eventos": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/eventos/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/gerartexto": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    }
   },
   "components": {
-    "securitySchemes": {
-      "apiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "x-api-key",
-        "description": "1234"
+  "securitySchemes": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "x-api-key",
+      "description": "1234"
+    }
+  },
+  "schemas": {
+    "Animal": {
+      "type": "object",
+      "required": [
+        "nome",
+        "raca",
+        "sexo",
+        "porte",
+        "castracao",
+        "tipo",
+        "userId"
+      ],
+      "properties": {
+        "nome": { "type": "string", "example": "Rex" },
+        "idade": { "type": "number", "example": 3 },
+        "raca": { "type": "string", "example": "Vira-lata" },
+        "sexo": { "type": "string", "example": "Macho" },
+        "porte": { "type": "string", "example": "Médio" },
+        "peso": { "type": "number", "example": 12.5 },
+        "observacoes": { "type": "string", "example": "Animal dócil" },
+        "linkAnimal": { "type": "string", "example": "https://achamigos.com/animal/1" },
+        "castracao": { "type": "boolean", "example": true },
+        "imagem": { "type": "string", "example": "/public/rex.jpg" },
+        "tipo": { "type": "string", "example": "Cachorro" },
+        "userId": { "type": "string", "example": "682f123456789abcdef12345" }
+      }
+    },
+    "Evento": {
+      "type": "object",
+      "properties": {
+        "nomeEvento": { "type": "string", "example": "Feira de Adoção" },
+        "data": { "type": "string", "format": "date-time" },
+        "tipo_Evento": { "type": "string", "example": "Adoção" },
+        "texto": { "type": "string", "example": "Venha adotar um amigo" },
+        "linkEvento": { "type": "string", "example": "https://achamigos.com/evento/1" },
+        "imagem": { "type": "string", "example": "/public/evento.jpg" }
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "nome",
+        "cnpj",
+        "telefone",
+        "userLogin",
+        "senha",
+        "email"
+      ],
+      "properties": {
+        "nome": { "type": "string", "example": "ONG Patinhas" },
+        "cnpj": { "type": "string", "example": "12345678000199" },
+        "telefone": { "type": "string", "example": "15999999999" },
+        "userLogin": { "type": "string", "example": "ongpatinhas" },
+        "senha": { "type": "string", "example": "123456" },
+        "email": { "type": "string", "example": "contato@ong.com" },
+        "endereco": {
+          "type": "object",
+          "properties": {
+            "cep": { "type": "string", "example": "18110000" },
+            "rua": { "type": "string", "example": "Rua das Flores" },
+            "cidade": { "type": "string", "example": "Votorantim" },
+            "numero": { "type": "string", "example": "100" }
+          }
+        },
+        "linkUser": {
+          "type": "string",
+          "example": "https://achamigos.com"
+        }
       }
     }
   },
@@ -672,4 +838,6 @@
       "apiKeyAuth": []
     }
   ]
+  }
+}
 }
