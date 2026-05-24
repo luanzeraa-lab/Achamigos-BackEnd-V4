@@ -126,9 +126,17 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
+          # Instalação do CLI
           curl https://cli-assets.heroku.com/install.sh | sh
+          
+          # Login
           heroku container:login
-          heroku container:push web -f Dockerfile.heroku -a achamigos-backend-prod
+          
+          # Renomeia o Dockerfile.heroku para Dockerfile para o CLI reconhecer
+          mv Dockerfile.heroku Dockerfile
+          
+          # Faz o push e release
+          heroku container:push web -a achamigos-backend-prod
           heroku container:release web -a achamigos-backend-prod
 
       - name: Enviar email se falhar
