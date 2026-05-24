@@ -25,22 +25,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "prompt"
-                ],
                 "properties": {
-                  "prompt": {
-                    "type": "string",
-                    "example": "Descreva um animal para adoção"
-                  },
-                  "id": {
-                    "type": "string",
-                    "example": "123"
-                  },
-                  "nome": {
-                    "type": "string",
-                    "example": "Rex"
-                  }
+                  "prompt": { "example": "Descreva um animal para adoção" },
+                  "id": { "example": "123" },
+                  "nome": { "example": "Rex" }
                 }
               }
             }
@@ -86,41 +74,70 @@
         }
       }
     },
-    "/api/animais/{id}": {
+    "/api/animais": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Listar animais",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "object" }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
+      "post": {
+        "summary": "Criar animal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "example": "any" },
+                  "idade": { "example": "any" },
+                  "raca": { "example": "any" },
+                  "sexo": { "example": "any" },
+                  "porte": { "example": "any" },
+                  "peso": { "example": "any" },
+                  "observacoes": { "example": "any" },
+                  "castracao": { "example": true },
+                  "imagem": { "example": "any" },
+                  "userId": { "example": "any" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/api/animais/{id}": {
       "put": {
-        "description": "",
+        "summary": "Atualizar animal",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
@@ -130,714 +147,287 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "nome": {
-                    "type": "string",
-                    "example": "Rex"
-                  },
-                  "idade": {
-                    "type": "number",
-                    "example": 3
-                  },
-                  "raca": {
-                    "type": "string",
-                    "example": "Vira-lata"
-                  },
-                  "sexo": {
-                    "type": "string",
-                    "example": "Macho"
-                  },
-                  "porte": {
-                    "type": "string",
-                    "example": "Médio"
-                  },
-                  "peso": {
-                    "type": "number",
-                    "example": 12.5
-                  },
-                  "observacoes": {
-                    "type": "string",
-                    "example": "Animal dócil"
-                  },
-                  "linkAnimal": {
-                    "type": "string",
-                    "example": "https://achamigos.com/animal/1"
-                  },
-                  "castracao": {
-                    "type": "boolean",
-                    "example": true
-                  },
-                  "tipo": {
-                    "type": "string",
-                    "example": "Cachorro"
-                  },
-                  "userId": {
-                    "type": "string",
-                    "example": "682f123456789abcdef12345"
-                  }
+                  "nome": { "example": "any" },
+                  "idade": { "example": "any" },
+                  "raca": { "example": "any" },
+                  "sexo": { "example": "any" },
+                  "porte": { "example": "any" },
+                  "peso": { "example": "any" },
+                  "observacoes": { "example": "any" },
+                  "castracao": { "example": true },
+                  "imagem": { "example": "any" }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
+          "200": { "description": "OK" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "delete": {
-        "description": "",
+        "summary": "Deletar animal",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/api/animais": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "nome",
-                  "raca",
-                  "sexo",
-                  "porte",
-                  "castracao",
-                  "tipo",
-                  "userId"
-                ],
-                "properties": {
-                  "nome": {
-                    "type": "string",
-                    "example": "Rex"
-                  },
-                  "idade": {
-                    "type": "number",
-                    "example": 3
-                  },
-                  "raca": {
-                    "type": "string",
-                    "example": "Vira-lata"
-                  },
-                  "sexo": {
-                    "type": "string",
-                    "example": "Macho"
-                  },
-                  "porte": {
-                    "type": "string",
-                    "example": "Médio"
-                  },
-                  "peso": {
-                    "type": "number",
-                    "example": 12.5
-                  },
-                  "observacoes": {
-                    "type": "string",
-                    "example": "Animal dócil"
-                  },
-                  "linkAnimal": {
-                    "type": "string",
-                    "example": "https://achamigos.com/animal/1"
-                  },
-                  "castracao": {
-                    "type": "boolean",
-                    "example": true
-                  },
-                  "imagem": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "tipo": {
-                    "type": "string",
-                    "example": "Cachorro"
-                  },
-                  "userId": {
-                    "type": "string",
-                    "example": "682f123456789abcdef12345"
-                  }
-                }
-              }
-            }
-          }
+          "200": { "description": "OK" },
+          "403": { "description": "Forbidden" }
         },
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
     "/api/users": {
       "get": {
-        "description": "",
+        "summary": "Listar usuários",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
-      },
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/api/users": {
       "post": {
-        "description": "",
+        "summary": "Criar usuário",
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "nome",
-                  "cnpj",
-                  "telefone",
-                  "userLogin",
-                  "senha",
-                  "email"
-                ],
                 "properties": {
                   "nome": {
+                "example": "ONG Patinhas"
+              },
+              "cnpj": {
+                "type": "string",
+                "example": "12345678000199"
+              },
+              "telefone": {
+                "type": "string",
+                "example": "15999999999"
+              },
+              "userLogin": {
+                "type": "string",
+                "example": "ongpatinhas"
+              },
+              "senha": {
+                "type": "string",
+                "example": "123456"
+              },
+              "email": {
+                "type": "string",
+                "example": "contato@ong.com"
+              },
+              "endereco": {
+                "type": "object",
+                "properties": {
+                  "cep": {
                     "type": "string",
-                    "example": "ONG Patinhas"
+                    "example": "18110000"
                   },
-                  "cnpj": {
+                  "rua": {
                     "type": "string",
-                    "example": "12345678000199"
+                    "example": "Rua das Flores"
                   },
-                  "telefone": {
+                  "cidade": {
                     "type": "string",
-                    "example": "15999999999"
+                    "example": "Votorantim"
                   },
-                  "userLogin": {
+                  "numero": {
                     "type": "string",
-                    "example": "ongpatinhas"
+                    "example": "100"
                   },
-                  "senha": {
-                    "type": "string",
-                    "example": "123456"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "contato@ong.com"
-                  },
-                  "endereco": {
-                    "type": "object",
-                    "properties": {
-                      "cep": {
-                        "type": "string",
-                        "example": "18110000"
-                      },
-                      "rua": {
-                        "type": "string",
-                        "example": "Rua das Flores"
-                      },
-                      "cidade": {
-                        "type": "string",
-                        "example": "Votorantim"
-                      },
-                      "numero": {
-                        "type": "string",
-                        "example": "100"
-                      }
-                    }
-                  },
-                  "linkUser": {
-                    "type": "string",
-                    "example": "https://achamigos.com"
-                  },
-                  "imagem": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
+              "imagem": {
+                "type": "string",
+                "format": "binary"
               }
             }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
           }
         }
       }
     },
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
     "/api/users/{id}": {
       "put": {
-        "description": "",
+        "summary": "Atualizar usuário",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "nome": {
-                    "type": "string",
-                    "example": "ONG Patinhas"
-                  },
-                  "cnpj": {
-                    "type": "string",
-                    "example": "12345678000199"
-                  },
-                  "telefone": {
-                    "type": "string",
-                    "example": "15999999999"
-                  },
-                  "userLogin": {
-                    "type": "string",
-                    "example": "ongpatinhas"
-                  },
-                  "senha": {
-                    "type": "string",
-                    "example": "123456"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "contato@ong.com"
-                  },
-                  "endereco": {
-                    "type": "object",
-                    "properties": {
-                      "cep": {
-                        "type": "string",
-                        "example": "18110000"
-                      },
-                      "rua": {
-                        "type": "string",
-                        "example": "Rua das Flores"
-                      },
-                      "cidade": {
-                        "type": "string",
-                        "example": "Votorantim"
-                      },
-                      "numero": {
-                        "type": "string",
-                        "example": "100"
-                      }
-                    }
-                  },
-                  "linkUser": {
-                    "type": "string",
-                    "example": "https://achamigos.com"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/api/users/login": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "email",
-                  "senha"
-                ],
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "contato@ong.com"
-                  },
-                  "senha": {
-                    "type": "string",
-                    "example": "123456"
-                  }
+                  "nome": { "example": "any" },
+                  "telefone": { "example": "any" },
+                  "cnpj": { "example": "any" },
+                  "userLogin": { "example": "any" },
+                  "senha": { "example": "any" },
+                  "email": { "example": "any" },
+                  "endereco": { "example": "any" },
+                  "tipo": { "example": "any" },
+                  "userStatus": { "example": "any" },
+                  "linkUser": { "example": "any" }
                 }
               }
             }
           }
-        }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "delete": {
+        "summary": "Deletar usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
     "/api/eventos": {
       "get": {
-        "description": "",
+        "summary": "Listar eventos",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          }
-        }
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "post": {
-        "description": "",
+        "summary": "Criar evento",
         "requestBody": {
           "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "nomeEvento": {
-                    "type": "string",
-                    "example": "Feira de Adoção"
-                  },
-                  "data": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "tipo_Evento": {
-                    "type": "string",
-                    "example": "Adoção"
-                  },
-                  "texto": {
-                    "type": "string",
-                    "example": "Venha adotar um amigo"
-                  },
-                  "linkEvento": {
-                    "type": "string",
-                    "example": "https://achamigos.com/evento/1"
-                  },
-                  "imagem": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/api/eventos/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "nomeEvento": {
-                    "type": "string",
-                    "example": "Feira de Adoção"
-                  },
-                  "data": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "tipo_Evento": {
-                    "type": "string",
-                    "example": "Adoção"
-                  },
-                  "texto": {
-                    "type": "string",
-                    "example": "Venha adotar um amigo"
-                  },
-                  "linkEvento": {
-                    "type": "string",
-                    "example": "https://achamigos.com/evento/1"
-                  }
+                  "data_Publicacao": { "example": "any" },
+                  "data_Exclusao": { "example": "any" },
+                  "tipo_Evento": { "example": "any" },
+                  "texto": { "example": "any" },
+                  "eventoStatus": { "example": "any" },
+                  "imagem": { "example": "any" }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      }
+    },
+    "/api/eventos/{id}": {
+      "put": {
+        "summary": "Atualizar evento",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Criado"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/api/animais/buscar": {
-      "get": {
-        "description": "",
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+      "delete": {
+        "summary": "Deletar evento",
         "parameters": [
           {
-            "name": "tipo",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "porte",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "cidade",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "castrado",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "true"
-            }
-          },
-          {
-            "name": "idade",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
+    }
   },
   "components": {
-  "securitySchemes": {
-    "apiKeyAuth": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "x-api-key",
-      "description": "1234"
-    }
-  },
-  "schemas": {
-    "Animal": {
-      "type": "object",
-      "required": [
-        "nome",
-        "raca",
-        "sexo",
-        "porte",
-        "castracao",
-        "tipo",
-        "userId"
-      ],
-      "properties": {
-        "nome": { "type": "string", "example": "Rex" },
-        "idade": { "type": "number", "example": 3 },
-        "raca": { "type": "string", "example": "Vira-lata" },
-        "sexo": { "type": "string", "example": "Macho" },
-        "porte": { "type": "string", "example": "Médio" },
-        "peso": { "type": "number", "example": 12.5 },
-        "observacoes": { "type": "string", "example": "Animal dócil" },
-        "linkAnimal": { "type": "string", "example": "https://achamigos.com/animal/1" },
-        "castracao": { "type": "boolean", "example": true },
-        "imagem": { "type": "string", "example": "/public/rex.jpg" },
-        "tipo": { "type": "string", "example": "Cachorro" },
-        "userId": { "type": "string", "example": "682f123456789abcdef12345" }
-      }
-    },
-    "Evento": {
-      "type": "object",
-      "properties": {
-        "nomeEvento": { "type": "string", "example": "Feira de Adoção" },
-        "data": { "type": "string", "format": "date-time" },
-        "tipo_Evento": { "type": "string", "example": "Adoção" },
-        "texto": { "type": "string", "example": "Venha adotar um amigo" },
-        "linkEvento": { "type": "string", "example": "https://achamigos.com/evento/1" },
-        "imagem": { "type": "string", "example": "/public/evento.jpg" }
-      }
-    },
-    "User": {
-      "type": "object",
-      "required": [
-        "nome",
-        "cnpj",
-        "telefone",
-        "userLogin",
-        "senha",
-        "email"
-      ],
-      "properties": {
-        "nome": { "type": "string", "example": "ONG Patinhas" },
-        "cnpj": { "type": "string", "example": "12345678000199" },
-        "telefone": { "type": "string", "example": "15999999999" },
-        "userLogin": { "type": "string", "example": "ongpatinhas" },
-        "senha": { "type": "string", "example": "123456" },
-        "email": { "type": "string", "example": "contato@ong.com" },
-        "endereco": {
-          "type": "object",
-          "properties": {
-            "cep": { "type": "string", "example": "18110000" },
-            "rua": { "type": "string", "example": "Rua das Flores" },
-            "cidade": { "type": "string", "example": "Votorantim" },
-            "numero": { "type": "string", "example": "100" }
-          }
-        },
-        "linkUser": {
-          "type": "string",
-          "example": "https://achamigos.com"
-        }
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
       }
     }
-  },
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ]
   }
-}
 }
