@@ -1,9 +1,9 @@
 {
   "name": "api-achamigos",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "engines": {
-  "node": "22.x"
-},
+    "node": "22.x"
+  },
   "description": "API Achamigos",
   "license": "ISC",
   "author": "",
