@@ -122,6 +122,15 @@ jobs:
             echo "Branch não é main, pulando produção."
           fi
 
+      - name: Deploy para Heroku (Container)
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku container:login
+          heroku container:push web -f Dockerfile.heroku -a achamigos-backend-prod
+          heroku container:release web -a achamigos-backend-prod
+
       - name: Enviar email se falhar
         if: failure()
         uses: dawidd6/action-send-mail@v3
