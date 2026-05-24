@@ -1,22 +1,9 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "API Achamigos",
     "description": "Documentação da API Achamigos usando Swagger",
-    "version": "1.2.0"
-  },
-  "host": "localhost:3002",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
-  "securityDefinitions": {
-    "apiKeyAuth": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "x-api-key",
-      "description": "1234"
-    }
+    "version": "1.8.0"
   },
   "paths": {
     "/": {
@@ -37,7 +24,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -57,7 +44,7 @@
         "description": "",
         "responses": {
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -80,7 +67,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -88,10 +77,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -102,7 +91,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -110,10 +101,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -124,7 +115,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -132,7 +125,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -145,10 +138,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -156,10 +149,10 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -172,10 +165,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -183,13 +176,13 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -202,7 +195,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -210,7 +205,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       },
@@ -221,7 +216,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -229,7 +226,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -237,26 +234,26 @@
     "/api/users/login": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "senha": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "senha": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -269,10 +266,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -280,13 +277,13 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -299,18 +296,20 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       },
@@ -321,18 +320,20 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -345,7 +346,7 @@
             "description": "OK"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -358,10 +359,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -369,13 +370,13 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -388,7 +389,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -396,7 +399,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       },
@@ -407,7 +410,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -415,7 +420,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -423,26 +428,26 @@
     "/users/login": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "senha": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "senha": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -455,7 +460,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -463,10 +470,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -477,7 +484,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -485,10 +494,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -499,7 +508,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -507,7 +518,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -520,10 +531,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -531,10 +542,10 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
       }
@@ -547,7 +558,7 @@
             "description": "OK"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -560,10 +571,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Não Encontrado"
           }
         }
       },
@@ -571,13 +582,13 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -590,18 +601,20 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       },
@@ -612,18 +625,20 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -636,9 +651,19 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitação Inválida"
           }
         }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "1234"
       }
     }
   },

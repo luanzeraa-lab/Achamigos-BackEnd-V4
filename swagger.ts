@@ -9,7 +9,6 @@ const doc = {
     description: 'Documentação da API Achamigos usando Swagger',
     version: packageJson.version,
   },
-  host: 'localhost:3002',
   schemes: ['http'],
   securityDefinitions: {
     apiKeyAuth: {
@@ -36,4 +35,11 @@ const endpointsFiles = [
   './routes/GenaiRoute.ts',
 ]
 
-swaggerAutogen()(outputFile, endpointsFiles, doc)
+const options = {
+  openapi: '3.0.0', 
+  language: 'pt-BR',
+};
+
+swaggerAutogen(options)(outputFile, endpointsFiles, doc).then(() => {
+  console.log("Swagger gerado com sucesso!");
+});
