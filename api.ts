@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import "dotenv/config";
 import dns from "dns"
 
-
+//test
 if(process.env.DNS_FORCE === 'true') {
   dns.setServers(["1.1.1.1", "8.8.8.8"])
 }
@@ -38,7 +38,7 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: '🚀 Api Achamigos rodando com sucesso!' })
 })
 
-// Swagger UI
+
 const swaggerOptions = {
   customCssUrl: '/public/custom.css',
   customSiteTitle: 'API Achamigos',
