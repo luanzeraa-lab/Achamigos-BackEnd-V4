@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "dist/api.js",
   "scripts": {
-    "swagger": "npx tsx swagger.ts && sed -i 's/\"version\": \".*\"/\"version\": \"'$npm_package_version'\"/' swagger-output.json",
+    "swagger": "npx tsx swagger.ts && node -e \"const fs = require('fs'); const data = JSON.parse(fs.readFileSync('swagger-output.json', 'utf8')); delete data.host; delete data.servers; fs.writeFileSync('swagger-output.json', JSON.stringify(data, null, 2));\"",
     "prebuild": "npm run swagger",
     "test": "jest",
     "test:coverage": "jest --coverage && node normalize-coverage.js",
