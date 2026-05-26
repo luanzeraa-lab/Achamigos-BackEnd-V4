@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { logger } from "../utils/logger";
-import { logtail } from "../config/loggerConfig";
 
 const router = Router();
 
@@ -9,7 +8,6 @@ router.get("/log", async (req, res) => {
 
   await logger.info("Teste manual", { ok: true });
 
-  // await logtail.flush(); 
 
   res.send("ok");
 });

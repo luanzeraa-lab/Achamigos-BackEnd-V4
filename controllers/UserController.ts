@@ -1,6 +1,46 @@
 import { Request, Response } from 'express'
+import { User } from '../models/UserModel'
 import * as UserModel from '../models/UserModel'
 import bcrypt from 'bcryptjs'
+
+ export const login = async (req: Request, res: Response) => {
+    const { email, senha } = req.body;
+
+    try {
+
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.json({
+          status: "error",
+          message: "Usuário não encontrado",
+        });
+      }
+      const senhaCorreta = await bcrypt.compare(senha, user.senha);
+
+      if (!senhaCorreta) {
+        return res.json({
+          status: "error",
+          message: "Senha ou Email incorretos",
+        });
+      }
+
+      const userObj: any = user.toObject();
+      delete userObj.senha;
+
+      return res.json({
+        status: "success",
+        user: userObj,
+        message: "Login realizado com sucesso",
+      });
+
+    } catch (error) {
+      console.error(error);
+      return res.json({
+        status: "error",
+        message: "Erro no servidor",
+      });
+    }
+  }
 
 export const listarUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,6 +52,39 @@ export const listarUser = async (req: Request, res: Response): Promise<void> => 
     res.status(200).json(users)
   } catch (error: any) {
     res.status(400).json({ error: error.message })
+  }
+}
+
+export const cadastrarUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userData = { ...req.body }
+
+    if (!userData.nome || !userData.cnpj || !userData.telefone || !userData.userLogin || !userData.senha || !userData.email) {
+      res.status(400).json({ message: 'Campos obrigatórios não informados' })
+      return
+    }
+
+    const users = await UserModel.listarUser()
+    if (users?.some((u: any) => u.email === userData.email)) {
+      res.status(400).json({ message: 'E-mail já cadastrado' })
+      return
+    }
+
+    if (users?.some((u: any) => u.userLogin === userData.userLogin)) {
+      res.status(400).json({ message: 'Login já cadastrado' })
+      return
+    }
+
+    userData.senha = bcrypt.hashSync(userData.senha, 10)
+
+    const newUser = await UserModel.criarUser(userData, req.file)
+    const userObj = (newUser as any)?.toObject ? (newUser as any).toObject() : { ...(newUser as any) }
+    delete userObj.senha
+    delete userObj.__v
+
+    res.status(201).json(userObj)
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
   }
 }
 
@@ -31,8 +104,8 @@ export const alterarUser = async (req: Request, res: Response): Promise<void> =>
       return
     }
     res.status(200).json(usuarioAtualizado)
-  } catch (error) {
-    res.status(400).json({ error: 'Erro' })
+  } catch (error: any) {
+    res.status(400).json({ error: error.message })
   }
 }
 
@@ -40,13 +113,12 @@ export const excluirUser = async (req: Request, res: Response): Promise<void> =>
   try {
     const { id } = req.params
     const usuarioDeletado = await UserModel.excluirUser(id as string)
-    console.log(usuarioDeletado)
     if (!usuarioDeletado) {
       res.status(400).json({ message: 'Usuário não encontrado' })
       return
     }
     res.status(200).json(usuarioDeletado)
-  } catch (error) {
-    res.status(400).json({ error: 'Erro' })
+  } catch (error: any) {
+    res.status(400).json({ error: error.message })
   }
 }

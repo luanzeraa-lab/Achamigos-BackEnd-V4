@@ -1,17 +1,80 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.0.0",
   "info": {
     "title": "API Achamigos",
-    "description": "Documentação da API Achamigos",
-    "version": "1.0.0"
+    "description": "Documentação da API Achamigos usando Swagger",
+    "version": "1.8.0"
   },
-  "servers": [
-    {
-      "url": "https://achamigos-back-end.onrender.com/api"
-    }
-  ],
   "paths": {
-    "/animais": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gerartexto": {
+      "post": {
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": { "example": "Descreva um animal para adoção" },
+                  "id": { "example": "123" },
+                  "nome": { "example": "Rex" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/api/log": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/erro": {
+      "get": {
+        "description": "",
+        "responses": {
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/api/lento": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/animais": {
       "get": {
         "summary": "Listar animais",
         "responses": {
@@ -28,7 +91,9 @@
           },
           "403": { "description": "Forbidden" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "post": {
         "summary": "Criar animal",
@@ -59,10 +124,12 @@
           "400": { "description": "Bad Request" },
           "403": { "description": "Forbidden" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
-    "/animais/{id}": {
+    "/api/animais/{id}": {
       "put": {
         "summary": "Atualizar animal",
         "parameters": [
@@ -98,7 +165,9 @@
           "200": { "description": "OK" },
           "403": { "description": "Forbidden" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "delete": {
         "summary": "Deletar animal",
@@ -114,10 +183,12 @@
           "200": { "description": "OK" },
           "403": { "description": "Forbidden" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
-    "/users": {
+    "/api/users": {
       "get": {
         "summary": "Listar usuários",
         "responses": {
@@ -126,10 +197,82 @@
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
-    "/users/{id}": {
+    "/api/users": {
+      "post": {
+        "summary": "Criar usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                "example": "ONG Patinhas"
+              },
+              "cnpj": {
+                "type": "string",
+                "example": "12345678000199"
+              },
+              "telefone": {
+                "type": "string",
+                "example": "15999999999"
+              },
+              "userLogin": {
+                "type": "string",
+                "example": "ongpatinhas"
+              },
+              "senha": {
+                "type": "string",
+                "example": "123456"
+              },
+              "email": {
+                "type": "string",
+                "example": "contato@ong.com"
+              },
+              "endereco": {
+                "type": "object",
+                "properties": {
+                  "cep": {
+                    "type": "string",
+                    "example": "18110000"
+                  },
+                  "rua": {
+                    "type": "string",
+                    "example": "Rua das Flores"
+                  },
+                  "cidade": {
+                    "type": "string",
+                    "example": "Votorantim"
+                  },
+                  "numero": {
+                    "type": "string",
+                    "example": "100"
+                  },
+              "imagem": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        }
+      }
+    },
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
+      },
+    "/api/users/{id}": {
       "put": {
         "summary": "Atualizar usuário",
         "parameters": [
@@ -167,7 +310,9 @@
           "400": { "description": "Bad Request" },
           "403": { "description": "Forbidden" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "delete": {
         "summary": "Deletar usuário",
@@ -184,10 +329,12 @@
           "400": { "description": "Bad Request" },
           "403": { "description": "Forbidden" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
-    "/eventos": {
+    "/api/eventos": {
       "get": {
         "summary": "Listar eventos",
         "responses": {
@@ -196,7 +343,9 @@
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "post": {
         "summary": "Criar evento",
@@ -224,10 +373,12 @@
           "403": { "description": "Forbidden" },
           "500": { "description": "Internal Server Error" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     },
-    "/eventos/{id}": {
+    "/api/eventos/{id}": {
       "put": {
         "summary": "Atualizar evento",
         "parameters": [
@@ -244,7 +395,9 @@
           "403": { "description": "Forbidden" },
           "500": { "description": "Internal Server Error" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       },
       "delete": {
         "summary": "Deletar evento",
@@ -262,7 +415,9 @@
           "403": { "description": "Forbidden" },
           "500": { "description": "Internal Server Error" }
         },
-        "security": [{ "apiKeyAuth": [] }]
+        "security": [
+          { "apiKeyAuth": [] }
+        ]
       }
     }
   },
