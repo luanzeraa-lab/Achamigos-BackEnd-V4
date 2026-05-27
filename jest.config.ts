@@ -10,7 +10,7 @@ export default {
         'controllers/UserController.ts',
     ],
     coveragePathIgnorePatterns: [
-        '[\\/]controllers[\\/](?!AnimalController\\.ts$|EventoController\\.ts$|UserController\\.ts$)',
+        String.raw`[\/]controllers[\/](?!AnimalController\.ts$|EventoController\.ts$|UserController\.ts$)`,
     ],
     coverageDirectory:'coverage',
     collectCoverage: true,
