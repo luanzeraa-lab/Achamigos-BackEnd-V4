@@ -3,7 +3,7 @@ export async function gerarTexto(prompt: string): Promise<string> {
     const { GoogleGenAI } = await import("@google/genai");
 
     const ai = new GoogleGenAI({
-      apiKey: process.env.GOOGLE_API_KEY,
+      apiKey: process.env.GEMINI_API_KEY,
     });
 
     const response = await ai.models.generateContent({
