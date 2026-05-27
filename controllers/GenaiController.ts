@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
-import { gerarTexto } from '../models/GenaiModel'
+import { gerartexto } from '../models/GenaiModel'
 import { descricao } from '../models/BancoAnimais'
 import { listarAnimais } from '../models/AnimalModel'
 
-export async function gerarTextoController(req: Request, res: Response): Promise<void> {
+export async function gerartextoController(req: Request, res: Response): Promise<void> {
   try {
     const { prompt, id, nome }: any = req.body
 
     const animaisData = await listarAnimais()
-    const resposta: string = await gerarTexto( prompt + JSON.stringify(animaisData) + descricao );
+    const resposta: string = await gerartexto( prompt + JSON.stringify(animaisData) + descricao );
 
     let respostaJson: any = null
     try {
@@ -37,7 +37,8 @@ export async function gerarTextoController(req: Request, res: Response): Promise
       nome: nomeFinal,
       resposta: respostaExtraida
     })
-  } catch {
-    res.status(400).json({ erro: 'Erro ao gerar texto' })
-  }
+    } catch (error) {
+  console.error("DEBUG - Erro no Controller:", error); // Adicione isso!
+  res.status(400).json({ erro: 'Erro ao gerar texto', detalhe: error instanceof Error ? error.message : error })
+}
 }

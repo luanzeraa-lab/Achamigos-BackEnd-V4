@@ -1,8 +1,8 @@
 import express from "express";
-import { gerarTextoController } from "../controllers/GenaiController";
+import { gerartextoController } from "../controllers/GenaiController";
 
 const router = express.Router();
 
-router.post("/gerartexto", gerarTextoController);
+router.post("/gerartexto", gerartextoController);
 
 export default router;

@@ -1,4 +1,4 @@
-export async function gerarTexto(prompt: string): Promise<string> {
+export async function gerartexto(prompt: string): Promise<string> {
   try {
     const { GoogleGenAI } = await import("@google/genai");
 
