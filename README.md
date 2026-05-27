@@ -34,21 +34,23 @@ O projeto utiliza GitHub Actions para automação de processos.
 ### Fluxos automatizados
 
 - Build da aplicação
+- Execução de testes automatizados
+- Geração de relatório de cobertura
+- Análise SonarCloud
 - Geração de tags
 - Build de imagens Docker
 - Push para Docker Hub
 - Deploy em homologação
 - Deploy em produção
-- Análise SonarCloud
 - Notificação por e-mail em caso de falhas
 
 ## 🚀 Ambientes de Deploy
 
 | Ambiente | Plataforma | URL |
 |-----------|-----------|-----|
-| Homologação | Render | [Acessar](https://achamigos-backend-hml.onrender.com) |
-| Produção | Render | [Acessar](https://achamigos-backend.onrender.com) |
-| Produção | Heroku | [Acessar](https://achamigos-backend.herokuapp.com) |
+| Homologação | Render | [Acessar](https://achamigos-backend-latest.onrender.com) |
+| Produção | Render | [Acessar](https://achamigos-backend-latest.onrender.com) |
+| Produção | Heroku | [Acessar](https://achamigos-backend-prod-f16416b748da.herokuapp.com/) |
 
 ## 🐳 Docker Hub
 
@@ -304,8 +306,35 @@ Métricas monitoradas:
 - Code Smells
 - Cobertura de testes
 - Duplicação de código
+- Confiabilidade do código
 
 A análise é executada automaticamente via GitHub Actions.
+
+## 🧪 Testes
+
+O projeto possui testes automatizados utilizando **Jest** e **Supertest** para validação das rotas e regras de negócio.
+
+### Executar todos os testes
+
+```bash
+npm test
+```
+
+### Executar testes com cobertura
+
+```bash
+npm run test:coverage
+```
+
+### Tecnologias utilizadas
+
+- Jest
+- Supertest
+- TypeScript
+
+### 📊 Cobertura de Testes
+
+![Cobertura](./docs/coverage.png)
 
 ### 🖼️ Evidências
 
