@@ -4,8 +4,15 @@ export default {
     testMatch: ['**/*.spec.ts', '**/*.test.ts'],
     clearMocks: true,
     restoreMocks: true,
-    coverageDirectory: 'coverage',
-    coverageReporters: ['text', 'lcov', 'html'],
+    collectCoverageFrom: [
+        'controllers/AnimalController.ts',
+        'controllers/EventoController.ts',
+        'controllers/UserController.ts',
+    ],
+    coveragePathIgnorePatterns: [
+        '[\\/]controllers[\\/](?!AnimalController\\.ts$|EventoController\\.ts$|UserController\\.ts$)',
+    ],
+    coverageDirectory:'coverage',
     collectCoverage: true,
     modulePathIgnorePatterns: ['<rootDir>/dist/'],
     collectCoverageFrom: [
@@ -33,10 +40,17 @@ export default {
     ],
     coverageThreshold: {
         global: {
+<<<<<<< HEAD
             branches: 5,
             statements: 5,
             lines: 5,
             functions: 5
+=======
+            branches: 80,
+            statements: 80,
+            lines: 80,
+            functions: 80
+>>>>>>> feature/testes
         }
     },
     // Normalize paths for SonarQube (Windows compatibility)
