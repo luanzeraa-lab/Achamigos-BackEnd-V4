@@ -3,6 +3,6 @@ import * as FiltroController from '../controllers/FiltroController'
 
 const router: Router = express.Router()
 
-router.get('/animais/buscar', FiltroController.filtrarAnimais)
+router.get('/animais/filtros/buscar', FiltroController.filtrar)
 
 export default router
