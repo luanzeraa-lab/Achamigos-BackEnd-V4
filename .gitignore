@@ -10,9 +10,16 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+coverage_output.txt
+coverage/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Imagens de upload
+public/*.jpg
+public/*.png
+public/*.jpeg
 
 # Runtime data
 pids
