@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import FiltroService from '../services/FiltroService'
+import { filtrarAnimais } from '../models/AnimalModel'
 
-export const filtrarAnimais = async (req: Request, res: Response): Promise<void> => {
+export const filtrar = async (req: Request, res: Response): Promise<void> => {
   try {
     const filtros = req.query
 
-    const animaisFiltrados = await FiltroService.filtrarAnimais(filtros)
+    const animaisFiltrados = await filtrarAnimais(filtros)
 
     if (!animaisFiltrados || animaisFiltrados.length === 0) {
       res.status(200).json([])
