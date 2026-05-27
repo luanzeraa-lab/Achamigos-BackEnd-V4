@@ -1,15 +1,24 @@
 import express, { Router } from 'express'
 import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
 import * as animalController from '../controllers/AnimalController'
 
 const router: Router = express.Router()
 
+const uploadPath = path.resolve('public')
+
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true })
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, __dirname + '/../public')
+    cb(null, uploadPath)
   },
+
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '.jpg')
+    cb(null, Date.now() + path.extname(file.originalname))
   },
 })
 const upload = multer({ storage })

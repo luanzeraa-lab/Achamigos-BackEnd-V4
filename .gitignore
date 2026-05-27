@@ -16,10 +16,6 @@ coverage/
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# Imagens de upload
-public/*.jpg
-public/*.png
-public/*.jpeg
 
 # Runtime data
 pids
@@ -100,7 +96,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+
 
 # Gatsby files
 .cache/
