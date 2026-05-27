@@ -102,16 +102,25 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          
+          
           git add package.json package-lock.json
           git commit -m "chore(release): version ${{ env.new_version }} [skip ci]" || echo "Sem mudanças"
           git push origin HEAD:${{ github.ref_name }}
 
+          
           BRANCH_NAME="${{ github.ref_name }}"
           TAG_NAME=$([ "$BRANCH_NAME" = "main" ] && echo "v${{ env.new_version }}" || echo "v${{ env.new_version }}-beta")
           
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+          echo "Verificando tag: $TAG_NAME"
+          
+          
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "Tag $TAG_NAME já existe, pulando criação."
+          else
             git tag "$TAG_NAME"
             git push origin "$TAG_NAME"
+            echo "Tag $TAG_NAME criada com sucesso."
           fi
 
       - name: Trigger Render Deploy
