@@ -34,7 +34,7 @@ const buscarAnimalPorId = async (id: string): Promise<IAnimal | null> => {
 const cadastrarAnimal = async (dados: any, file?: Express.Multer.File): Promise<IAnimal> => {
   const novoAnimal = new Animal({
     ...dados,
-    imagem: file ? `/public/${file.filename}` : null,
+    imagem: file ? (file as any).path : null,
   })
   return await novoAnimal.save()
 }

@@ -1,26 +1,21 @@
 import express, { Router } from 'express'
 import multer from 'multer'
-import path from 'path'
-import fs from 'fs'
+
 import * as animalController from '../controllers/AnimalController'
+
+import { CloudinaryStorage } from 'multer-storage-cloudinary'
+import cloudinary from '../config/cloudinary'
 
 const router: Router = express.Router()
 
-const uploadPath = path.resolve('public')
-
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true })
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadPath)
-  },
-
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
-  },
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => ({
+    folder: 'achamigos',
+    public_id: Date.now().toString(),
+  }),
 })
+
 const upload = multer({ storage })
 
 router.get('/animais/:id', animalController.buscarAnimalPorId)
