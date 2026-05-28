@@ -27,6 +27,19 @@ API para gerenciamento de animais, usuários e eventos da plataforma Achamigos.
 └── dist/                 # Código compilado (gerado automaticamente)
 ```
 
+## 🏗️ Arquitetura
+
+A API foi estruturada seguindo arquitetura baseada em camadas:
+
+- Controllers
+- Services
+- Models
+- Middlewares
+- Rotas
+- Integração com MongoDB
+
+O projeto segue princípios de separação de responsabilidades e modularização.
+
 ## ⚙️ CI/CD
 
 O projeto utiliza GitHub Actions para automação de processos.
@@ -49,7 +62,7 @@ O projeto utiliza GitHub Actions para automação de processos.
 | Ambiente | Plataforma | URL |
 |-----------|-----------|-----|
 | Homologação | Render | [Acessar](https://achamigos-backend-latest.onrender.com) |
-| Produção | Render | [Acessar](https://achamigos-backend-latest.onrender.com) |
+| Produção | Render | [Acessar](https://achamigos-backend-prod.onrender.com) |
 | Produção | Heroku | [Acessar](https://achamigos-backend-prod-f16416b748da.herokuapp.com/) |
 
 ## 🐳 Docker Hub
@@ -64,16 +77,21 @@ Imagem disponível em:
 docker pull luanzeralab/achamigos-backend:latest
 ```
 
-## Instalação
+## ⚙️ Instalação
 
-1. Clone o repositório
-2. Instale as dependências:
- 
+### Clone o repositório
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+```
+
+### Instale as dependências
+
 ```bash
 npm install
 ```
 
-3. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+  Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
 MONGO_URI=sua_connection_string_mongodb
@@ -114,9 +132,7 @@ Inicia o servidor a partir do código compilado em `dist/`.
 
 Acesse a documentação Swagger após iniciar o servidor:
 
-```text
-http://localhost:3002/docs
-```
+[Swagger](https://achamigos-backend-latest.onrender.com/docs)
 
 ## Endpoints Principais
 
@@ -156,7 +172,7 @@ x-api-key: SUA_API_KEY
 
 Este projeto usa a SDK oficial `@google/genai` para gerar respostas com IA.
 
-### 1) Dependencia
+### 1) Dependência
 
 Se necessario, instale/atualize:
 
@@ -164,11 +180,11 @@ Se necessario, instale/atualize:
 npm install @google/genai
 ```
 
-### 2) Endpoint criado
+### Endpoint criado
 
 - `POST /api/gerarTexto` - Envia prompt para o Gemini
 
-### 3) Exemplo de chamada (backend)
+### Exemplo de chamada (backend)
 
 Request:
 
@@ -178,8 +194,8 @@ x-api-key: SUA_API_KEY
 Content-Type: application/json
 
 {
-  "prompt": "Crie uma descricao curta para adoção de um cachorro idoso.",
-  "systemInstruction": "Responda em portugues, em tom acolhedor.",
+  "prompt": "Crie uma descrição curta para adoção de um cachorro idoso.",
+  "systemInstruction": "Responda em português, em tom acolhedor.",
   "model": "gemini-2.0-flash",
   "saveHistory": true,
   "userId": "123"
@@ -196,7 +212,7 @@ Response:
 }
 ```
 
-### 4) Exemplo de consumo no frontend
+###  Exemplo de consumo no frontend
 
 ```javascript
 async function gerarTexto(prompt) {
@@ -208,7 +224,7 @@ async function gerarTexto(prompt) {
     },
     body: JSON.stringify({
       prompt,
-      systemInstruction: 'Responda em portugues de forma objetiva.',
+      systemInstruction: 'Responda em português de forma objetiva.',
       saveHistory: false,
     }),
   })
@@ -223,38 +239,67 @@ async function gerarTexto(prompt) {
 }
 ```
 
-### 5) Segurança
+### Segurança
 
 - Nunca exponha `GEMINI_API_KEY` no frontend.
-- A chamada ao Gemini e feita apenas no backend.
+- A chamada ao Gemini é feita apenas no backend.
 - O frontend conversa com o endpoint interno `/api/gerarTexto`.
 
-### 6) Como rodar em container Docker
+## 🐳 Docker
 
-Pré-requisitos - Docker desktop instalado e aberto e arquivo .env
-com LOGTAIL_SOURCE_TOKEN=sua_logtail_token. Aqui você pode colocar uma logtail fake
-apenas para teste.
+O projeto possui suporte completo a containerização utilizando Docker.
 
-Criar a imagem Docker
-No diretório raiz do backend (onde está o Dockerfile):
+### 📦 Build da imagem
 
 ```bash
-docker build -t backend-app .
-docker run -d -p 3002:3002 --name backend-container backend-app
+docker build -t achamigos-backend .
 ```
 
-A aplicação estará acessível em: http://localhost:3002
+### 🚀 Executar container
 
-Parar e remover o container
-Para parar:
+```bash
+docker run -d -p 3002:3002 --name achamigos-backend achamigos-backend
+```
 
-docker stop backend-container
+A API ficará disponível em:
 
-Para remover:
+```text
+http://localhost:3002
+```
 
-docker rm backend-container
+---
 
-## 7) 📊 Observabilidade e Logs
+## 🐳 Docker Compose
+
+Executar toda a stack:
+
+```bash
+docker compose up -d
+```
+
+### Serviços disponíveis
+
+- Backend API
+- Banco de dados MongoDB
+- Microsserviços auxiliares
+
+---
+
+## 🛑 Gerenciamento do Container
+
+### Parar container
+
+```bash
+docker stop achamigos-backend
+```
+
+### Remover container
+
+```bash
+docker rm achamigos-backend
+```
+
+##  📊 Observabilidade e Logs
 
 O backend do projeto utiliza o Better Stack para monitoramento e análise de logs em tempo real.
 
