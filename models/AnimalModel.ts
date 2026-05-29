@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose'
 import { IAnimal } from '../types'
+import { User } from './UserModel';
 
 const AnimalSchema: Schema = new mongoose.Schema({
   nome: { type: String, required: true },
@@ -27,17 +28,13 @@ const listarAnimais = async (): Promise<IAnimal[]> => {
 }
 
 const buscarAnimalPorId = async (id: string): Promise<IAnimal | null> => {
-  try {
-    return await Animal.findById(id)
-  } catch (error) {
-    throw error
-  }
+  return await Animal.findById(id)
 }
 
 const cadastrarAnimal = async (dados: any, file?: Express.Multer.File): Promise<IAnimal> => {
   const novoAnimal = new Animal({
     ...dados,
-    imagem: file ? `/public/${file.filename}` : null,
+    imagem: file ? (file as any).path : null,
   })
   return await novoAnimal.save()
 }
@@ -50,4 +47,27 @@ const excluirAnimal = async (id: string): Promise<IAnimal | null> => {
   return await Animal.findByIdAndDelete(id)
 }
 
-export { Animal, cadastrarAnimal, alterarAnimal, excluirAnimal, listarAnimais, buscarAnimalPorId }
+
+
+
+const filtrarAnimais = async (filtros: any = {}): Promise<IAnimal[]> => {
+    const { tipo, porte, cidade, castrado, idade } = filtros;
+    const query: any = {};
+
+    
+    if (cidade) {
+        const usuarios = await User.find({ 'endereco.cidade': cidade });
+        if (!usuarios.length) return [];
+        query.userId = { $in: usuarios.map((user) => user._id) };
+    }
+
+    
+    if (tipo) query.tipo = tipo;
+    if (porte) query.porte = porte;
+    if (castrado !== undefined) query.castracao = castrado;
+    if (idade) query.idade = idade;
+
+    return await Animal.find(query);
+};
+
+export { Animal, cadastrarAnimal, alterarAnimal, excluirAnimal, listarAnimais, buscarAnimalPorId, filtrarAnimais }

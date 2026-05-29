@@ -4,12 +4,12 @@ API para gerenciamento de animais, usuários e eventos da plataforma Achamigos.
 
 ## Tecnologias
 
-- **Node.js** com **TypeScript**
-- **Express.js** - Framework web
-- **MongoDB** com **Mongoose** - Banco de dados
-- **Swagger** - Documentação da API
-- **Multer** - Upload de arquivos
-- **Bcrypt** - Criptografia de senhas
+![Node](https://img.shields.io/badge/Node.js-22-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![MongoDB](https://img.shields.io/badge/MongoDB-green)
+![Docker](https://img.shields.io/badge/Docker-blue)
+![Swagger](https://img.shields.io/badge/Swagger-green)
+![Sonar](https://img.shields.io/badge/Sonar-Enabled-orange)
 
 ## Estrutura do Projeto
 
@@ -27,16 +27,71 @@ API para gerenciamento de animais, usuários e eventos da plataforma Achamigos.
 └── dist/                 # Código compilado (gerado automaticamente)
 ```
 
-## Instalação
+## 🏗️ Arquitetura
 
-1. Clone o repositório
-1. Instale as dependências:
+A API foi estruturada seguindo arquitetura baseada em camadas:
+
+- Controllers
+- Services
+- Models
+- Middlewares
+- Rotas
+- Integração com MongoDB
+
+O projeto segue princípios de separação de responsabilidades e modularização.
+
+## ⚙️ CI/CD
+
+O projeto utiliza GitHub Actions para automação de processos.
+
+### Fluxos automatizados
+
+- Build da aplicação
+- Execução de testes automatizados
+- Geração de relatório de cobertura
+- Análise SonarCloud
+- Geração de tags
+- Build de imagens Docker
+- Push para Docker Hub
+- Deploy em homologação
+- Deploy em produção
+- Notificação por e-mail em caso de falhas
+
+## 🚀 Ambientes de Deploy
+
+| Ambiente | Plataforma | URL |
+|-----------|-----------|-----|
+| Homologação | Render | [Acessar](https://achamigos-backend-latest.onrender.com) |
+| Produção | Render | [Acessar](https://achamigos-backend-prod.onrender.com) |
+| Produção | Heroku | [Acessar](https://achamigos-backend-prod-f16416b748da.herokuapp.com/) |
+
+## 🐳 Docker Hub
+
+Imagem disponível em:
+
+[Acessar](https://hub.docker.com/repository/docker/luanzeralab/achamigos-backend)
+
+Última versão:
+
+```bash
+docker pull luanzeralab/achamigos-backend:latest
+```
+
+## ⚙️ Instalação
+
+### Clone o repositório
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+```
+
+### Instale as dependências
 
 ```bash
 npm install
 ```
 
-1. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+  Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
 MONGO_URI=sua_connection_string_mongodb
@@ -77,9 +132,7 @@ Inicia o servidor a partir do código compilado em `dist/`.
 
 Acesse a documentação Swagger após iniciar o servidor:
 
-```text
-http://localhost:3002/docs
-```
+[Swagger](https://achamigos-backend-latest.onrender.com/docs)
 
 ## Endpoints Principais
 
@@ -115,11 +168,11 @@ Adicione o header em todas as requisições:
 x-api-key: SUA_API_KEY
 ```
 
-## Integracao com Google GenAI (Gemini)
+## 🤖 Integração com Google GenAI (Gemini)
 
 Este projeto usa a SDK oficial `@google/genai` para gerar respostas com IA.
 
-### 1) Dependencia
+### 1) Dependência
 
 Se necessario, instale/atualize:
 
@@ -127,23 +180,22 @@ Se necessario, instale/atualize:
 npm install @google/genai
 ```
 
-### 2) Endpoint criado
+### Endpoint criado
 
-- `POST /api/ia/prompt` - Envia prompt para o Gemini
-- `GET /api/ia/historico` - Lista historico em memoria (opcional)
+- `POST /api/gerarTexto` - Envia prompt para o Gemini
 
-### 3) Exemplo de chamada (backend)
+### Exemplo de chamada (backend)
 
 Request:
 
 ```http
-POST /api/ia/prompt
+POST /api/gerarTexto
 x-api-key: SUA_API_KEY
 Content-Type: application/json
 
 {
-  "prompt": "Crie uma descricao curta para adoção de um cachorro idoso.",
-  "systemInstruction": "Responda em portugues, em tom acolhedor.",
+  "prompt": "Crie uma descrição curta para adoção de um cachorro idoso.",
+  "systemInstruction": "Responda em português, em tom acolhedor.",
   "model": "gemini-2.0-flash",
   "saveHistory": true,
   "userId": "123"
@@ -160,11 +212,11 @@ Response:
 }
 ```
 
-### 4) Exemplo de consumo no frontend
+###  Exemplo de consumo no frontend
 
 ```javascript
 async function gerarTexto(prompt) {
-  const response = await fetch('http://localhost:3002/api/ia/prompt', {
+  const response = await fetch('http://localhost:3002/api/gerarTexto', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -172,7 +224,7 @@ async function gerarTexto(prompt) {
     },
     body: JSON.stringify({
       prompt,
-      systemInstruction: 'Responda em portugues de forma objetiva.',
+      systemInstruction: 'Responda em português de forma objetiva.',
       saveHistory: false,
     }),
   })
@@ -187,39 +239,67 @@ async function gerarTexto(prompt) {
 }
 ```
 
-### 5) Seguranca
+### Segurança
 
 - Nunca exponha `GEMINI_API_KEY` no frontend.
-- A chamada ao Gemini e feita apenas no backend.
-- O frontend conversa com o endpoint interno `/api/ia/prompt`.
+- A chamada ao Gemini é feita apenas no backend.
+- O frontend conversa com o endpoint interno `/api/gerarTexto`.
 
-### 6) Como rodar em container Docker
-Pré-requisitos - Docker desktop instalado e aberto e arquivo .env
-com LOGTAIL_SOURCE_TOKEN=sua_logtail_token. Aqui você pode colocar uma logtail fake
-apenas para teste.
+## 🐳 Docker
 
+O projeto possui suporte completo a containerização utilizando Docker.
 
-Criar a imagem Docker
-No diretório raiz do backend (onde está o Dockerfile):
+### 📦 Build da imagem
 
-docker build -t backend-app .
+```bash
+docker build -t achamigos-backend .
+```
 
-Rodar o container
-docker run -d -p 3002:3002 --name backend-container backend-app
+### 🚀 Executar container
 
-A aplicação estará acessível em: http://localhost:3002
+```bash
+docker run -d -p 3002:3002 --name achamigos-backend achamigos-backend
+```
 
-Parar e remover o container
-Para parar:
+A API ficará disponível em:
 
-docker stop backend-container
+```text
+http://localhost:3002
+```
 
-Para remover:
+---
 
-docker rm backend-container
+## 🐳 Docker Compose
 
+Executar toda a stack:
 
-## 7) 📊 Observabilidade e Logs
+```bash
+docker compose up -d
+```
+
+### Serviços disponíveis
+
+- Backend API
+- Banco de dados MongoDB
+- Microsserviços auxiliares
+
+---
+
+## 🛑 Gerenciamento do Container
+
+### Parar container
+
+```bash
+docker stop achamigos-backend
+```
+
+### Remover container
+
+```bash
+docker rm achamigos-backend
+```
+
+##  📊 Observabilidade e Logs
 
 O backend do projeto utiliza o Better Stack para monitoramento e análise de logs em tempo real.
 
@@ -259,6 +339,47 @@ Os logs da API foram integrados ao Better Stack e validados com sucesso, garanti
 Quando os alertas são atingidos, notificações são enviadas automaticamente por e-mail.
 
 ---
+
+## 🔍 Qualidade de Código
+
+O projeto utiliza SonarQube/SonarCloud para análise contínua de qualidade.
+
+Métricas monitoradas:
+
+- Bugs
+- Vulnerabilidades
+- Code Smells
+- Cobertura de testes
+- Duplicação de código
+- Confiabilidade do código
+
+A análise é executada automaticamente via GitHub Actions.
+
+## 🧪 Testes
+
+O projeto possui testes automatizados utilizando **Jest** e **Supertest** para validação das rotas e regras de negócio.
+
+### Executar todos os testes
+
+```bash
+npm test
+```
+
+### Executar testes com cobertura
+
+```bash
+npm run test:coverage
+```
+
+### Tecnologias utilizadas
+
+- Jest
+- Supertest
+- TypeScript
+
+### 📊 Cobertura de Testes
+
+![Cobertura](./docs/coverage.png)
 
 ### 🖼️ Evidências
 

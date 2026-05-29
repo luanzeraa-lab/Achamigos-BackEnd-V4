@@ -28,11 +28,6 @@ const doc = {
 const outputFile = './swagger-output.json'
 const endpointsFiles = [
   './api.ts',
-  './routes/UserRoute.ts',
-  './routes/AnimalRoute.ts',
-  './routes/FiltroRoute.ts',
-  './routes/EventoRoute.ts',
-  './routes/GenaiRoute.ts',
 ]
 
 const options = {

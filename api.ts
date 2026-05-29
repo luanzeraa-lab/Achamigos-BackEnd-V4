@@ -1,8 +1,10 @@
 import dotenv from 'dotenv'
 import "dotenv/config";
 import dns from "dns"
+import path from 'path'
 
-//test
+//teste
+
 if(process.env.DNS_FORCE === 'true') {
   dns.setServers(["1.1.1.1", "8.8.8.8"])
 }
@@ -27,9 +29,9 @@ import swaggerDocument from './swagger-output.json'
 
 const app: Application = express()
 
+app.use('/public', express.static(path.resolve('public')))
 app.use(express.json())
 app.use(cors({ origin: '*' }))
-app.use('/public', express.static('public'))
 
 app.use(loggerMiddleware);
 

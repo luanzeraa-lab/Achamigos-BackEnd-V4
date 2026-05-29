@@ -1,0 +1,370 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Achamigos",
+        "description": "Documentação da API Achamigos usando Swagger",
+        "version": "1.10.3"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/gerartexto": {
+            "post": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    }
+                }
+            }
+        },
+        "/api/log": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/erro": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "500": {
+                        "description": "Erro Interno do Servidor"
+                    }
+                }
+            }
+        },
+        "/api/lento": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/animais/{id}": {
+            "get": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "404": {
+                        "description": "Não Encontrado"
+                    }
+                }
+            },
+            "put": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "404": {
+                        "description": "Não Encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    }
+                }
+            }
+        },
+        "/api/animais": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "404": {
+                        "description": "Não Encontrado"
+                    }
+                }
+            },
+            "post": {
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Criado"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "404": {
+                        "description": "Não Encontrado"
+                    }
+                }
+            },
+            "post": {
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Criado"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "500": {
+                        "description": "Erro Interno do Servidor"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "put": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    }
+                }
+            },
+            "delete": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "example": "any"
+                                    },
+                                    "senha": {
+                                        "example": "any"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/eventos": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "404": {
+                        "description": "Não Encontrado"
+                    }
+                }
+            },
+            "post": {
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Criado"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "500": {
+                        "description": "Erro Interno do Servidor"
+                    }
+                }
+            }
+        },
+        "/api/eventos/{id}": {
+            "put": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Criado"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "500": {
+                        "description": "Erro Interno do Servidor"
+                    }
+                }
+            },
+            "delete": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Criado"
+                    },
+                    "400": {
+                        "description": "Solicitação Inválida"
+                    },
+                    "500": {
+                        "description": "Erro Interno do Servidor"
+                    }
+                }
+            }
+        },
+        "/api/animais/buscar": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Erro Interno do Servidor"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "x-api-key",
+                "description": "1234"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyAuth": []
+        }
+    ]
+}
