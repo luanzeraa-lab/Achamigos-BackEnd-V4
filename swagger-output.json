@@ -22,7 +22,8 @@
                   "prompt": { "type": "string" },
                   "id": { "type": "string" },
                   "nome": { "type": "string" }
-                }
+                },
+                "example": { "prompt": "Crie uma descrição para um cão", "id": "123", "nome": "Rex" }
               }
             }
           }
@@ -52,7 +53,8 @@
                   "castracao": { "type": "boolean" },
                   "tipo": { "type": "string" },
                   "userId": { "type": "string" }
-                }
+                },
+                "example": { "nome": "Rex", "idade": 2, "raca": "SRD", "sexo": "macho", "porte": "medio", "peso": 15, "observacoes": "Muito dócil", "linkAnimal": "url", "castracao": true, "tipo": "cachorro", "userId": "user123" }
               }
             }
           }
@@ -85,7 +87,8 @@
                   "castracao": { "type": "boolean" },
                   "tipo": { "type": "string" },
                   "userId": { "type": "string" }
-                }
+                },
+                "example": { "nome": "Rex", "idade": 2, "raca": "SRD", "sexo": "macho", "porte": "medio", "peso": 15, "observacoes": "Atualizado", "linkAnimal": "url", "castracao": true, "tipo": "cachorro", "userId": "user123" }
               }
             }
           }
@@ -119,7 +122,8 @@
                     "type": "object",
                     "properties": { "cep": { "type": "string" }, "rua": { "type": "string" }, "cidade": { "type": "string" }, "numero": { "type": "string" } }
                   }
-                }
+                },
+                "example": { "nome": "Ong Teste", "userLogin": "ong1", "senha": "123", "email": "ong@teste.com", "endereco": { "cep": "12345-000", "rua": "Rua A", "cidade": "SP", "numero": "10" } }
               }
             }
           }
@@ -143,7 +147,8 @@
                   "tipo_Evento": { "type": "string" },
                   "texto": { "type": "string" },
                   "linkEvento": { "type": "string" }
-                }
+                },
+                "example": { "nomeEvento": "Feira de Adoção", "data": "2026-06-10T10:00:00Z", "tipo_Evento": "Feira", "texto": "Venha adotar", "linkEvento": "url" }
               }
             }
           }
@@ -166,7 +171,8 @@
                   "tipo_Evento": { "type": "string" },
                   "texto": { "type": "string" },
                   "linkEvento": { "type": "string" }
-                }
+                },
+                "example": { "nomeEvento": "Feira Editada", "data": "2026-06-15T10:00:00Z", "tipo_Evento": "Feira", "texto": "Atualizado", "linkEvento": "url" }
               }
             }
           }
