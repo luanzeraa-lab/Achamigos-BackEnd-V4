@@ -1,40 +1,14 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API Achamigos",
-    "description": "Documentação da API Achamigos usando Swagger",
+    "title": "API Achamigos Completa",
     "version": "1.10.3"
   },
   "paths": {
-    "/": {
-      "get": { "description": "Rota inicial", "responses": { "200": { "description": "OK" } } }
-    },
-    "/api/gerartexto": {
-      "post": {
-        "description": "Gera texto usando IA",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["prompt", "id", "nome"],
-                "properties": {
-                  "prompt": { "type": "string" },
-                  "id": { "type": "string" },
-                  "nome": { "type": "string" }
-                },
-                "example": { "prompt": "Crie uma descrição para um cão", "id": "123", "nome": "Rex" }
-              }
-            }
-          }
-        },
-        "responses": { "200": { "description": "OK" }, "400": { "description": "Solicitação Inválida" } }
-      }
-    },
     "/api/animais": {
-      "get": { "description": "Lista animais", "responses": { "200": { "description": "OK" } } },
+      "get": { "summary": "Lista animais", "responses": { "200": { "description": "OK" } } },
       "post": {
-        "description": "Cria animal",
+        "summary": "Cria animal",
         "requestBody": {
           "content": {
             "application/json": {
@@ -42,153 +16,76 @@
                 "type": "object",
                 "required": ["userId", "tipo", "castracao", "porte", "sexo", "raca", "nome"],
                 "properties": {
-                  "nome": { "type": "string" },
-                  "idade": { "type": "number" },
-                  "raca": { "type": "string" },
-                  "sexo": { "type": "string" },
-                  "porte": { "type": "string" },
-                  "peso": { "type": "number" },
-                  "observacoes": { "type": "string" },
-                  "linkAnimal": { "type": "string" },
-                  "castracao": { "type": "boolean" },
-                  "tipo": { "type": "string" },
-                  "userId": { "type": "string" }
+                  "nome": { "type": "string" }, "idade": { "type": "number" }, "raca": { "type": "string" }, "sexo": { "type": "string" }, "porte": { "type": "string" }, "peso": { "type": "number" }, "observacoes": { "type": "string" }, "linkAnimal": { "type": "string" }, "castracao": { "type": "boolean" }, "tipo": { "type": "string" }, "userId": { "type": "string" }
                 },
-                "example": { "nome": "Rex", "idade": 2, "raca": "SRD", "sexo": "macho", "porte": "medio", "peso": 15, "observacoes": "Muito dócil", "linkAnimal": "url", "castracao": true, "tipo": "cachorro", "userId": "user123" }
+                "example": { "nome": "Rex", "idade": 2, "raca": "SRD", "sexo": "macho", "porte": "medio", "peso": 15, "observacoes": "Dócil", "linkAnimal": "url", "castracao": true, "tipo": "cachorro", "userId": "665b12345678901234567890" }
               }
             }
           }
         },
-        "responses": { "201": { "description": "Criado" }, "400": { "description": "Solicitação Inválida" } }
+        "responses": { "201": { "description": "Criado" } }
       }
     },
     "/api/animais/{id}": {
-      "get": {
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "OK" } }
-      },
+      "get": { "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "OK" } } },
       "put": {
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["userId", "tipo", "castracao", "porte", "sexo", "raca", "nome"],
-                "properties": {
-                  "nome": { "type": "string" },
-                  "idade": { "type": "number" },
-                  "raca": { "type": "string" },
-                  "sexo": { "type": "string" },
-                  "porte": { "type": "string" },
-                  "peso": { "type": "number" },
-                  "observacoes": { "type": "string" },
-                  "linkAnimal": { "type": "string" },
-                  "castracao": { "type": "boolean" },
-                  "tipo": { "type": "string" },
-                  "userId": { "type": "string" }
-                },
-                "example": { "nome": "Rex", "idade": 2, "raca": "SRD", "sexo": "macho", "porte": "medio", "peso": 15, "observacoes": "Atualizado", "linkAnimal": "url", "castracao": true, "tipo": "cachorro", "userId": "user123" }
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "nome": { "type": "string" }, "idade": { "type": "number" } }, "example": { "nome": "Rex Atualizado", "idade": 3 } } } }
         },
-        "responses": { "200": { "description": "OK" }, "400": { "description": "Solicitação Inválida" } }
-      },
-      "delete": {
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": { "200": { "description": "OK" } }
-      }
+      },
+      "delete": { "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Removido" } } }
     },
     "/api/users": {
-      "get": { "description": "Lista usuários", "responses": { "200": { "description": "OK" } } },
+      "get": { "summary": "Lista usuários", "responses": { "200": { "description": "OK" } } },
       "post": {
-        "description": "Cria usuário",
+        "summary": "Cria usuário",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["nome", "userLogin", "senha", "email"],
+                "required": ["nome", "cnpj", "telefone", "userLogin", "senha", "email", "endereco"],
                 "properties": {
-                  "nome": { "type": "string" },
-                  "cnpj": { "type": "string" },
-                  "telefone": { "type": "string" },
-                  "userLogin": { "type": "string" },
-                  "senha": { "type": "string" },
-                  "email": { "type": "string" },
-                  "linkUser": { "type": "string" },
-                  "endereco": {
-                    "type": "object",
-                    "properties": { "cep": { "type": "string" }, "rua": { "type": "string" }, "cidade": { "type": "string" }, "numero": { "type": "string" } }
-                  }
+                  "nome": { "type": "string" }, "cnpj": { "type": "string" }, "telefone": { "type": "string" }, "userLogin": { "type": "string" }, "senha": { "type": "string" }, "email": { "type": "string" }, "endereco": { "type": "object", "properties": { "cep": { "type": "string" }, "rua": { "type": "string" }, "cidade": { "type": "string" }, "numero": { "type": "string" } } }
                 },
-                "example": { "nome": "Ong Teste", "userLogin": "ong1", "senha": "123", "email": "ong@teste.com", "endereco": { "cep": "12345-000", "rua": "Rua A", "cidade": "SP", "numero": "10" } }
+                "example": { "nome": "Ong", "cnpj": "12345", "telefone": "11999", "userLogin": "ong1", "senha": "123", "email": "o@o.com", "endereco": { "cep": "000", "rua": "A", "cidade": "SP", "numero": "1" } }
               }
             }
           }
         },
-        "responses": { "201": { "description": "Criado" }, "400": { "description": "Solicitação Inválida" } }
+        "responses": { "201": { "description": "Criado" } }
       }
     },
     "/api/eventos": {
-      "get": { "description": "Lista eventos", "responses": { "200": { "description": "OK" } } },
+      "get": { "summary": "Lista eventos", "responses": { "200": { "description": "OK" } } },
       "post": {
-        "description": "Cria evento",
+        "summary": "Cria evento",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "required": ["nomeEvento", "data", "tipo_Evento"],
-                "properties": {
-                  "nomeEvento": { "type": "string" },
-                  "data": { "type": "string", "format": "date-time" },
-                  "tipo_Evento": { "type": "string" },
-                  "texto": { "type": "string" },
-                  "linkEvento": { "type": "string" }
-                },
-                "example": { "nomeEvento": "Feira de Adoção", "data": "2026-06-10T10:00:00Z", "tipo_Evento": "Feira", "texto": "Venha adotar", "linkEvento": "url" }
+                "properties": { "nomeEvento": { "type": "string" }, "data": { "type": "string", "format": "date-time" }, "tipo_Evento": { "type": "string" }, "texto": { "type": "string" }, "linkEvento": { "type": "string" } },
+                "example": { "nomeEvento": "Feira", "data": "2026-06-10T10:00:00Z", "tipo_Evento": "Adoção", "texto": "Venha!", "linkEvento": "url" }
               }
             }
           }
         },
-        "responses": { "201": { "description": "Criado" }, "400": { "description": "Solicitação Inválida" } }
+        "responses": { "201": { "description": "Criado" } }
       }
     },
     "/api/eventos/{id}": {
       "put": {
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["nomeEvento", "data", "tipo_Evento"],
-                "properties": {
-                  "nomeEvento": { "type": "string" },
-                  "data": { "type": "string", "format": "date-time" },
-                  "tipo_Evento": { "type": "string" },
-                  "texto": { "type": "string" },
-                  "linkEvento": { "type": "string" }
-                },
-                "example": { "nomeEvento": "Feira Editada", "data": "2026-06-15T10:00:00Z", "tipo_Evento": "Feira", "texto": "Atualizado", "linkEvento": "url" }
-              }
-            }
-          }
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "nomeEvento": { "type": "string" } }, "example": { "nomeEvento": "Feira Editada" } } } }
         },
-        "responses": { "200": { "description": "OK" }, "400": { "description": "Solicitação Inválida" } }
-      },
-      "delete": {
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": { "200": { "description": "OK" } }
-      }
+      },
+      "delete": { "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Removido" } } }
     }
-  },
-  "components": {
-    "securitySchemes": {
-      "apiKeyAuth": { "type": "apiKey", "in": "header", "name": "x-api-key" }
-    }
-  },
-  "security": [{ "apiKeyAuth": [] }]
+  }
 }
