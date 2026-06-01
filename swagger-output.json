@@ -7,16 +7,8 @@
   },
   "paths": {
     "/": {
-      "get": {
-        "description": "Rota inicial",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
+      "get": { "description": "Rota inicial", "responses": { "200": { "description": "OK" } } }
     },
-
     "/api/gerartexto": {
       "post": {
         "description": "Gera texto usando IA",
@@ -25,41 +17,21 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["prompt", "id", "nome"],
                 "properties": {
-                  "prompt": {
-                    "type": "string"
-                  },
-                  "id": {
-                    "type": "string"
-                  },
-                  "nome": {
-                    "type": "string"
-                  }
+                  "prompt": { "type": "string" },
+                  "id": { "type": "string" },
+                  "nome": { "type": "string" }
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
+        "responses": { "200": { "description": "OK" }, "400": { "description": "Solicitação Inválida" } }
       }
     },
-
     "/api/animais": {
-      "get": {
-        "description": "Lista animais",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+      "get": { "description": "Lista animais", "responses": { "200": { "description": "OK" } } },
       "post": {
         "description": "Cria animal",
         "requestBody": {
@@ -67,160 +39,66 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["userId", "tipo", "castracao", "porte", "sexo", "raca", "nome"],
                 "properties": {
-                  "nome": {
-                    "type": "string"
-                  },
-                  "idade": {
-                    "type": "number"
-                  },
-                  "raca": {
-                    "type": "string"
-                  },
-                  "sexo": {
-                    "type": "string"
-                  },
-                  "porte": {
-                    "type": "string"
-                  },
-                  "peso": {
-                    "type": "number"
-                  },
-                  "observacoes": {
-                    "type": "string"
-                  },
-                  "linkAnimal": {
-                    "type": "string"
-                  },
-                  "castracao": {
-                    "type": "boolean"
-                  },
-                  "tipo": {
-                    "type": "string"
-                  },
-                  "userId": {
-                    "type": "string"
-                  }
+                  "nome": { "type": "string" },
+                  "idade": { "type": "number" },
+                  "raca": { "type": "string" },
+                  "sexo": { "type": "string" },
+                  "porte": { "type": "string" },
+                  "peso": { "type": "number" },
+                  "observacoes": { "type": "string" },
+                  "linkAnimal": { "type": "string" },
+                  "castracao": { "type": "boolean" },
+                  "tipo": { "type": "string" },
+                  "userId": { "type": "string" }
                 }
               }
             }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Criado"
-          }
-        }
+        "responses": { "201": { "description": "Criado" }, "400": { "description": "Solicitação Inválida" } }
       }
     },
-
     "/api/animais/{id}": {
       "get": {
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
       },
       "put": {
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["userId", "tipo", "castracao", "porte", "sexo", "raca", "nome"],
                 "properties": {
-                  "nome": {
-                    "type": "string"
-                  },
-                  "idade": {
-                    "type": "number"
-                  },
-                  "raca": {
-                    "type": "string"
-                  },
-                  "sexo": {
-                    "type": "string"
-                  },
-                  "porte": {
-                    "type": "string"
-                  },
-                  "peso": {
-                    "type": "number"
-                  },
-                  "observacoes": {
-                    "type": "string"
-                  },
-                  "linkAnimal": {
-                    "type": "string"
-                  },
-                  "castracao": {
-                    "type": "boolean"
-                  },
-                  "tipo": {
-                    "type": "string"
-                  },
-                  "userId": {
-                    "type": "string"
-                  }
+                  "nome": { "type": "string" },
+                  "idade": { "type": "number" },
+                  "raca": { "type": "string" },
+                  "sexo": { "type": "string" },
+                  "porte": { "type": "string" },
+                  "peso": { "type": "number" },
+                  "observacoes": { "type": "string" },
+                  "linkAnimal": { "type": "string" },
+                  "castracao": { "type": "boolean" },
+                  "tipo": { "type": "string" },
+                  "userId": { "type": "string" }
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" }, "400": { "description": "Solicitação Inválida" } }
       },
       "delete": {
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
       }
     },
-
     "/api/users": {
-      "get": {
-        "description": "Lista usuários",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+      "get": { "description": "Lista usuários", "responses": { "200": { "description": "OK" } } },
       "post": {
         "description": "Cria usuário",
         "requestBody": {
@@ -228,67 +106,29 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["nome", "userLogin", "senha", "email"],
                 "properties": {
-                  "nome": {
-                    "type": "string"
-                  },
-                  "cnpj": {
-                    "type": "string"
-                  },
-                  "telefone": {
-                    "type": "string"
-                  },
-                  "userLogin": {
-                    "type": "string"
-                  },
-                  "senha": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "linkUser": {
-                    "type": "string"
-                  },
+                  "nome": { "type": "string" },
+                  "cnpj": { "type": "string" },
+                  "telefone": { "type": "string" },
+                  "userLogin": { "type": "string" },
+                  "senha": { "type": "string" },
+                  "email": { "type": "string" },
+                  "linkUser": { "type": "string" },
                   "endereco": {
                     "type": "object",
-                    "properties": {
-                      "cep": {
-                        "type": "string"
-                      },
-                      "rua": {
-                        "type": "string"
-                      },
-                      "cidade": {
-                        "type": "string"
-                      },
-                      "numero": {
-                        "type": "string"
-                      }
-                    }
+                    "properties": { "cep": { "type": "string" }, "rua": { "type": "string" }, "cidade": { "type": "string" }, "numero": { "type": "string" } }
                   }
                 }
               }
             }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Criado"
-          }
-        }
+        "responses": { "201": { "description": "Criado" }, "400": { "description": "Solicitação Inválida" } }
       }
     },
-
     "/api/eventos": {
-      "get": {
-        "description": "Lista eventos",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+      "get": { "description": "Lista eventos", "responses": { "200": { "description": "OK" } } },
       "post": {
         "description": "Cria evento",
         "requestBody": {
@@ -296,114 +136,53 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["nomeEvento", "data", "tipo_Evento"],
                 "properties": {
-                  "nomeEvento": {
-                    "type": "string"
-                  },
-                  "data": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "tipo_Evento": {
-                    "type": "string"
-                  },
-                  "texto": {
-                    "type": "string"
-                  },
-                  "linkEvento": {
-                    "type": "string"
-                  }
+                  "nomeEvento": { "type": "string" },
+                  "data": { "type": "string", "format": "date-time" },
+                  "tipo_Evento": { "type": "string" },
+                  "texto": { "type": "string" },
+                  "linkEvento": { "type": "string" }
                 }
               }
             }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Criado"
-          }
-        }
+        "responses": { "201": { "description": "Criado" }, "400": { "description": "Solicitação Inválida" } }
       }
     },
-
     "/api/eventos/{id}": {
       "put": {
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["nomeEvento", "data", "tipo_Evento"],
                 "properties": {
-                  "nomeEvento": {
-                    "type": "string"
-                  },
-                  "data": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "tipo_Evento": {
-                    "type": "string"
-                  },
-                  "texto": {
-                    "type": "string"
-                  },
-                  "linkEvento": {
-                    "type": "string"
-                  }
+                  "nomeEvento": { "type": "string" },
+                  "data": { "type": "string", "format": "date-time" },
+                  "tipo_Evento": { "type": "string" },
+                  "texto": { "type": "string" },
+                  "linkEvento": { "type": "string" }
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" }, "400": { "description": "Solicitação Inválida" } }
       },
       "delete": {
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
       }
     }
   },
-
   "components": {
     "securitySchemes": {
-      "apiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "x-api-key"
-      }
+      "apiKeyAuth": { "type": "apiKey", "in": "header", "name": "x-api-key" }
     }
   },
-
-  "security": [
-    {
-      "apiKeyAuth": []
-    }
-  ]
+  "security": [{ "apiKeyAuth": [] }]
 }
