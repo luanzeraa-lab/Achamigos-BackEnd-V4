@@ -84,7 +84,7 @@ describe('EventoController', () => {
     excluirEventoMock.mockResolvedValueOnce({ id: '30' } as any)
     const res1 = createRes()
     await excluirEvento(req, res1)
-    expect(res1.status).toHaveBeenCalledWith(201)
+    expect(res1.status).toHaveBeenCalledWith(200)
 
     excluirEventoMock.mockResolvedValueOnce(null as any)
     const res2 = createRes()
