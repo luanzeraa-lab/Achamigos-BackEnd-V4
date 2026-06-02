@@ -1,16 +1,18 @@
 import express, { Router } from 'express'
 import multer from 'multer'
 import * as EventoController from '../controllers/EventoController'
+import { CloudinaryStorage } from 'multer-storage-cloudinary'
+import cloudinary from '../config/cloudinary'
+
 
 const router: Router = express.Router()
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, __dirname + '/../public')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '.jpg')
-  },
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => ({
+    folder: 'achamigos_eventos',
+    public_id: Date.now().toString(),
+  }),
 })
 const upload = multer({ storage })
 
