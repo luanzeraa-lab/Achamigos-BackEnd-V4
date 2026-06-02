@@ -23,7 +23,7 @@ const cadastrarEvento = async (dados: any, file?: Express.Multer.File): Promise<
     data: dados.data,
     linkEvento: dados.linkEvento,
     nomeEvento: dados.nomeEvento || dados.tipo_Evento,
-    imagem: file ? `/public/${file.filename}` : null,
+    imagem: file ? (file as any).path : null,
   })
 
   return await newEvento.save()

@@ -49,10 +49,10 @@ export const excluirEvento = async (req: Request, res: Response): Promise<void> 
     const eventoDeletado = await EventoModel.excluirEvento(id as string)
 
     if (!eventoDeletado) {
-      res.status(400).json({ message: 'Erro ao alterar Evento' })
+      res.status(404).json({ message: 'Evento não encontrado' })
       return
     }
-    res.status(201).json(eventoDeletado)
+    res.status(200).json(eventoDeletado)
   } catch (error: any) {
     res.status(500).json({ error: error.message })
   }
