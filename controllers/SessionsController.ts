@@ -3,8 +3,7 @@ import { z } from "zod"
 import { compare } from "bcrypt";
 import { AuthConfig } from "../config/Auth";
 import { User } from "../models/UserModel";
-const jwt = require("jsonwebtoken")
-const { sign } = jwt
+import { sign } from "jsonwebtoken";
 
 class sessionsController {
     async create(request: Request, response: Response) {
@@ -27,14 +26,15 @@ class sessionsController {
             throw new Error("E-mail ou senha inválido")
         }
 
-        const {secret, expiresIn} = AuthConfig.jwt
+        const { secret, expiresIn } = AuthConfig.jwt
         
         const token = sign({}, secret, {
             subject: user.id,
             expiresIn
         })
 
-        const {senha: hashedPassword, ...userWithoutPassword} = user
+        const { senha: _hashedPassword, ...userWithoutPassword } = user.toObject()
+
         response.json({token, user: userWithoutPassword})
     }
 }

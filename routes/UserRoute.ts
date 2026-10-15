@@ -1,6 +1,7 @@
 import express, { Router } from 'express'
 import multer from 'multer'
 import * as userController from '../controllers/UserController'
+import { ensureAuthenticated } from '../middleware/EnsureAuthenticated'
 
 const router: Router = express.Router()
 
@@ -15,10 +16,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-router.get('/users', userController.listarUser)
+router.get('/users', ensureAuthenticated, userController.listarUser)
 router.post('/users', upload.single('imagem'), userController.cadastrarUser)
-router.put('/users/:id', userController.alterarUser)
-router.delete('/users/:id', userController.excluirUser)
+router.put('/users/:id', ensureAuthenticated, userController.alterarUser)
+router.delete('/users/:id', ensureAuthenticated, userController.excluirUser)
 router.post('/users/login', userController.login)
 
 export default router

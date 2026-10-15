@@ -3,4 +3,4 @@ export const AuthConfig = {
         secret: process.env.JWT_SECRET || "default_secret_key",
         expiresIn: "1d"
     }
-}
+} as const

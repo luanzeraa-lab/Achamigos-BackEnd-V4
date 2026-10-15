@@ -20,6 +20,7 @@ import swaggerUi from 'swagger-ui-express'
 
 import animalRoute from './routes/AnimalRoute'
 import userRoute from './routes/UserRoute'
+import sessionsRoute from './routes/SessionsRoute'
 import eventoRoute from './routes/EventoRoute'
 import filtroRoute from './routes/FiltroRoute'
 import GenaiRoute from './routes/GenaiRoute'
@@ -50,6 +51,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOption
 
 app.use('/api', GenaiRoute)
 app.use('/api', logRoute);
+app.use('/api', sessionsRoute)
 
 
 //app.use(apiKeyAuth)
@@ -72,4 +74,3 @@ app.listen(port, () => {
 })
 
 export {app}
-
