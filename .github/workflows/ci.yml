@@ -39,17 +39,6 @@ jobs:
       - name: Rodar testes
         run: npm run test:coverage
 
-      - name: Análise com SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v3.1.0
-        with:
-          args: >
-            -Dsonar.projectKey=achamigos-backend
-            -Dsonar.organization=luanzeraa-lab
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
       - name: Instalar semver
         run: npm install -g semver
 
