@@ -1,45 +1,14 @@
-name: SonarQube Analysis - Backend
+# SonarCloud temporarily disabled. Re-enable this workflow when the project is ready
+# for static analysis and coverage reporting.
+name: SonarQube Analysis - Backend (disabled)
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  sonarcloud-disabled:
+    name: SonarCloud (disabled)
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests (generate coverage)
-        run: npm run test:coverage
-
-      - name: Debug show coverage file
-        run: |
-          echo "Coverage files in workspace:"
-          ls -la coverage || true
-          echo ""
-          echo "--- start coverage/lcov.info ---"
-          head -n 80 coverage/lcov.info || true
-          echo "--- end coverage/lcov.info ---"
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v8.3.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud temporarily disabled
+        run: echo "SonarCloud analysis is temporarily disabled."
