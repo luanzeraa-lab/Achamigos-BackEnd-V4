@@ -7,6 +7,7 @@ exports.app = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 require("dotenv/config");
 const dns_1 = __importDefault(require("dns"));
+const path_1 = __importDefault(require("path"));
 if (process.env.DNS_FORCE === 'true') {
     dns_1.default.setServers(["1.1.1.1", "8.8.8.8"]);
 }
@@ -26,9 +27,9 @@ const LogRoute_1 = __importDefault(require("./routes/LogRoute"));
 const swagger_output_json_1 = __importDefault(require("./swagger-output.json"));
 const app = (0, express_1.default)();
 exports.app = app;
+app.use('/public', express_1.default.static(path_1.default.resolve('public')));
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({ origin: '*' }));
-app.use('/public', express_1.default.static('public'));
 app.use(loggerMiddleware_1.loggerMiddleware);
 app.get('/', (req, res) => {
     res.json({ message: '🚀 Api Achamigos rodando com sucesso!' });

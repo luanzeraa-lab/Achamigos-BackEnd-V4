@@ -3,7 +3,7 @@
     "info": {
         "title": "API Achamigos",
         "description": "Documentação da API Achamigos usando Swagger",
-        "version": "1.10.3"
+        "version": "1.12.0"
     },
     "paths": {
         "/": {
@@ -338,7 +338,7 @@
                 }
             }
         },
-        "/api/animais/buscar": {
+        "/api/animais/filtros/buscar": {
             "get": {
                 "description": "",
                 "responses": {
@@ -357,8 +357,7 @@
             "apiKeyAuth": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "x-api-key",
-                "description": "1234"
+                "name": "x-api-key"
             }
         }
     },

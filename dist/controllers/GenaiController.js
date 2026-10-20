@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gerarTextoController = gerarTextoController;
+exports.gerartextoController = gerartextoController;
 const GenaiModel_1 = require("../models/GenaiModel");
 const BancoAnimais_1 = require("../models/BancoAnimais");
 const AnimalModel_1 = require("../models/AnimalModel");
-async function gerarTextoController(req, res) {
+async function gerartextoController(req, res) {
     try {
         const { prompt, id, nome } = req.body;
         const animaisData = await (0, AnimalModel_1.listarAnimais)();
-        const resposta = await (0, GenaiModel_1.gerarTexto)(prompt + JSON.stringify(animaisData) + BancoAnimais_1.descricao);
+        const resposta = await (0, GenaiModel_1.gerartexto)(prompt + JSON.stringify(animaisData) + BancoAnimais_1.descricao);
         let respostaJson = null;
         try {
             respostaJson = JSON.parse(resposta);
@@ -34,8 +34,9 @@ async function gerarTextoController(req, res) {
             resposta: respostaExtraida
         });
     }
-    catch {
-        res.status(400).json({ erro: 'Erro ao gerar texto' });
+    catch (error) {
+        console.error("DEBUG - Erro no Controller:", error);
+        res.status(400).json({ erro: 'Erro ao gerar texto', detalhe: error instanceof Error ? error.message : error });
     }
 }
 //# sourceMappingURL=GenaiController.js.map

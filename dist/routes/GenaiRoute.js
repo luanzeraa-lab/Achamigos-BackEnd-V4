@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const GenaiController_1 = require("../controllers/GenaiController");
 const router = express_1.default.Router();
-router.post("/gerartexto", GenaiController_1.gerarTextoController);
+router.post("/gerartexto", GenaiController_1.gerartextoController);
 exports.default = router;
 //# sourceMappingURL=GenaiRoute.js.map

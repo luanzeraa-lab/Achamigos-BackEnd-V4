@@ -1,2 +1,2 @@
-export declare function gerarTexto(prompt: string): Promise<string>;
+export declare function gerartexto(prompt: string): Promise<string>;
 //# sourceMappingURL=GenaiModel.d.ts.map

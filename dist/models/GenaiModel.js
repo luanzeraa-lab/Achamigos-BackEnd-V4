@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gerarTexto = gerarTexto;
-async function gerarTexto(prompt) {
+exports.gerartexto = gerartexto;
+async function gerartexto(prompt) {
     try {
         const { GoogleGenAI } = await import("@google/genai");
         const ai = new GoogleGenAI({
-            apiKey: process.env.GOOGLE_API_KEY,
+            apiKey: process.env.GEMINI_API_KEY,
         });
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",

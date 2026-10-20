@@ -26,7 +26,7 @@ const cadastrarEvento = async (dados, file) => {
         data: dados.data,
         linkEvento: dados.linkEvento,
         nomeEvento: dados.nomeEvento || dados.tipo_Evento,
-        imagem: file ? `/public/${file.filename}` : null,
+        imagem: file ? file.path : null,
     });
     return await newEvento.save();
 };

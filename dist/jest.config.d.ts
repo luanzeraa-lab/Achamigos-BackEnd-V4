@@ -4,12 +4,11 @@ declare const _default: {
     testMatch: string[];
     clearMocks: boolean;
     restoreMocks: boolean;
-    coverageDirectory: string;
-    coverageReporters: string[];
-    collectCoverage: boolean;
-    modulePathIgnorePatterns: string[];
     collectCoverageFrom: string[];
     coveragePathIgnorePatterns: string[];
+    coverageDirectory: string;
+    collectCoverage: boolean;
+    modulePathIgnorePatterns: string[];
     testPathIgnorePatterns: string[];
     coverageThreshold: {
         global: {

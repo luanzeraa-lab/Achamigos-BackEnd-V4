@@ -37,7 +37,7 @@ exports.buscarAnimalPorId = buscarAnimalPorId;
 const cadastrarAnimal = async (dados, file) => {
     const novoAnimal = new Animal({
         ...dados,
-        imagem: file ? `/public/${file.filename}` : null,
+        imagem: file ? file.path : null,
     });
     return await novoAnimal.save();
 };

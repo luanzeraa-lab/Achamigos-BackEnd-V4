@@ -1,91 +1,369 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API Achamigos Completa",
-    "version": "1.10.3"
+    "title": "API Achamigos",
+    "description": "Documentação da API Achamigos usando Swagger",
+    "version": "1.12.0"
   },
   "paths": {
-    "/api/animais": {
-      "get": { "summary": "Lista animais", "responses": { "200": { "description": "OK" } } },
-      "post": {
-        "summary": "Cria animal",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["userId", "tipo", "castracao", "porte", "sexo", "raca", "nome"],
-                "properties": {
-                  "nome": { "type": "string" }, "idade": { "type": "number" }, "raca": { "type": "string" }, "sexo": { "type": "string" }, "porte": { "type": "string" }, "peso": { "type": "number" }, "observacoes": { "type": "string" }, "linkAnimal": { "type": "string" }, "castracao": { "type": "boolean" }, "tipo": { "type": "string" }, "userId": { "type": "string" }
-                },
-                "example": { "nome": "Rex", "idade": 2, "raca": "SRD", "sexo": "macho", "porte": "medio", "peso": 15, "observacoes": "Dócil", "linkAnimal": "url", "castracao": true, "tipo": "cachorro", "userId": "665b12345678901234567890" }
-              }
-            }
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
-        },
-        "responses": { "201": { "description": "Criado" } }
+        }
+      }
+    },
+    "/api/gerartexto": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/api/log": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/erro": {
+      "get": {
+        "description": "",
+        "responses": {
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/api/lento": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/animais/{id}": {
-      "get": { "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "OK" } } },
-      "put": {
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "requestBody": {
-          "content": { "application/json": { "schema": { "type": "object", "properties": { "nome": { "type": "string" }, "idade": { "type": "number" } }, "example": { "nome": "Rex Atualizado", "idade": 3 } } } }
-        },
-        "responses": { "200": { "description": "OK" } }
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          }
+        }
       },
-      "delete": { "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Removido" } } }
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/api/animais": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
     },
     "/api/users": {
-      "get": { "summary": "Lista usuários", "responses": { "200": { "description": "OK" } } },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          }
+        }
+      },
       "post": {
-        "summary": "Cria usuário",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["nome", "cnpj", "telefone", "userLogin", "senha", "email", "endereco"],
                 "properties": {
-                  "nome": { "type": "string" }, "cnpj": { "type": "string" }, "telefone": { "type": "string" }, "userLogin": { "type": "string" }, "senha": { "type": "string" }, "email": { "type": "string" }, "endereco": { "type": "object", "properties": { "cep": { "type": "string" }, "rua": { "type": "string" }, "cidade": { "type": "string" }, "numero": { "type": "string" } } }
-                },
-                "example": { "nome": "Ong", "cnpj": "12345", "telefone": "11999", "userLogin": "ong1", "senha": "123", "email": "o@o.com", "endereco": { "cep": "000", "rua": "A", "cidade": "SP", "numero": "1" } }
+                  "email": {
+                    "example": "any"
+                  },
+                  "senha": {
+                    "example": "any"
+                  }
+                }
               }
             }
           }
-        },
-        "responses": { "201": { "description": "Criado" } }
+        }
       }
     },
     "/api/eventos": {
-      "get": { "summary": "Lista eventos", "responses": { "200": { "description": "OK" } } },
-      "post": {
-        "summary": "Cria evento",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["nomeEvento", "data", "tipo_Evento"],
-                "properties": { "nomeEvento": { "type": "string" }, "data": { "type": "string", "format": "date-time" }, "tipo_Evento": { "type": "string" }, "texto": { "type": "string" }, "linkEvento": { "type": "string" } },
-                "example": { "nomeEvento": "Feira", "data": "2026-06-10T10:00:00Z", "tipo_Evento": "Adoção", "texto": "Venha!", "linkEvento": "url" }
-              }
-            }
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Não Encontrado"
           }
-        },
-        "responses": { "201": { "description": "Criado" } }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
       }
     },
     "/api/eventos/{id}": {
       "put": {
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "requestBody": {
-          "content": { "application/json": { "schema": { "type": "object", "properties": { "nomeEvento": { "type": "string" } }, "example": { "nomeEvento": "Feira Editada" } } } }
-        },
-        "responses": { "200": { "description": "OK" } }
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
       },
-      "delete": { "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Removido" } } }
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/api/animais/filtros/buscar": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
     }
-  }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ]
 }

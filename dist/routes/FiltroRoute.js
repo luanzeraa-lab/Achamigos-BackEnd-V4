@@ -39,6 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const FiltroController = __importStar(require("../controllers/FiltroController"));
 const router = express_1.default.Router();
-router.get('/animais/buscar', FiltroController.filtrar);
+router.get('/animais/filtros/buscar', FiltroController.filtrar);
 exports.default = router;
 //# sourceMappingURL=FiltroRoute.js.map

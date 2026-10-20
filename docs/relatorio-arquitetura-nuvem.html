@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achamigos | Relatório de Arquitetura em Nuvem</title>
+  <style>
+    :root {
+      --ink: #17252e;
+      --muted: #61727c;
+      --paper: #f4f7f5;
+      --white: #ffffff;
+      --line: #d8e2df;
+      --teal: #087f8c;
+      --teal-dark: #075863;
+      --blue: #2873b8;
+      --amber: #d58a25;
+      --red: #c94a42;
+      --green: #38805f;
+      --shadow: 0 18px 45px rgba(23, 37, 46, .08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 86% 4%, rgba(8, 127, 140, .13), transparent 28rem),
+        linear-gradient(135deg, #f7faf8 0%, var(--paper) 48%, #edf4f2 100%);
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.5;
+    }
+
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(216, 226, 223, .9);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .04em; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; color: white; background: var(--teal); border-radius: 8px; font: 700 16px Arial, sans-serif; }
+    nav { display: flex; flex-wrap: wrap; gap: 18px; font: 700 12px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--teal-dark); }
+
+    .hero { padding: 72px 0 58px; display: grid; grid-template-columns: 1.35fr .65fr; gap: 52px; align-items: end; }
+    .eyebrow { color: var(--teal); font: 700 12px Arial, sans-serif; text-transform: uppercase; letter-spacing: .14em; }
+    h1 { max-width: 780px; margin: 14px 0 18px; font-size: clamp(40px, 7vw, 78px); line-height: .98; letter-spacing: -.04em; font-weight: 700; }
+    .hero p { max-width: 700px; margin: 0; color: var(--muted); font-size: 19px; }
+    .hero-note { padding: 24px; border-left: 4px solid var(--amber); background: rgba(255,255,255,.7); box-shadow: var(--shadow); }
+    .hero-note strong { display: block; margin-bottom: 7px; font-size: 21px; }
+    .hero-note p { font-size: 15px; }
+
+    section { padding: 48px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin-bottom: 24px; }
+    h2 { margin: 0; font-size: 34px; letter-spacing: -.025em; }
+    h3 { margin: 0 0 8px; font-size: 20px; }
+    .section-head p { max-width: 520px; margin: 0; color: var(--muted); }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .metric, .panel { background: rgba(255,255,255,.82); border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .metric { padding: 20px; min-height: 130px; }
+    .metric b { display: block; color: var(--teal-dark); font-size: 31px; }
+    .metric span { color: var(--muted); font: 13px Arial, sans-serif; }
+
+    .architecture { padding: 30px 24px 26px; overflow-x: auto; }
+    .flow { display: grid; grid-template-columns: repeat(5, minmax(145px, 1fr)); align-items: center; min-width: 800px; gap: 14px; }
+    .node { position: relative; min-height: 124px; padding: 18px 14px; display: flex; flex-direction: column; justify-content: center; text-align: center; border: 2px solid var(--teal); border-radius: 4px; background: #effafa; box-shadow: 6px 6px 0 rgba(8, 127, 140, .12); }
+    .node small { display: block; margin-top: 5px; color: var(--muted); font: 12px Arial, sans-serif; }
+    .node.external { border-color: var(--blue); background: #f1f7fd; }
+    .node.data { border-color: var(--green); background: #f1f8f3; }
+    .node.security { border-color: var(--amber); background: #fff8ec; }
+    .arrow { display: grid; place-items: center; color: var(--teal); font: 700 24px Arial, sans-serif; }
+    .subflow { position: relative; margin: 42px auto 0; display: grid; grid-template-columns: repeat(3, minmax(170px, 1fr)); max-width: 780px; gap: 28px; }
+    .subflow::before { content: ''; position: absolute; top: -28px; left: 16.5%; right: 16.5%; border-top: 2px dashed var(--teal); }
+    .subflow div { position: relative; min-height: 110px; padding: 18px 14px 14px; border: 2px solid var(--blue); border-radius: 4px; background: #f7fafc; font: 13px Arial, sans-serif; }
+    .subflow div::before { content: '↓'; position: absolute; top: -31px; left: calc(50% - 9px); color: var(--teal); background: #fff; font: 700 22px Arial, sans-serif; line-height: 18px; }
+    .subflow strong { display: block; margin-bottom: 7px; color: var(--teal-dark); font-size: 14px; }
+    .flow-caption { margin: 0 0 22px; color: var(--muted); text-align: center; font: 700 11px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .panel { padding: 24px; }
+    .panel p { margin: 8px 0 0; color: var(--muted); }
+    .panel ul { padding-left: 20px; margin: 14px 0 0; }
+    .panel li { margin: 7px 0; }
+    .tag { display: inline-block; padding: 5px 8px; margin-bottom: 12px; border-radius: 4px; color: white; background: var(--teal); font: 700 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+    .tag.amber { background: var(--amber); }
+    .tag.red { background: var(--red); }
+    .tag.green { background: var(--green); }
+
+    table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,.86); box-shadow: var(--shadow); font: 14px Arial, sans-serif; }
+    th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--teal-dark); background: #eaf4f2; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    tr:last-child td { border-bottom: 0; }
+    .allow { color: var(--green); font-weight: 700; }
+    .deny { color: var(--red); font-weight: 700; }
+
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: phase; }
+    .phase { position: relative; padding: 22px 20px 20px; border-top: 3px solid var(--teal); background: rgba(255,255,255,.78); }
+    .phase + .phase { border-left: 1px solid var(--line); }
+    .phase::before { counter-increment: phase; content: '0' counter(phase); display: block; margin-bottom: 26px; color: var(--teal); font: 700 13px Arial, sans-serif; }
+    .phase p { margin: 0; color: var(--muted); font: 14px Arial, sans-serif; }
+
+    .decision { padding: 26px; border: 2px solid var(--teal); background: #eaf7f5; }
+    .decision h3 { color: var(--teal-dark); }
+    .decision ol { margin-bottom: 0; padding-left: 22px; }
+    footer { padding: 30px 0 54px; color: var(--muted); font: 12px Arial, sans-serif; }
+
+    @media (max-width: 800px) {
+      .shell { width: min(100% - 28px, 620px); }
+      .topbar, .section-head { align-items: flex-start; flex-direction: column; }
+      .hero, .grid-2 { grid-template-columns: 1fr; gap: 24px; }
+      .hero { padding-top: 48px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .subflow, .timeline { grid-template-columns: 1fr; }
+      .subflow { margin-top: 34px; gap: 30px; }
+      .subflow::before { display: none; }
+      .subflow div::before { top: -29px; }
+      .phase + .phase { border-left: 0; border-top: 1px solid var(--line); }
+      h2 { font-size: 29px; }
+    }
+    @media print {
+      body { background: white; }
+      .topbar { border-bottom: 1px solid #aaa; }
+      .panel, .metric, table { box-shadow: none; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <div class="brand"><span class="brand-mark">A</span><span>ACHAMIGOS / CLOUD REVIEW</span></div>
+    <nav aria-label="Navegação do relatório">
+      <a href="#resumo">Resumo</a>
+      <a href="#topologia">Topologia</a>
+      <a href="#rede">Rede</a>
+      <a href="#riscos">Riscos</a>
+      <a href="#proximos-passos">Próximos passos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="shell hero" id="resumo">
+      <div>
+        <div class="eyebrow">Relatório visual · 06 outubro 2026</div>
+        <h1>Da API local para uma nuvem operável.</h1>
+        <p>Leitura arquitetural do backend Achamigos e proposta de fluxo para Oracle Cloud, com MongoDB Atlas, frontend separado e acesso público somente por HTTPS.</p>
+      </div>
+      <aside class="hero-note">
+        <strong>Direção recomendada</strong>
+        <p>OCI Container Instances em sub-rede privada, atrás de Load Balancer público, com NAT Gateway para as integrações externas.</p>
+      </aside>
+    </section>
+
+    <section class="shell">
+      <div class="metrics">
+        <div class="metric"><b>1</b><span>serviço monolítico Express</span></div>
+        <div class="metric"><b>4</b><span>destinos externos principais</span></div>
+        <div class="metric"><b>3002</b><span>porta interna atual da API</span></div>
+        <div class="metric"><b>20/20</b><span>testes existentes aprovados</span></div>
+      </div>
+    </section>
+
+    <section class="shell" id="topologia">
+      <div class="section-head">
+        <h2>Topologia alvo</h2>
+        <p>O tráfego público termina no Load Balancer. Banco, container e segredos ficam fora da borda da Internet.</p>
+      </div>
+      <div class="panel architecture">
+        <p class="flow-caption">Fluxo de entrada da requisição</p>
+        <div class="flow">
+          <div class="node external"><strong>01 · Frontend</strong><small>usuário e navegador</small></div>
+          <div class="arrow">→</div>
+          <div class="node security"><strong>02 · OCI WAF / LB</strong><small>DNS · TLS · 443</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>03 · API Achamigos</strong><small>Container privado · 3002</small></div>
+        </div>
+        <p class="flow-caption" style="margin-top: 34px;">Ramificação de saída da API</p>
+        <div class="subflow">
+          <div><strong>04 · Dados</strong>API → MongoDB Atlas com TLS e allowlist do IP de saída.</div>
+          <div><strong>05 · Imagens e IA</strong>API → Cloudinary e Gemini por HTTPS.</div>
+          <div><strong>06 · Observabilidade</strong>API → Logtail por HTTPS, sem dados sensíveis.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="section-head">
+        <h2>O que já existe</h2>
+        <p>O código já contém os principais caminhos funcionais, mas alguns contratos ainda precisam ser endurecidos antes da publicação.</p>
+      </div>
+      <div class="grid-2">
+        <article class="panel"><span class="tag green">Aplicação</span><h3>Fluxo principal</h3><p>Express monta as rotas sob <strong>/api</strong>, conecta ao MongoDB via Mongoose e publica Swagger em <strong>/docs</strong>.</p><ul><li>Animais e eventos usam Cloudinary para imagens.</li><li>GenAI chama o Google Gemini pelo backend.</li><li>Logs de aplicação são enviados ao Logtail.</li></ul></article>
+        <article class="panel"><span class="tag amber">Desenvolvimento</span><h3>Compose local</h3><p>O Docker Compose sobe frontend, backend e MongoDB em uma bridge local.</p><ul><li>Não deve ser copiado literalmente para produção.</li><li>A porta 27017 não deve ser pública.</li><li>O disco local não é armazenamento persistente de produção.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="shell" id="rede">
+      <div class="section-head">
+        <h2>Mapa de rede</h2>
+        <p>Estas são as permissões mínimas para uma primeira implantação controlada.</p>
+      </div>
+      <table>
+        <thead><tr><th>Origem</th><th>Destino</th><th>Porta</th><th>Regra</th></tr></thead>
+        <tbody>
+          <tr><td>Internet</td><td>OCI Load Balancer</td><td>443</td><td class="allow">Permitir</td></tr>
+          <tr><td>Load Balancer</td><td>Container da API</td><td>3002</td><td class="allow">Permitir somente do LB</td></tr>
+          <tr><td>API via NAT</td><td>MongoDB Atlas</td><td>27017/TLS</td><td class="allow">Permitir pelo IP fixo de saída</td></tr>
+          <tr><td>API via NAT</td><td>Cloudinary / Gemini / Logtail</td><td>443</td><td class="allow">Permitir saída HTTPS</td></tr>
+          <tr><td>Internet</td><td>MongoDB</td><td>27017</td><td class="deny">Bloquear</td></tr>
+          <tr><td>Internet</td><td>Container da API</td><td>3002</td><td class="deny">Bloquear</td></tr>
+          <tr><td>Internet</td><td>SSH da infraestrutura</td><td>22</td><td class="deny">Bloquear ou restringir a VPN</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="shell" id="riscos">
+      <div class="section-head">
+        <h2>Antes do go-live</h2>
+        <p>Os itens abaixo são bloqueadores ou riscos importantes para uma API pública.</p>
+      </div>
+      <div class="grid-2">
+        <article class="panel"><span class="tag red">Prioridade alta</span><h3>Segurança de acesso</h3><ul><li>API key está desativada em <strong>api.ts</strong>.</li><li>JWT existe, mas não é emitido no login nem aplicado às rotas.</li><li>CORS está aberto para qualquer origem.</li><li>Token Logtail e API key aparecem no Compose.</li></ul></article>
+        <article class="panel"><span class="tag red">Prioridade alta</span><h3>Dados e observabilidade</h3><ul><li>Upload de usuário grava no disco efêmero do container.</li><li>Logger envia headers e bodies completos, podendo capturar credenciais.</li><li>Não há readiness real para confirmar conexão com MongoDB.</li><li>GenAI não tem limite de prompt, rate limit ou controle de custo.</li></ul></article>
+        <article class="panel"><span class="tag amber">Prioridade média</span><h3>Reprodutibilidade</h3><ul><li><strong>tsx</strong> é executado no build, mas não está declarado diretamente.</li><li>Docker usa Node 20; CI documenta Node 22.</li><li>O build regenera artefatos versionados em <strong>dist/</strong>.</li></ul></article>
+        <article class="panel"><span class="tag amber">Prioridade média</span><h3>Operação</h3><ul><li>Não há health check de container nem graceful shutdown.</li><li>Listagens não têm paginação.</li><li>Uploads não têm limite de tamanho ou validação de tipo.</li><li>Swagger e README divergem de algumas rotas reais.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="shell" id="proximos-passos">
+      <div class="section-head">
+        <h2>Roteiro de implantação</h2>
+        <p>Uma sequência curta para reduzir risco sem exigir Kubernetes de início.</p>
+      </div>
+      <div class="timeline">
+        <article class="phase"><h3>Fundação OCI</h3><p>VCN, sub-redes pública/privada, NSGs, Load Balancer, NAT Gateway e DNS.</p></article>
+        <article class="phase"><h3>Dados e segredos</h3><p>Atlas com TLS, backup e allowlist; segredos em Vault/Secret Manager, nunca no Compose.</p></article>
+        <article class="phase"><h3>Aplicação</h3><p>Imagem imutável, health check, upload persistente e autenticação efetiva antes de abrir o endpoint.</p></article>
+        <article class="phase"><h3>Operação</h3><p>Logs sem dados sensíveis, métricas, alertas, rollback e teste de restauração.</p></article>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="decision">
+        <h3>Decisões para fechar o desenho executivo</h3>
+        <ol>
+          <li>Usar OCI Container Instances como primeira plataforma ou iniciar diretamente com OKE?</li>
+          <li>Manter acesso ao Atlas por IP fixo do NAT Gateway ou avaliar conectividade privada?</li>
+          <li>Migrar imagens de usuários para Cloudinary ou OCI Object Storage?</li>
+          <li>Qual mecanismo será oficial: JWT, API key ou combinação dos dois?</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">Achamigos · Relatório técnico baseado na estrutura atual do backend, Docker, rotas e configurações do projeto.</footer>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achamigos | Arquitetura IBM Cloud Free Tier</title>
+  <style>
+    :root { --ink:#17202b; --muted:#596878; --paper:#f3f6f8; --line:#d6e0e8; --blue:#0f62fe; --blue-dark:#053b8f; --cyan:#1192e8; --purple:#8a3ffc; --amber:#d59b22; --red:#c9362b; --green:#21864b; --shadow:0 18px 45px rgba(23,32,43,.09); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:radial-gradient(circle at 88% 3%,rgba(15,98,254,.14),transparent 28rem),linear-gradient(135deg,#f8fafb 0%,var(--paper) 54%,#edf3f8 100%); font-family:Georgia,'Times New Roman',serif; line-height:1.5; }
+    .shell { width:min(1180px,calc(100% - 40px)); margin:0 auto; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:22px 0; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.04em; }
+    .brand-mark { width:34px; height:34px; display:grid; place-items:center; color:white; background:var(--blue); border-radius:4px; font:700 15px Arial,sans-serif; }
+    nav { display:flex; flex-wrap:wrap; gap:18px; font:700 12px Arial,sans-serif; text-transform:uppercase; letter-spacing:.08em; }
+    nav a { color:var(--muted); text-decoration:none; } nav a:hover { color:var(--blue-dark); }
+    .hero { padding:72px 0 58px; display:grid; grid-template-columns:1.35fr .65fr; gap:52px; align-items:end; }
+    .eyebrow { color:var(--blue); font:700 12px Arial,sans-serif; text-transform:uppercase; letter-spacing:.14em; }
+    h1 { max-width:780px; margin:14px 0 18px; font-size:clamp(40px,7vw,78px); line-height:.98; letter-spacing:-.04em; }
+    .hero p { max-width:700px; margin:0; color:var(--muted); font-size:19px; }
+    .hero-note { padding:24px; border-left:4px solid var(--purple); background:rgba(255,255,255,.75); box-shadow:var(--shadow); }
+    .hero-note strong { display:block; margin-bottom:7px; font-size:21px; } .hero-note p { font-size:15px; }
+    section { padding:48px 0; } .section-head { display:flex; justify-content:space-between; align-items:baseline; gap:24px; margin-bottom:24px; }
+    h2 { margin:0; font-size:34px; letter-spacing:-.025em; } h3 { margin:0 0 8px; font-size:20px; }
+    .section-head p { max-width:540px; margin:0; color:var(--muted); }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .metric,.panel { background:rgba(255,255,255,.84); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .metric { padding:20px; min-height:130px; } .metric b { display:block; color:var(--blue-dark); font-size:31px; } .metric span { color:var(--muted); font:13px Arial,sans-serif; }
+    .architecture { padding:30px 24px 26px; overflow-x:auto; }
+    .flow { display:grid; grid-template-columns:repeat(5,minmax(145px,1fr)); align-items:center; min-width:800px; gap:14px; }
+    .node { min-height:124px; padding:18px 14px; display:flex; flex-direction:column; justify-content:center; text-align:center; border:2px solid var(--blue); border-radius:4px; background:#eef5ff; box-shadow:6px 6px 0 rgba(15,98,254,.12); }
+    .node small { display:block; margin-top:5px; color:var(--muted); font:12px Arial,sans-serif; } .node.external { border-color:var(--cyan); background:#effaff; } .node.security { border-color:var(--purple); background:#f7f1ff; } .node.data { border-color:var(--green); background:#f0faf3; }
+    .arrow { display:grid; place-items:center; color:var(--blue); font:700 24px Arial,sans-serif; }
+    .flow-caption { margin:0 0 22px; color:var(--muted); text-align:center; font:700 11px Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+    .subflow { position:relative; margin:42px auto 0; display:grid; grid-template-columns:repeat(3,minmax(170px,1fr)); max-width:780px; gap:28px; }
+    .subflow::before { content:''; position:absolute; top:-28px; left:16.5%; right:16.5%; border-top:2px dashed var(--blue); }
+    .subflow div { position:relative; min-height:110px; padding:18px 14px 14px; border:2px solid var(--cyan); border-radius:4px; background:#f5fbff; font:13px Arial,sans-serif; }
+    .subflow div::before { content:'↓'; position:absolute; top:-31px; left:calc(50% - 9px); color:var(--blue); background:#fff; font:700 22px Arial,sans-serif; line-height:18px; }
+    .subflow strong { display:block; margin-bottom:7px; color:var(--blue-dark); font-size:14px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; } .panel { padding:24px; } .panel p { margin:8px 0 0; color:var(--muted); } .panel ul { padding-left:20px; margin:14px 0 0; } .panel li { margin:7px 0; }
+    .tag { display:inline-block; padding:5px 8px; margin-bottom:12px; border-radius:3px; color:#fff; background:var(--blue); font:700 11px Arial,sans-serif; text-transform:uppercase; letter-spacing:.08em; } .tag.amber { background:var(--amber); } .tag.red { background:var(--red); } .tag.green { background:var(--green); } .tag.purple { background:var(--purple); }
+    table { width:100%; border-collapse:collapse; background:rgba(255,255,255,.86); box-shadow:var(--shadow); font:14px Arial,sans-serif; } th,td { padding:14px 16px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; } th { color:var(--blue-dark); background:#eaf2fc; font-size:12px; text-transform:uppercase; letter-spacing:.06em; } tr:last-child td { border-bottom:0; } .allow { color:var(--green); font-weight:700; } .deny { color:var(--red); font-weight:700; } .check { color:var(--amber); font-weight:700; }
+    .timeline { display:grid; grid-template-columns:repeat(4,1fr); gap:0; counter-reset:phase; } .phase { position:relative; padding:22px 20px 20px; border-top:3px solid var(--blue); background:rgba(255,255,255,.78); } .phase+.phase { border-left:1px solid var(--line); } .phase::before { counter-increment:phase; content:'0' counter(phase); display:block; margin-bottom:26px; color:var(--blue); font:700 13px Arial,sans-serif; } .phase p { margin:0; color:var(--muted); font:14px Arial,sans-serif; }
+    .decision { padding:26px; border:2px solid var(--blue); background:#edf5ff; } .decision h3 { color:var(--blue-dark); } .decision ol { margin-bottom:0; padding-left:22px; } footer { padding:30px 0 54px; color:var(--muted); font:12px Arial,sans-serif; }
+    @media(max-width:800px) { .shell{width:min(100% - 28px,620px)} .topbar,.section-head{align-items:flex-start;flex-direction:column} .hero,.grid-2{grid-template-columns:1fr;gap:24px} .hero{padding-top:48px} .metrics{grid-template-columns:1fr 1fr} .subflow,.timeline{grid-template-columns:1fr} .subflow{margin-top:34px;gap:30px}.subflow::before{display:none}.subflow div::before{top:-29px}.phase+.phase{border-left:0;border-top:1px solid var(--line)} h2{font-size:29px} }
+    @media print { body{background:#fff} .topbar{border-bottom:1px solid #aaa} .panel,.metric,table{box-shadow:none} nav{display:none} }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <div class="brand"><span class="brand-mark">IBM</span><span>ACHAMIGOS / IBM CLOUD REVIEW</span></div>
+    <nav aria-label="Navegação do relatório"><a href="#resumo">Resumo</a><a href="#topologia">Topologia</a><a href="#rede">Rede</a><a href="#custos">Free tier</a><a href="#proximos-passos">Próximos passos</a></nav>
+  </header>
+  <main>
+    <section class="shell hero" id="resumo">
+      <div><div class="eyebrow">Relatório visual · IBM Cloud · 06 outubro 2026</div><h1>Uma rota IBM para colocar a API no ar.</h1><p>Proposta de arquitetura do backend Achamigos usando a conta gratuita da IBM Cloud, créditos iniciais e uma evolução possível para VPC quando a aplicação precisar de mais controle.</p></div>
+      <aside class="hero-note"><strong>Premissa de custo</strong><p>“Free tier” não significa que todos os serviços de rede sejam sempre gratuitos. Code Engine, VPC, Load Balancer, tráfego e armazenamento devem ser conferidos na conta e na região antes da criação.</p></aside>
+    </section>
+    <section class="shell"><div class="metrics"><div class="metric"><b>1</b><span>container da API</span></div><div class="metric"><b>3</b><span>integrações HTTPS externas</span></div><div class="metric"><b>IBM</b><span>Registry + Code Engine</span></div><div class="metric"><b>USD 200</b><span>crédito inicial divulgado pela IBM por 30 dias</span></div></div></section>
+    <section class="shell" id="topologia">
+      <div class="section-head"><h2>Topologia de menor custo</h2><p>Para experimentar a API, o caminho mais simples é publicar um container no Code Engine e manter banco e serviços de mídia fora da IBM Cloud.</p></div>
+      <div class="panel architecture">
+        <p class="flow-caption">Fluxo de entrada da requisição</p>
+        <div class="flow"><div class="node external"><strong>01 · Frontend</strong><small>usuário e navegador</small></div><div class="arrow">→</div><div class="node security"><strong>02 · Code Engine</strong><small>URL pública · HTTPS</small></div><div class="arrow">→</div><div class="node"><strong>03 · API Achamigos</strong><small>container · porta 3002</small></div></div>
+        <p class="flow-caption" style="margin-top:34px;">Saídas controladas do container</p>
+        <div class="subflow"><div><strong>04 · Dados</strong>API → MongoDB Atlas com TLS, usuário restrito e allowlist.</div><div><strong>05 · Imagens e IA</strong>API → Cloudinary e Google Gemini somente por HTTPS.</div><div><strong>06 · Logs</strong>API → Logtail por HTTPS; sem headers ou senhas no payload.</div></div>
+      </div>
+    </section>
+    <section class="shell"><div class="section-head"><h2>Como a IBM entra no projeto</h2><p>O runtime hospeda a imagem Docker; o backend continua sendo o mesmo monólito Express já existente.</p></div><div class="grid-2">
+      <article class="panel"><span class="tag green">Caminho inicial</span><h3>IBM Cloud Code Engine</h3><p>Executa a imagem do backend sem administrar uma VM ou cluster Kubernetes. A aplicação recebe uma URL HTTPS pública e deve escutar a porta configurada pelo ambiente.</p><ul><li>Build da imagem no CI.</li><li>Push para IBM Cloud Container Registry.</li><li>Deploy do container no Code Engine.</li></ul></article>
+      <article class="panel"><span class="tag purple">Evolução</span><h3>IBM Cloud VPC</h3><p>Quando for necessário controlar sub-redes, ACLs, Security Groups, IPs e Load Balancer, a API pode migrar para VSI ou outro runtime dentro de uma VPC.</p><ul><li>Sub-rede pública para o Load Balancer.</li><li>Sub-rede privada para o compute.</li><li>Saída por public gateway ou arquitetura de egress revisada.</li></ul></article>
+    </div></section>
+    <section class="shell" id="rede"><div class="section-head"><h2>Mapa de rede</h2><p>No cenário Code Engine, não se administra uma porta de entrada no VPC como em uma VM; no cenário VPC, estas regras passam a ser explícitas.</p></div><table><thead><tr><th>Origem</th><th>Destino</th><th>Porta</th><th>Regra</th></tr></thead><tbody>
+      <tr><td>Internet / Frontend</td><td>URL pública do Code Engine</td><td>443</td><td class="allow">Permitir HTTPS</td></tr><tr><td>Internet</td><td>Container da API</td><td>3002</td><td class="deny">Não expor diretamente</td></tr><tr><td>API</td><td>MongoDB Atlas</td><td>27017/TLS</td><td class="allow">Permitir apenas egress autorizado</td></tr><tr><td>API</td><td>Cloudinary / Gemini / Logtail</td><td>443</td><td class="allow">Permitir HTTPS de saída</td></tr><tr><td>Internet</td><td>MongoDB</td><td>27017</td><td class="deny">Bloquear</td></tr><tr><td>Load Balancer IBM</td><td>VSI privado</td><td>3002</td><td class="allow">Somente no cenário VPC</td></tr><tr><td>Internet</td><td>SSH da VSI</td><td>22</td><td class="deny">Restringir a IP administrativo/VPN</td></tr>
+    </tbody></table></section>
+    <section class="shell" id="custos"><div class="section-head"><h2>O que “free tier” cobre</h2><p>Leitura de planejamento baseada na página oficial da IBM consultada em 06/10/2026. A disponibilidade final deve ser confirmada no catálogo e na região escolhida.</p></div><div class="grid-2">
+      <article class="panel"><span class="tag green">Confirmado na página IBM</span><h3>Conta e produtos gratuitos</h3><ul><li>Conta Pay-As-You-Go sem compromisso inicial, com produtos que possuem camada gratuita.</li><li>A IBM informa mais de 40 produtos sempre gratuitos no plano Lite.</li><li>Crédito inicial de USD 200 por 30 dias para experimentar serviços.</li><li>IBM Cloudant aparece com 1 GB de armazenamento gratuito.</li><li>Continuous Delivery aparece com cota mensal de jobs.</li></ul></article>
+      <article class="panel"><span class="tag amber">Verificar antes de criar</span><h3>Custos que podem aparecer</h3><ul><li>VPC, VSI, Block Storage e Load Balancer podem depender de promoção, região ou cobrança por uso.</li><li>Code Engine e Container Registry precisam ter quota/preço confirmados para a conta escolhida.</li><li>Egress, IP público, logs e armazenamento podem consumir crédito.</li><li>O free tier não substitui alertas de orçamento e limites de gasto.</li></ul></article>
+    </div></section>
+    <section class="shell"><div class="section-head"><h2>Antes do go-live</h2><p>Os bloqueadores do backend continuam existindo, independentemente do provedor escolhido.</p></div><div class="grid-2">
+      <article class="panel"><span class="tag red">Prioridade alta</span><h3>Segurança da aplicação</h3><ul><li>API key está desativada em <strong>api.ts</strong>.</li><li>JWT existe, mas não é emitido no login nem aplicado às rotas.</li><li>CORS está aberto para qualquer origem.</li><li>Segredos aparecem no Compose e precisam ser rotacionados.</li></ul></article>
+      <article class="panel"><span class="tag red">Prioridade alta</span><h3>Persistência e logs</h3><ul><li>Upload de usuário grava em disco local, inadequado para instâncias substituíveis.</li><li>Logger envia headers e bodies completos, podendo capturar credenciais.</li><li>Não há readiness real para MongoDB nem health check operacional.</li><li>GenAI não tem rate limit nem limite de prompt/custo.</li></ul></article>
+      <article class="panel"><span class="tag amber">Prioridade média</span><h3>Imagem Docker</h3><ul><li>Declarar <strong>tsx</strong> diretamente nas dependências de build.</li><li>Fixar a versão do Node entre Docker e CI.</li><li>Usar <strong>npm ci</strong> e uma tag imutável no Registry.</li></ul></article>
+      <article class="panel"><span class="tag amber">Prioridade média</span><h3>Operação IBM</h3><ul><li>Criar alertas de orçamento e acompanhar consumo do crédito.</li><li>Definir região e quotas antes do deploy.</li><li>Testar restart, escala, logs e comportamento quando Mongo estiver indisponível.</li></ul></article>
+    </div></section>
+    <section class="shell" id="proximos-passos"><div class="section-head"><h2>Roteiro IBM</h2><p>Uma sequência segura para começar pequeno e preservar uma evolução para VPC.</p></div><div class="timeline"><article class="phase"><h3>Conta e região</h3><p>Validar elegibilidade, quotas, região, orçamento e produtos gratuitos disponíveis.</p></article><article class="phase"><h3>Imagem</h3><p>Build no GitHub Actions, scan, tag imutável e push para o IBM Cloud Container Registry.</p></article><article class="phase"><h3>Runtime</h3><p>Publicar no Code Engine com variáveis em secret/configuration e health endpoint.</p></article><article class="phase"><h3>Escala</h3><p>Quando necessário, avaliar VPC, Load Balancer, VSI e controles de rede mais completos.</p></article></div></section>
+    <section class="shell"><div class="decision"><h3>Decisões para fechar a implantação IBM</h3><ol><li>Começar com Code Engine para validação ou usar VPC desde o primeiro ambiente?</li><li>O frontend continuará separado e consumirá a URL pública HTTPS do Code Engine?</li><li>MongoDB Atlas será mantido como banco principal?</li><li>As imagens de usuários serão migradas para Cloudinary ou IBM Cloud Object Storage?</li><li>Qual limite financeiro e alerta de orçamento serão configurados?</li></ol></div></section>
+  </main>
+  <footer class="shell">Achamigos · Relatório baseado no backend atual e na documentação pública da IBM Cloud consultada em 06/10/2026. Quotas, preços e elegibilidade devem ser confirmados na conta antes da contratação.</footer>
+</body>
+</html>

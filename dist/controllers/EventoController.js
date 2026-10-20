@@ -84,7 +84,7 @@ const excluirEvento = async (req, res) => {
         const { id } = req.params;
         const eventoDeletado = await EventoModel.excluirEvento(id);
         if (!eventoDeletado) {
-            res.status(400).json({ message: 'Erro ao alterar Evento' });
+            res.status(400).json({ message: 'Evento não encontrado' });
             return;
         }
         res.status(201).json(eventoDeletado);

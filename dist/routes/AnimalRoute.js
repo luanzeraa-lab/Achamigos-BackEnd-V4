@@ -39,14 +39,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const animalController = __importStar(require("../controllers/AnimalController"));
+const multer_storage_cloudinary_1 = require("multer-storage-cloudinary");
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const router = express_1.default.Router();
-const storage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, __dirname + '/../public');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '.jpg');
-    },
+const storage = new multer_storage_cloudinary_1.CloudinaryStorage({
+    cloudinary: cloudinary_1.default,
+    params: async (req, file) => ({
+        folder: 'achamigos',
+        public_id: Date.now().toString(),
+    }),
 });
 const upload = (0, multer_1.default)({ storage });
 router.get('/animais/:id', animalController.buscarAnimalPorId);
