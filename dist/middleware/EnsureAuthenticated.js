@@ -7,18 +7,23 @@ function ensureAuthenticated(req, _res, next) {
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            throw new Error("Token JWT não encontrado.");
+            throw new Error("Token JWT ausente.");
         }
-        const [, token] = authHeader.split(" ");
+        const [scheme, token] = authHeader.split(" ");
+        if (scheme !== "Bearer" || !token) {
+            throw new Error("Formato do token JWT inválido.");
+        }
         const { role, sub: user_id } = (0, jsonwebtoken_1.verify)(token, Auth_1.AuthConfig.jwt.secret);
         req.user = {
             _id: user_id,
-            role
+            role: role ?? ""
         };
         return next();
     }
     catch (_error) {
-        throw new Error("Token JWT não encontrado.");
+        return _res.status(401).json({
+            message: "Token JWT inválido ou ausente."
+        });
     }
 }
 //# sourceMappingURL=EnsureAuthenticated.js.map

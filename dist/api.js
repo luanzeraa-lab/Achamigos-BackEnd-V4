@@ -20,6 +20,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const AnimalRoute_1 = __importDefault(require("./routes/AnimalRoute"));
 const UserRoute_1 = __importDefault(require("./routes/UserRoute"));
+const SessionsRoute_1 = __importDefault(require("./routes/SessionsRoute"));
 const EventoRoute_1 = __importDefault(require("./routes/EventoRoute"));
 const FiltroRoute_1 = __importDefault(require("./routes/FiltroRoute"));
 const GenaiRoute_1 = __importDefault(require("./routes/GenaiRoute"));
@@ -42,6 +43,7 @@ const swaggerOptions = {
 app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_output_json_1.default, swaggerOptions));
 app.use('/api', GenaiRoute_1.default);
 app.use('/api', LogRoute_1.default);
+app.use('/api', SessionsRoute_1.default);
 app.use('/api', AnimalRoute_1.default);
 app.use('/api', UserRoute_1.default);
 app.use('/api', EventoRoute_1.default);

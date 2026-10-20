@@ -3,7 +3,7 @@
   "info": {
     "title": "API Achamigos",
     "description": "Documentação da API Achamigos usando Swagger",
-    "version": "1.12.0"
+    "version": "1.13.0"
   },
   "paths": {
     "/": {
@@ -55,6 +55,16 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/sessions": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -160,12 +170,24 @@
     "/api/users": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
           },
           "404": {
             "description": "Não Encontrado"
@@ -198,6 +220,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -206,6 +235,9 @@
           },
           "400": {
             "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
           }
         }
       },
@@ -219,6 +251,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -227,6 +266,9 @@
           },
           "400": {
             "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
           }
         }
       }
@@ -357,7 +399,8 @@
       "apiKeyAuth": {
         "type": "apiKey",
         "in": "header",
-        "name": "x-api-key"
+        "name": "x-api-key",
+        "description": "1234"
       }
     }
   },

@@ -1,6 +1,6 @@
 {
     "name": "api-achamigos",
-    "version": "1.12.0",
+    "version": "1.13.0",
     "description": "API Achamigos",
     "license": "ISC",
     "author": "",
@@ -34,7 +34,8 @@
         "multer": "^2.0.2",
         "multer-storage-cloudinary": "^4.0.0",
         "swagger-autogen": "^2.23.7",
-        "swagger-ui-express": "^5.0.1"
+        "swagger-ui-express": "^5.0.1",
+        "zod": "^4.6.5"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.4",

@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const userController = __importStar(require("../controllers/UserController"));
+const EnsureAuthenticated_1 = require("../middleware/EnsureAuthenticated");
 const router = express_1.default.Router();
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
@@ -49,10 +50,10 @@ const storage = multer_1.default.diskStorage({
     },
 });
 const upload = (0, multer_1.default)({ storage });
-router.get('/users', userController.listarUser);
+router.get('/users', EnsureAuthenticated_1.ensureAuthenticated, userController.listarUser);
 router.post('/users', upload.single('imagem'), userController.cadastrarUser);
-router.put('/users/:id', userController.alterarUser);
-router.delete('/users/:id', userController.excluirUser);
+router.put('/users/:id', EnsureAuthenticated_1.ensureAuthenticated, userController.alterarUser);
+router.delete('/users/:id', EnsureAuthenticated_1.ensureAuthenticated, userController.excluirUser);
 router.post('/users/login', userController.login);
 exports.default = router;
 //# sourceMappingURL=UserRoute.js.map
